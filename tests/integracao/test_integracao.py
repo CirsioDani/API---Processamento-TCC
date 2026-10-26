@@ -434,9 +434,17 @@ def _envelope(pacote: str, registros: list, chave: list[str]) -> dict:
     }
 
 
-def _escrever(raiz: Path, d: str, indices: range, dia: int) -> None:
-    """Escreve saida/<d>/execucao.json e saida_completa/<d>/{series_diarias,mercado_dia,execucao}.json."""
+def _escrever(raiz: Path, d: str, indices: range | list[int], dia: int,
+              alterar: dict[int, dict] | None = None) -> None:
+    """Escreve saida/<d>/execucao.json e saida_completa/<d>/{series_diarias,mercado_dia,execucao}.json.
+
+    `indices` pode ser uma lista (pula datas do meio). `alterar` troca campos de datas específicas (índice -> campos).
+    """
     datas = [DATAS[i].isoformat() for i in indices]
+
+    def valores_do_dia(i: int) -> dict:
+        return {**_valores(i, dia), **(alterar or {}).get(i, {})}
+
     serie = {
         "versao_contrato": "1.0",
         "gerado_em": GERADO,
@@ -447,7 +455,7 @@ def _escrever(raiz: Path, d: str, indices: range, dia: int) -> None:
         "substituir_serie": True,
         "inicio_janela": datas[0],
         "datas": datas,
-        "valores": {campo: [_valores(i, dia)[campo] for i in indices] for campo in CAMPOS_SERIE},
+        "valores": {campo: [valores_do_dia(i)[campo] for i in indices] for campo in CAMPOS_SERIE},
         "status": {},
     }
     mercado = {
@@ -541,6 +549,60 @@ def test_emenda_ponta_a_ponta(conexao, cfg, tmp_path):
         t["status"] == "indisponivel" and t["de"] == DATAS[0].isoformat() and t["ate"] == DATAS[9].isoformat()
         for t in trechos
     ), trechos
+
+
+def test_ponto_removido_volta_sem_chave_duplicada(conexao, tmp_path):
+    # Dia 1: janela inteira (45 datas).
+    _escrever(tmp_path, D1, range(0, 45), 1)
+    publicar(conexao, tmp_path, D1)
+
+    # Dia 2: a mesma janela sem a data de índice 20: o ponto vira removido (removido_em = D2).
+    data_meio = DATAS[20].isoformat()
+    _escrever(tmp_path, D2, [i for i in range(0, 45) if i != 20], 1)
+    publicar(conexao, tmp_path, D2)
+    linha = conexao.consultar(
+        f"SELECT removido_em FROM {conexao.t('series_pontos')} WHERE ticker = %s AND data = %s",
+        ("TSTE3", data_meio),
+    )
+    assert str(linha[0]["removido_em"]) == D2
+    assert len(_pontos(conexao)) == 44
+
+    # Dia 3: a data volta, com fechamento diferente do removido. Reabre a linha (antes: chave duplicada).
+    _escrever(tmp_path, D3, range(0, 45), 1, alterar={20: {"fechamento": 99.0}})
+    plano = publicar(conexao, tmp_path, D3)
+    assert plano.contagens().get("series_pontos_reabertos") == 1
+    assert "series_pontos" not in plano.contagens()
+
+    linha = conexao.consultar(
+        f"SELECT removido_em, valores, hash FROM {conexao.t('series_pontos')} WHERE ticker = %s AND data = %s",
+        ("TSTE3", data_meio),
+    )
+    assert linha[0]["removido_em"] is None
+    assert banco.ler_json(linha[0]["valores"])["fechamento"] == 99.0
+    assert dict(_pontos(conexao))[data_meio]["fechamento"] == 99.0
+
+    # A remoção e a volta ficam em correcoes: a remoção com hash_novo zerado, a volta com hash_anterior zerado.
+    zeros = "0" * 64
+    correcoes = [
+        c for c in conexao.consultar(
+            f"SELECT chave, hash_anterior, hash_novo FROM {conexao.t('correcoes')} WHERE tabela = %s",
+            ("series_pontos",),
+        )
+        if banco.ler_json(c["chave"]) == {"ticker": "TSTE3", "data": data_meio}
+    ]
+    remocoes = [c for c in correcoes if c["hash_novo"] == zeros]
+    voltas = [c for c in correcoes if c["hash_anterior"] == zeros]
+    assert len(correcoes) == 2
+    assert len(remocoes) == 1 and remocoes[0]["hash_anterior"] != zeros
+    assert len(voltas) == 1 and voltas[0]["hash_novo"] == linha[0]["hash"]
+
+    # Republicar o dia 3: nenhuma operação de ponto e as tabelas com as mesmas contagens.
+    antes = contagens(conexao)
+    plano_de_novo = publicar(conexao, tmp_path, D3)
+    assert plano_de_novo.modo == "republicacao"
+    assert contagens(conexao) == antes
+    for chave in ("series_pontos", "series_pontos_atualizados", "series_pontos_removidos", "series_pontos_reabertos"):
+        assert chave not in plano_de_novo.contagens()
 
 
 # ------------------------------------------------------ 11. experimento_top e experimento_historico (sintéticos)

@@ -262,6 +262,7 @@ class ErroPublicacao(Exception)
     publicacoes: dict[str, str]                         # D -> status ("completa"|"so_execucao"|"rejeitada")
     fotos: dict[str, dict[tuple, tuple[str, dict]]]     # pacote -> chave -> (hash, registro)
     pontos: dict[str, dict[str, Ponto]]                 # ticker -> data -> Ponto (só não removidos)
+    pontos_removidos: dict[str, dict[str, Ponto]]       # ticker -> data -> Ponto (removido_em preenchido)
     catalogo: dict[str, dict]                           # ticker -> {tipo, nome, campos}
     versoes: dict[str, dict[tuple, list[Versao]]]       # pacote -> chave -> versões em ordem de valido_desde
     recusas: dict[str, dict[str, str]]                  # ticker -> campo -> ate (recusa mais recente) [para a API em memória]
@@ -272,8 +273,9 @@ class ErroPublicacao(Exception)
 FotoInserir(pacote, chave, hash, registro)
 FotoAtualizar(pacote, chave, hash, registro, hash_anterior, registro_anterior)            # + linha em correcoes
 PontoInserir(ticker, ponto, hash)
-PontoAtualizar(ticker, ponto, hash, anterior: Ponto | None, hash_anterior: str)           # anterior None = sem correcoes
-PontoRemover(ticker, data, anterior: Ponto, hash_anterior)                                # removido_em = D + correcoes
+PontoAtualizar(ticker, ponto, hash, anterior: Ponto | None, hash_anterior: str, ruido: bool = False)  # anterior None = sem correcoes
+PontoRemover(ticker, data, anterior: Ponto, hash_anterior)
+PontoReabrir(ticker, ponto, hash, anterior: Ponto, hash_anterior)                           # removido que voltou: removido_em = NULL + correcoes                                # removido_em = D + correcoes
 AjusteRegistrar(ticker, ajuste: Ajuste)
 CatalogoGravar(ticker, tipo, nome, campos: list[str])
 VersaoInserir(pacote, chave, valido_desde, valido_ate, hash, registro)
@@ -304,7 +306,8 @@ def planejar(entrada: Entrada, estado: Estado, forcar: bool = False) -> Plano
     - `res = emenda.analisar(...)`;
     - cada novo: inserir se a data é nova; nada se o hash é igual; senão `PontoAtualizar`. O `anterior` é None
       quando todo campo que mudou (valor ou status) é explicado (`data in datas_explicadas[campo]`); senão é o
-      antigo;
+      antigo. **Ruído (26/10/2026):** se o status é o mesmo e todo valor que mudou e não é explicado é número
+      nos dois lados com `abs(a - b) <= emenda.TOLERANCIA * abs(b)` → `anterior=None, ruido=True`;
     - antigos com d0 ≤ data ≤ última nova e ausentes dos novos → `PontoRemover`;
     - antigos com data < d0 e campo em `fatores_aplicar`: valor × k (None continua None). Um `PontoAtualizar`
       por data, com `anterior=None`;
@@ -328,7 +331,8 @@ def planejar(entrada: Entrada, estado: Estado, forcar: bool = False) -> Plano
     - senão nada.
 - **`contagens()`:** conta as operações por rótulo:
   - `"<pacote>"` = FotoInserir; `"<pacote>_atualizadas"`;
-  - `"series_pontos"` = PontoInserir; `"series_pontos_atualizados"`; `"series_pontos_removidos"`;
+  - `"series_pontos"` = PontoInserir; `"series_pontos_atualizados"`; `"series_pontos_ruido"` (PontoAtualizar com
+    ruido); `"series_pontos_removidos"`; `"series_pontos_reabertos"`;
   - `"series_ajustes"` = AjusteRegistrar aplicado; `"series_recusas"` = AjusteRegistrar com classificacao "recusado";
   - `"<versionada>"` = VersaoInserir; `"<versionada>_fechadas"`; `"<versionada>_corrigidas"`.
   Só chaves com contagem > 0.
@@ -346,7 +350,7 @@ def contar_tabelas(conexao: Conexao) -> dict[str, int]
 - `carregar_estado`:
   - publicacoes (todas);
   - fotos: só as chaves com `data_referencia` presente nos pacotes da entrada (execucao inclusive), via `IN (...)`;
-  - pontos: `removido_em IS NULL` dos tickers da completa;
+  - pontos: `removido_em IS NULL` dos tickers da completa; e, em `pontos_removidos`, os `removido_em IS NOT NULL`;
   - catálogo;
   - versões de todos os registros das 3 versionadas (ordenadas por valido_desde);
   - recusas = vazio (o publicador não usa).
@@ -358,7 +362,10 @@ def contar_tabelas(conexao: Conexao) -> dict[str, int]
     prefixo, chave JSON, data_troca=D, hash_anterior, conteudo_anterior, hash_novo)`. Remover: hash_novo = "removido"
     preenchido com zeros de 64 caracteres.
   - Ponto: colunas ticker, data, valores (JSON), status (JSON), hash, data_publicacao=D.
-  - Atualizar ponto: `UPDATE ... SET valores, status, hash WHERE ticker AND data`.
+  - Atualizar ponto: `INSERT ... ON DUPLICATE KEY UPDATE valores = VALUES(valores), status = VALUES(status),
+    hash = VALUES(hash)` (vai em lote; `data_publicacao` não muda).
+  - Ordem de execução (`ordenar_para_lotes`): o resto na ordem das operações; depois os INSERTs de pontos agrupados
+    pelo SQL; por fim os de correcoes. Tudo em `executar_muitos`, lotes de 1.000, na mesma transação.
   - CatalogoGravar: `INSERT ... ON DUPLICATE KEY UPDATE tipo=VALUES(tipo), nome=VALUES(nome), campos=VALUES(campos),
     primeira_publicacao=LEAST(primeira_publicacao, VALUES(primeira_publicacao)),
     ultima_publicacao=GREATEST(ultima_publicacao, VALUES(ultima_publicacao))`.

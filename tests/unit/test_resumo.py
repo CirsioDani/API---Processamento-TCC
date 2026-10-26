@@ -5,6 +5,7 @@ from publicador.operacoes import (
     CatalogoGravar,
     FotoInserir,
     Plano,
+    PontoAtualizar,
     PontoInserir,
     VersaoFechar,
     VersaoInserir,
@@ -93,3 +94,29 @@ def test_versionadas_e_avisos_aparecem():
 def test_numeros_usam_ponto_de_milhar_e_tempo_com_virgula():
     texto = resumo.formatar(_plano_normal(), 12.34)
     assert "em 12,3 s" in texto.splitlines()[0]
+
+
+def _plano_com_pontos_atualizados(ruidos: int, corrigidos: int) -> Plano:
+    operacoes = [PontoAtualizar("PETR4", _ponto(i), HASH, None, HASH, ruido=True) for i in range(ruidos)]
+    operacoes += [PontoAtualizar("PETR4", _ponto(100 + i), HASH, _ponto(100 + i), HASH) for i in range(corrigidos)]
+    return Plano(data="2026-10-23", modo="normal", status_publicacao="completa", data_referencia="2026-10-22",
+                 metadados={"experimento_top": {}}, operacoes=operacoes)
+
+
+def test_ruido_numerico_tem_linha_propria_e_correcoes_conta_so_as_com_anterior():
+    texto = resumo.formatar(_plano_com_pontos_atualizados(ruidos=3, corrigidos=2), 1.0)
+    assert "3 pontos com ruído numérico (< 1e-6)" in texto
+    linha_correcoes = next(linha for linha in texto.splitlines() if linha.strip().startswith("correções"))
+    assert linha_correcoes.endswith("2 (fotos e pontos de série)")
+
+
+def test_um_ponto_com_ruido_numerico_usa_singular():
+    texto = resumo.formatar(_plano_com_pontos_atualizados(ruidos=1, corrigidos=0), 1.0)
+    assert "1 ponto com ruído numérico (< 1e-6)" in texto
+    assert "correções" not in texto
+
+
+def test_sem_ruido_numerico_nao_aparece_a_linha():
+    texto = resumo.formatar(_plano_com_pontos_atualizados(ruidos=0, corrigidos=2), 1.0)
+    assert "ruído numérico" not in texto
+    assert "2 (fotos e pontos de série)" in texto

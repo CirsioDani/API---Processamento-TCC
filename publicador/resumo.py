@@ -1,6 +1,6 @@
 """Texto do resumo de uma publicação (o que o usuário lê no terminal depois de `--data`)."""
 from comum import tabelas
-from publicador.operacoes import CatalogoGravar, FotoAtualizar, FotoInserir, Plano
+from publicador.operacoes import CatalogoGravar, FotoAtualizar, FotoInserir, Plano, PontoAtualizar
 
 FOTOS_RESUMO = ("resumo_acao", "noticias_dia", "mercado_dia", "execucao", "experimento_historico")
 LARGURA_ROTULO = 30
@@ -72,12 +72,19 @@ def formatar(plano: Plano, segundos: float) -> str:
             texto = f"{_contar(pontos, 'ponto novo', 'pontos novos')} ({_contar(series, 'série', 'séries')})"
             corpo.append(_linha("series_diarias", texto))
 
-        corrigidos = sum(
-            n for rotulo, n in contagens.items()
-            if rotulo.endswith("_atualizadas") or rotulo in ("series_pontos_atualizados", "series_pontos_removidos")
+        # Só o que vira linha em correcoes: pontos emendados pelo fator e ruído numérico têm linha própria.
+        pontos_corrigidos = sum(
+            1 for op in plano.operacoes if isinstance(op, PontoAtualizar) and op.anterior is not None
+        )
+        corrigidos = (pontos_corrigidos + contagens.get("series_pontos_removidos", 0)
+                      + contagens.get("series_pontos_reabertos", 0)) + sum(
+            n for rotulo, n in contagens.items() if rotulo.endswith("_atualizadas")
         )
         if corrigidos:
             corpo.append(_linha("correções", f"{_numero(corrigidos)} (fotos e pontos de série)"))
+        ruido = contagens.get("series_pontos_ruido", 0)
+        if ruido:
+            corpo.append(_linha("ruído numérico", f"{_contar(ruido, 'ponto', 'pontos')} com ruído numérico (< 1e-6)"))
 
         ajustes = contagens.get("series_ajustes", 0)
         if ajustes:

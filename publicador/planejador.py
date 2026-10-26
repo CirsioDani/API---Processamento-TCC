@@ -15,6 +15,7 @@ from publicador.operacoes import (
     Plano,
     PontoAtualizar,
     PontoInserir,
+    PontoReabrir,
     PontoRemover,
     Versao,
     VersaoAntecipar,
@@ -64,7 +65,12 @@ def aplicar_em_memoria(estado: Estado, plano: Plano) -> None:
         elif isinstance(op, (PontoInserir, PontoAtualizar)):
             estado.pontos.setdefault(op.ticker, {})[op.ponto.data] = op.ponto
         elif isinstance(op, PontoRemover):
-            estado.pontos.get(op.ticker, {}).pop(op.data, None)
+            removido = estado.pontos.get(op.ticker, {}).pop(op.data, None)
+            if removido is not None:
+                estado.pontos_removidos.setdefault(op.ticker, {})[op.data] = removido
+        elif isinstance(op, PontoReabrir):
+            estado.pontos_removidos.get(op.ticker, {}).pop(op.ponto.data, None)
+            estado.pontos.setdefault(op.ticker, {})[op.ponto.data] = op.ponto
         elif isinstance(op, CatalogoGravar):
             estado.catalogo[op.ticker] = {"tipo": op.tipo, "nome": op.nome, "campos": list(op.campos)}
         elif isinstance(op, AjusteRegistrar):
@@ -229,16 +235,26 @@ def _serie_normal(serie: dict, estado: Estado, plano: Plano) -> None:
     res = emenda.analisar(ticker, serie["tipo"], antigos, novos)
     d0, ultima = novos[0].data, novos[-1].data
     datas_novas = {p.data for p in novos}
+    removidos = estado.pontos_removidos.get(ticker, {})
 
     for novo in novos:
         antigo = antigos.get(novo.data)
         if antigo is None:
-            plano.operacoes.append(PontoInserir(ticker, novo, series.hash_ponto(novo)))
+            removido = removidos.get(novo.data)
+            if removido is not None:
+                # A linha removida ainda ocupa a chave (ticker, data): reabre em vez de inserir.
+                plano.operacoes.append(PontoReabrir(ticker, novo, series.hash_ponto(novo), removido,
+                                                    series.hash_ponto(removido)))
+            else:
+                plano.operacoes.append(PontoInserir(ticker, novo, series.hash_ponto(novo)))
             continue
         h_novo, h_antigo = series.hash_ponto(novo), series.hash_ponto(antigo)
         if h_novo != h_antigo:
             anterior = _anterior(antigo, novo, res.datas_explicadas)
-            plano.operacoes.append(PontoAtualizar(ticker, novo, h_novo, anterior, h_antigo))
+            ruido = anterior is not None and _so_ruido(antigo, novo, novo.data, res.datas_explicadas)
+            if ruido:
+                anterior = None
+            plano.operacoes.append(PontoAtualizar(ticker, novo, h_novo, anterior, h_antigo, ruido))
 
     for data in sorted(antigos):
         antigo = antigos[data]
@@ -262,9 +278,12 @@ def _serie_buraco(serie: dict, estado: Estado, plano: Plano) -> int:
     ticker = serie["ticker"]
     plano.operacoes.append(CatalogoGravar(ticker, serie["tipo"], serie["nome"], list(serie["valores"].keys())))
     antigos = estado.pontos.get(ticker, {})
+    removidos = estado.pontos_removidos.get(ticker, {})
     diferentes = 0
     for novo in series.compacto_para_pontos(serie):
         antigo = antigos.get(novo.data)
+        if antigo is None and novo.data in removidos:
+            continue  # removido por uma D posterior: o modo buraco não desfaz a remoção
         if antigo is None:
             plano.operacoes.append(PontoInserir(ticker, novo, series.hash_ponto(novo)))
         elif series.hash_ponto(antigo) != series.hash_ponto(novo):
@@ -279,6 +298,24 @@ def _anterior(antigo: series.Ponto, novo: series.Ponto, explicadas: dict) -> ser
     if all(novo.data in explicadas.get(c, set()) for c in mudados):
         return None
     return antigo
+
+
+def _so_ruido(antigo: series.Ponto, novo: series.Ponto, data: str, explicadas: dict) -> bool:
+    """True quando o status é o mesmo e todo valor que mudou (e não é explicado pela emenda) difere no máximo
+    emenda.TOLERANCIA em termos relativos: ruído numérico do processamento, não correção."""
+    if antigo.status != novo.status:
+        return False
+    for campo in set(antigo.valores) | set(novo.valores):
+        a, b = antigo.valores.get(campo), novo.valores.get(campo)
+        if a == b or data in explicadas.get(campo, set()):
+            continue
+        if not (_numero(a) and _numero(b)) or abs(a - b) > emenda.TOLERANCIA * abs(b):
+            return False
+    return True
+
+
+def _numero(v) -> bool:
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
 
 
 def _ponto_emendado(antigo: series.Ponto, fatores: dict) -> series.Ponto:

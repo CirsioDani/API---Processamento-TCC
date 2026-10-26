@@ -25,6 +25,7 @@ class Estado:
     publicacoes: dict[str, str] = field(default_factory=dict)                      # D -> status
     fotos: dict[str, dict[tuple, tuple[str, dict]]] = field(default_factory=dict)  # pacote -> chave -> (hash, registro)
     pontos: dict[str, dict[str, Ponto]] = field(default_factory=dict)              # ticker -> data -> Ponto (não removidos)
+    pontos_removidos: dict[str, dict[str, Ponto]] = field(default_factory=dict)    # ticker -> data -> Ponto (removido_em preenchido)
     catalogo: dict[str, dict] = field(default_factory=dict)                        # ticker -> {tipo, nome, campos}
     versoes: dict[str, dict[tuple, list[Versao]]] = field(default_factory=dict)    # pacote -> chave -> versões
     recusas: dict[str, dict[str, str]] = field(default_factory=dict)               # ticker -> campo -> ate
@@ -48,11 +49,17 @@ class PontoInserir:
 @dataclass(frozen=True)
 class PontoAtualizar:
     ticker: str; ponto: Ponto; hash: str; anterior: Ponto | None; hash_anterior: str  # anterior None = sem correcoes
+    ruido: bool = False  # mudança só de ruído numérico (< emenda.TOLERANCIA): grava o valor novo, sem correcoes
 
 
 @dataclass(frozen=True)
 class PontoRemover:
     ticker: str; data: str; anterior: Ponto; hash_anterior: str
+
+
+@dataclass(frozen=True)
+class PontoReabrir:
+    ticker: str; ponto: Ponto; hash: str; anterior: Ponto; hash_anterior: str  # anterior = o ponto removido
 
 
 @dataclass(frozen=True)
@@ -112,8 +119,12 @@ class Plano:
                 contador["series_pontos"] += 1
             elif isinstance(op, PontoAtualizar):
                 contador["series_pontos_atualizados"] += 1
+                if op.ruido:
+                    contador["series_pontos_ruido"] += 1
             elif isinstance(op, PontoRemover):
                 contador["series_pontos_removidos"] += 1
+            elif isinstance(op, PontoReabrir):
+                contador["series_pontos_reabertos"] += 1
             elif isinstance(op, AjusteRegistrar):
                 contador["series_recusas" if op.ajuste.classificacao == "recusado" else "series_ajustes"] += 1
             elif isinstance(op, VersaoInserir):

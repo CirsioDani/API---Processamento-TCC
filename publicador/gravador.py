@@ -22,6 +22,7 @@ from publicador.operacoes import (
     Plano,
     PontoAtualizar,
     PontoInserir,
+    PontoReabrir,
     PontoRemover,
     Versao,
     VersaoAntecipar,
@@ -138,11 +139,15 @@ def _ponto_inserir(op: PontoInserir, data: str, t: Callable[[str], str]) -> tupl
     return _insert(t("series_pontos"), colunas, valores)
 
 
+_ATUALIZA_PONTO = "ON DUPLICATE KEY UPDATE valores = VALUES(valores), status = VALUES(status), hash = VALUES(hash)"
+
+
 def _ponto_atualizar(op: PontoAtualizar, data: str, t: Callable[[str], str]) -> list[tuple[str, tuple]]:
-    sql = (f"UPDATE {t('series_pontos')} SET valores = %s, status = %s, hash = %s "
-           "WHERE ticker = %s AND data = %s")
-    params = (_json(op.ponto.valores), _json(op.ponto.status), op.hash, op.ticker, op.ponto.data)
-    comandos = [(sql, params)]
+    # INSERT ... ON DUPLICATE KEY UPDATE (o ponto sempre existe) em vez de UPDATE: assim vai em lote. A
+    # data_publicacao do INSERT nunca é usada, porque o UPDATE não a altera.
+    colunas = ["ticker", "data", "valores", "status", "hash", "data_publicacao"]
+    valores = [op.ticker, op.ponto.data, _json(op.ponto.valores), _json(op.ponto.status), op.hash, data]
+    comandos = [_insert(t("series_pontos"), colunas, valores, " " + _ATUALIZA_PONTO)]
     if op.anterior is not None:
         comandos.append(_correcao(t, "series_pontos", {"ticker": op.ticker, "data": op.ponto.data},
                                   op.hash_anterior, _conteudo_ponto(op.anterior), op.hash, data))
@@ -155,6 +160,17 @@ def _ponto_remover(op: PontoRemover, data: str, t: Callable[[str], str]) -> list
     comandos.append(_correcao(t, "series_pontos", {"ticker": op.ticker, "data": op.data},
                               op.hash_anterior, _conteudo_ponto(op.anterior), HASH_REMOVIDO, data))
     return comandos
+
+
+def _ponto_reabrir(op: PontoReabrir, data: str, t: Callable[[str], str]) -> list[tuple[str, tuple]]:
+    """Ponto removido que voltou: grava os valores novos, limpa removido_em e registra a volta em correcoes
+    (hash_anterior = HASH_REMOVIDO, conteúdo anterior = o ponto removido)."""
+    sql = (f"UPDATE {t('series_pontos')} SET valores = %s, status = %s, hash = %s, removido_em = NULL "
+           "WHERE ticker = %s AND data = %s")
+    params = (_json(op.ponto.valores), _json(op.ponto.status), op.hash, op.ticker, op.ponto.data)
+    correcao = _correcao(t, "series_pontos", {"ticker": op.ticker, "data": op.ponto.data},
+                         HASH_REMOVIDO, _conteudo_ponto(op.anterior), op.hash, data)
+    return [(sql, params), correcao]
 
 
 _ATUALIZA_CATALOGO = (
@@ -222,6 +238,8 @@ def comandos_da_operacao(op: Any, data: str, t: Callable[[str], str]) -> list[tu
         return _ponto_atualizar(op, data, t)
     if isinstance(op, PontoRemover):
         return _ponto_remover(op, data, t)
+    if isinstance(op, PontoReabrir):
+        return _ponto_reabrir(op, data, t)
     if isinstance(op, CatalogoGravar):
         return [_catalogo_gravar(op, data, t)]
     if isinstance(op, AjusteRegistrar):
@@ -317,6 +335,27 @@ def _executar_em_lotes(conexao: Conexao, comandos: list[tuple[str, tuple]]) -> N
         conexao.executar_muitos(sql, lote)
 
 
+def ordenar_para_lotes(comandos: list[tuple[str, tuple]], t: Callable[[str], str]) -> list[tuple[str, tuple]]:
+    """Reordena para que os INSERTs de pontos e de correcoes fiquem juntos e vão em lote.
+
+    Fase 0: todo o resto, na ordem original (fotos e versões dependem da ordem). Fase 1: inserções e atualizações
+    de pontos, agrupadas pelo SQL (cada uma toca um (ticker, data) diferente, então a ordem entre elas não importa).
+    Fase 2: as linhas de correcoes, que nenhum outro comando lê. Tudo continua na mesma transação.
+    """
+    pontos = f"INSERT INTO {t('series_pontos')} "
+    correcoes = f"INSERT INTO {t('correcoes')} "
+
+    def fase(comando: tuple[str, tuple]) -> tuple[int, str]:
+        sql = comando[0]
+        if sql.startswith(pontos):
+            return 1, sql
+        if sql.startswith(correcoes):
+            return 2, ""
+        return 0, ""
+
+    return sorted(comandos, key=fase)  # sorted é estável: dentro de cada grupo, a ordem original fica
+
+
 def _em_transacao(conexao: Conexao, operacao: Callable[[], None]) -> None:
     conexao.iniciar()
     try:
@@ -334,7 +373,7 @@ def gravar(conexao: Conexao, entrada: Entrada, plano: Plano, inicio: datetime) -
         comandos: list[tuple[str, tuple]] = []
         for op in plano.operacoes:
             comandos.extend(comandos_da_operacao(op, plano.data, conexao.t))
-        _executar_em_lotes(conexao, comandos)
+        _executar_em_lotes(conexao, ordenar_para_lotes(comandos, conexao.t))
         sql, params = comando_publicacao(
             conexao.t,
             data=plano.data,
@@ -434,6 +473,15 @@ def carregar_estado(conexao: Conexao, entrada: Entrada) -> Estado:
                 status=ler_json(linha["status"]) or {},
             )
             estado.pontos.setdefault(linha["ticker"], {})[ponto.data] = ponto
+        sql = (f"SELECT ticker, data, valores, status FROM {conexao.t('series_pontos')} "
+               f"WHERE removido_em IS NOT NULL AND ticker IN ({marcas})")
+        for linha in conexao.consultar(sql, tuple(tickers)):
+            ponto = Ponto(
+                data=_do_banco(linha["data"]),
+                valores=ler_json(linha["valores"]),
+                status=ler_json(linha["status"]) or {},
+            )
+            estado.pontos_removidos.setdefault(linha["ticker"], {})[ponto.data] = ponto
 
     sql = f"SELECT ticker, tipo, nome, campos FROM {conexao.t('series_catalogo')}"
     for linha in conexao.consultar(sql):

@@ -83,7 +83,8 @@ def analisar(ticker: str, tipo: str, antigos: dict[str, Ponto], novos: list[Pont
         if proporcional:
             _analisar_proporcional(ticker, campo, razoes, costura, antigas, resultado)
         else:
-            _analisar_so_aviso(ticker, campo, razoes, costura, antigas, resultado)
+            lacuna = _lacuna_preenchida(campo, sobreposicao, antigos, novos_por_data)
+            _analisar_so_aviso(ticker, campo, razoes, costura, antigas, resultado, lacuna)
 
     return resultado
 
@@ -134,7 +135,7 @@ def _analisar_proporcional(ticker, campo, razoes, costura, antigas, resultado):
     ))
 
 
-def _analisar_so_aviso(ticker, campo, razoes, costura, antigas, resultado):
+def _analisar_so_aviso(ticker, campo, razoes, costura, antigas, resultado, lacuna=0):
     k, motivo = _fator_da_costura(costura)
     data_evento = None
     if motivo is not None:
@@ -152,6 +153,10 @@ def _analisar_so_aviso(ticker, campo, razoes, costura, antigas, resultado):
     }
     if data_evento is not None:
         detalhe["data_evento"] = data_evento
+    # Sem fator porque o antigo era null onde o novo tem número: é uma lacuna preenchida, não mudança do valor oficial.
+    so_lacuna = k is None and lacuna > 0
+    if so_lacuna:
+        detalhe["lacuna_preenchida"] = lacuna
     resultado.ajustes.append(Ajuste(
         campo=campo,
         fator=k,
@@ -163,10 +168,15 @@ def _analisar_so_aviso(ticker, campo, razoes, costura, antigas, resultado):
         aplicado=False,
         detalhe=detalhe,
     ))
-    resultado.avisos.append(
-        f"série {ticker}, campo {campo}: campo oficial mudou (fator {_fmt_fator(k)}) "
-        "— só aviso, nada foi ajustado"
-    )
+    if so_lacuna:
+        diferentes = sum(1 for _, r in razoes if not _iguais(r, 1.0))
+        detalhe["pontos_diferentes"] = diferentes
+        mudanca = f"lacuna preenchida ({lacuna} pontos)"
+        if diferentes:
+            mudanca += f"; {diferentes} ponto(s) já existente(s) com valor diferente"
+    else:
+        mudanca = f"campo oficial mudou (fator {_fmt_fator(k)})"
+    resultado.avisos.append(f"série {ticker}, campo {campo}: {mudanca} — só aviso, nada foi ajustado")
 
 
 def _fator_da_costura(costura):
@@ -210,6 +220,14 @@ def _razoes(campo, sobreposicao, antigos, novos_por_data):
             continue
         saida.append((data, novo / antigo))
     return saida
+
+
+def _lacuna_preenchida(campo, sobreposicao, antigos, novos_por_data):
+    """Quantas datas da sobreposição tinham o campo null no antigo e agora têm número."""
+    return sum(
+        1 for data in sobreposicao
+        if antigos[data].valores.get(campo) is None and novos_por_data[data].valores.get(campo) is not None
+    )
 
 
 def _antigos_com_valor(campo, antigos, d0):

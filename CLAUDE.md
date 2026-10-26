@@ -52,6 +52,8 @@ módulo).
   janela; uniforme/evento/irregular/recusado) está no plano. pl/pvp/dividend_yield/n_empresas antigos ficam
   como publicados.
 - Ausência = `null` + status, nunca 0.
+- Ponto de série com diferença relativa ≤ 1e-6 (mesmo status) = ruído numérico: grava o valor novo, sem linha em
+  `correcoes`. Pontos e correções vão em lote (`gravador.ordenar_para_lotes`); não volte a UPDATE um a um.
 
 ## Comandos
 - Testes: `./.venv/Scripts/python -m pytest -q` (integração: com `PROC_API_TESTES_COM_BANCO=1`).

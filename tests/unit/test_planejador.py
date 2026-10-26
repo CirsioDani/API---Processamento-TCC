@@ -17,6 +17,7 @@ from publicador.operacoes import (
     FotoInserir,
     PontoAtualizar,
     PontoInserir,
+    PontoReabrir,
     PontoRemover,
     VersaoAntecipar,
     VersaoCorrigir,
@@ -76,6 +77,7 @@ def datas_uteis(n: int) -> list[str]:
 
 DATAS = datas_uteis(45)
 D_SINTETICA = DATAS[44]
+D_SINTETICA_SEGUINTE = datas_uteis(46)[45]  # outra data de publicação, maior que D_SINTETICA
 
 
 def valores_base(i: int) -> dict:
@@ -133,10 +135,10 @@ def execucao_sintetica(d: str) -> dict:
     }
 
 
-def entrada_series(registros: list) -> Entrada:
+def entrada_series(registros: list, data: str = D_SINTETICA) -> Entrada:
     return Entrada(
-        data=D_SINTETICA,
-        execucao=execucao_sintetica(D_SINTETICA),
+        data=data,
+        execucao=execucao_sintetica(data),
         completa={"series_diarias": envelope_series(registros)},
     )
 
@@ -558,5 +560,160 @@ def test_metadados_series_diarias_do_arquivo_real_tem_inicio_janela():
     plano = planejar(entrada_de("2026-10-23"), Estado())
 
     assert plano.metadados["series_diarias"]["inicio_janela"] == "2025-10-16"
+
+
+# ---------------------------------------------------------------- ruído numérico (< emenda.TOLERANCIA)
+
+def valores_com_ruido(i: int) -> dict:
+    """valores_base, com indice_retorno_total do dia 30 alterado em 5e-7 relativo (ruído, não correção)."""
+    v = valores_base(i)
+    if i == 30:
+        v["indice_retorno_total"] = v["indice_retorno_total"] * (1 + 5e-7)
+    return v
+
+
+def test_ruido_numerico_grava_valor_novo_sem_correcao():
+    estado = banco_series([registro_serie("PETR4", "acao", range(0, 40), valores_base)])
+    entrada = entrada_series([registro_serie("PETR4", "acao", range(10, 45), valores_com_ruido)])
+
+    plano = planejar(entrada, estado)
+
+    atualizados = ops(plano, PontoAtualizar)
+    assert len(atualizados) == 1
+    up = atualizados[0]
+    assert up.ponto.data == DATAS[30]
+    assert up.ponto.valores["indice_retorno_total"] == pytest.approx(valores_base(30)["indice_retorno_total"] * (1 + 5e-7))
+    assert up.anterior is None
+    assert up.ruido is True
+    assert plano.contagens()["series_pontos_ruido"] == 1
+    assert plano.contagens()["series_pontos_atualizados"] == 1
+    assert not ops(plano, AjusteRegistrar)
+
+
+def test_diferenca_acima_da_tolerancia_nao_e_ruido_e_guarda_o_antigo():
+    estado = banco_series([registro_serie("PETR4", "acao", range(0, 40), valores_base)])
+
+    def mudanca(i):
+        v = valores_base(i)
+        if i == 30:
+            v["indice_retorno_total"] = 160.01  # 160.0 -> 160.01: diferença relativa ~6e-5, acima de 1e-6
+        return v
+
+    entrada = entrada_series([registro_serie("PETR4", "acao", range(10, 45), mudanca)])
+
+    plano = planejar(entrada, estado)
+
+    atualizados = ops(plano, PontoAtualizar)
+    assert len(atualizados) == 1
+    up = atualizados[0]
+    assert up.ponto.data == DATAS[30]
+    assert up.anterior is not None
+    assert up.anterior.valores["indice_retorno_total"] == valores_base(30)["indice_retorno_total"]
+    assert up.ruido is False
+    assert "series_pontos_ruido" not in plano.contagens()
+
+
+def test_mesmo_valor_com_status_diferente_nao_e_ruido():
+    estado = banco_series([registro_serie("PETR4", "acao", range(0, 40), valores_base)])
+    registro = registro_serie("PETR4", "acao", range(10, 45), valores_base)
+    registro["status"] = {"volume": [{"de": DATAS[30], "ate": DATAS[30], "status": "parcial"}]}
+    entrada = entrada_series([registro])
+
+    plano = planejar(entrada, estado)
+
+    atualizados = ops(plano, PontoAtualizar)
+    assert len(atualizados) == 1
+    assert atualizados[0].ponto.data == DATAS[30]
+    assert atualizados[0].anterior is not None
+    assert atualizados[0].ruido is False
+    assert "series_pontos_ruido" not in plano.contagens()
+
+
+def test_null_que_vira_numero_nao_e_ruido():
+    def com_lacuna(i):
+        v = valores_base(i)
+        if i == 30:
+            v["indice_retorno_total"] = None
+        return v
+
+    estado = banco_series([registro_serie("PETR4", "acao", range(0, 40), com_lacuna)])
+    entrada = entrada_series([registro_serie("PETR4", "acao", range(10, 45), valores_base)])
+
+    plano = planejar(entrada, estado)
+
+    atualizados = ops(plano, PontoAtualizar)
+    assert len(atualizados) == 1
+    assert atualizados[0].ponto.data == DATAS[30]
+    assert atualizados[0].anterior is not None
+    assert atualizados[0].anterior.valores["indice_retorno_total"] is None
+    assert atualizados[0].ruido is False
+
+
+def test_republicar_depois_do_ruido_nao_gera_operacao_de_ponto():
+    estado = banco_series([registro_serie("PETR4", "acao", range(0, 40), valores_base)])
+    entrada = entrada_series([registro_serie("PETR4", "acao", range(10, 45), valores_com_ruido)])
+    plano = planejar(entrada, estado)
+    assert plano.contagens()["series_pontos_ruido"] == 1
+    aplicar_em_memoria(estado, plano)
+
+    plano_de_novo = planejar(entrada, estado)
+
+    assert plano_de_novo.modo == "republicacao"
+    assert not ops(plano_de_novo, PontoInserir)
+    assert not ops(plano_de_novo, PontoAtualizar)
+    assert not ops(plano_de_novo, PontoRemover)
+
+
+# ---------------------------------------------------------------- ponto removido que volta (PontoReabrir)
+
+def test_ponto_removido_que_volta_vira_reabertura_e_nao_insercao():
+    estado = banco_series([registro_serie("PETR4", "acao", range(0, 45), valores_base)])
+    original = estado.pontos["PETR4"][DATAS[20]]
+
+    # D1: a série sai sem a data do meio (índice 20): o ponto vira removido.
+    entrada_d1 = entrada_series([registro_serie("PETR4", "acao", [i for i in range(0, 45) if i != 20], valores_base)])
+    plano_d1 = planejar(entrada_d1, estado)
+    assert [op.data for op in ops(plano_d1, PontoRemover)] == [DATAS[20]]
+    aplicar_em_memoria(estado, plano_d1)
+    assert DATAS[20] in estado.pontos_removidos["PETR4"]
+
+    # D2: a data volta. Tem que reabrir a linha removida (não inserir: a chave (ticker, data) já existe).
+    entrada_d2 = entrada_series([registro_serie("PETR4", "acao", range(0, 45), valores_base)],
+                                D_SINTETICA_SEGUINTE)
+    plano_d2 = planejar(entrada_d2, estado)
+    assert plano_d2.modo == "normal"
+    reaberturas = ops(plano_d2, PontoReabrir)
+    assert len(reaberturas) == 1
+    assert reaberturas[0].ponto.data == DATAS[20]
+    assert reaberturas[0].ponto.valores == valores_base(20)
+    assert reaberturas[0].anterior == original
+    assert not ops(plano_d2, PontoInserir)
+    assert not ops(plano_d2, PontoAtualizar)
+    assert plano_d2.contagens()["series_pontos_reabertos"] == 1
+    aplicar_em_memoria(estado, plano_d2)
+    assert DATAS[20] in estado.pontos["PETR4"]
+    assert DATAS[20] not in estado.pontos_removidos.get("PETR4", {})
+
+    # Republicar D2 com a mesma entrada: nenhuma operação de ponto.
+    plano_de_novo = planejar(entrada_d2, estado)
+    assert plano_de_novo.modo == "republicacao"
+    for tipo in (PontoInserir, PontoAtualizar, PontoRemover, PontoReabrir):
+        assert not ops(plano_de_novo, tipo)
+
+
+def test_modo_buraco_nao_reabre_nem_insere_ponto_removido():
+    estado = banco_series([registro_serie("PETR4", "acao", range(0, 45), valores_base)])
+    removido = estado.pontos["PETR4"].pop(DATAS[20])
+    estado.pontos_removidos["PETR4"] = {DATAS[20]: removido}
+    estado.publicacoes[D_SINTETICA_SEGUINTE] = "completa"
+
+    # D_SINTETICA é anterior à última completa: modo buraco.
+    entrada = entrada_series([registro_serie("PETR4", "acao", range(0, 45), valores_base)])
+    plano = planejar(entrada, estado)
+
+    assert plano.modo == "buraco"
+    assert not ops(plano, PontoInserir)
+    assert not ops(plano, PontoReabrir)
+    assert not ops(plano, PontoRemover)
 
 

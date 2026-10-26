@@ -649,3 +649,39 @@ sem precisar de `--forcar`. O `--forcar` fica só para a trava dos versionados. 
   isso já impede tocar uma tabela real.
 - Os índices ficam dentro do `CREATE TABLE IF NOT EXISTS` (o MySQL 8 não tem `CREATE INDEX IF NOT EXISTS`), e é
   isso que deixa o `--criar-tabelas` idempotente. `CREATE INDEX` continua permitido pela guarda, mas não é usado.
+
+## Ajustes depois da publicação real de 26/10 (aprovados em 26/10/2026)
+Diagnóstico (scripts em `.diag/`, fora do git): a publicação de 26/10 gravou 36.144 correções e levou 921 s.
+- 35.538 correções eram **ruído numérico** do processamento: `indice_retorno_total` de 62 ações e das 85 SETOR_SEM
+  com diferença relativa ≤ 7e-7, variando dia a dia (recálculo com o histórico novo da coleta). Os arquivos
+  diferiam de verdade (não era falso positivo do publicador), mas a emenda já tratava razões dentro de 1e-6 como
+  iguais e o planejador gravava correção pelo hash exato.
+- 606 eram a lacuna de IDIV/SMLL/IFIX preenchida (null → número), com aviso "fator indefinido".
+- O tempo era de idas ao banco: cada ponto atualizado virava UPDATE + INSERT em correcoes, um por vez
+  (~72.800 comandos × ~12 ms).
+
+Mudanças:
+1. **Ruído numérico:** ponto da janela em que o status é o mesmo e todo valor que mudou (e não é explicado pela
+   emenda) difere no máximo `emenda.TOLERANCIA` (1e-6) relativo → recebe o valor novo (a janela continua igual
+   ao arquivo), mas **sem linha em `correcoes`**. `PontoAtualizar.ruido = True`; contagem `series_pontos_ruido`;
+   o resumo mostra "N pontos com ruído numérico (< 1e-6)". A linha "correções" do resumo passa a contar só o que
+   vira linha em `correcoes`.
+2. **Gravação em lote:** atualizar ponto = `INSERT ... ON DUPLICATE KEY UPDATE valores, status, hash` (o ponto já
+   existe; `data_publicacao` não muda). `gravador.ordenar_para_lotes` deixa o resto na ordem original e manda
+   depois os INSERTs de pontos (agrupados pelo SQL) e, no fim, os de `correcoes`, em lotes de 1.000. Mesma
+   transação.
+3. **Aviso de lacuna:** campo "só aviso" (fechamento de índice) sem fator porque o antigo era null onde o novo tem
+   número → "lacuna preenchida (N pontos)" e `detalhe.lacuna_preenchida = N`, em vez de "fator indefinido". Se
+   pontos que já tinham número também mudaram, o aviso acrescenta "; M ponto(s) já existente(s) com valor
+   diferente" (`detalhe.pontos_diferentes = M`), para não esconder a mudança (caso do IDIV em 20/10).
+
+## Ponto removido que volta (aprovado em 26/10/2026)
+`series_pontos` tem chave (ticker, data) e a remoção só preenche `removido_em`, então um ponto que sumiu de uma
+completa e voltou numa seguinte virava INSERT com chave duplicada (a publicação inteira era desfeita). Agora:
+- `carregar_estado` também lê os pontos removidos (`Estado.pontos_removidos`);
+- modo normal/republicação: ponto da completa que está removido → `PontoReabrir`: UPDATE com os valores novos e
+  `removido_em = NULL`, mais uma linha em `correcoes` registrando a volta (`hash_anterior` = zeros, conteúdo
+  anterior = o ponto removido). Assim `correcoes` guarda a remoção e a volta. Contagem `series_pontos_reabertos`;
+  entra na linha "correções" do resumo;
+- modo buraco: ponto removido fica como está (quem removeu foi uma D posterior);
+- republicar depois da volta: o ponto já está aberto e igual → nada.

@@ -284,3 +284,49 @@ def test_um_ponto_corrigido_no_comeco_da_janela_nao_recusa():
     assert res.ajustes == []
     assert res.fatores_aplicar == {}
     assert res.avisos == []
+
+
+def test_indice_com_lacuna_preenchida_so_avisa_e_conta_a_lacuna():
+    """Antigo com fechamento null (datas 10..36 da sobreposição) e novo com número: sem fator, o aviso fala de lacuna."""
+    def antigos(i):
+        v = {"fechamento": 10.0 + i, "indice_retorno_total": 100.0 + 2 * i}
+        if 10 <= i <= 36:
+            v["fechamento"] = None
+        return v
+
+    def completa(i):
+        v = {"fechamento": 10.0 + i, "indice_retorno_total": 100.0 + 2 * i}
+        if i >= 37:
+            v["fechamento"] = (10.0 + i) * 1.05  # razão ≠ 1 só nas 3 últimas datas da sobreposição
+        return v
+
+    res = analisar("IBOV", "indice", antigos_de(antigos), novos_de(completa))
+    assert len(res.ajustes) == 1
+    a = res.ajustes[0]
+    assert a.campo == "fechamento"
+    assert a.fator is None
+    assert a.aplicado is False
+    assert a.detalhe["lacuna_preenchida"] == 27  # datas 10..36 da sobreposição: antigo null, novo com número
+    assert "fechamento" not in res.fatores_aplicar
+    assert len(res.avisos) == 1
+    assert "IBOV" in res.avisos[0]
+    assert "lacuna preenchida (27 pontos); 3 ponto(s) já existente(s) com valor diferente" in res.avisos[0]
+    assert a.detalhe["pontos_diferentes"] == 3
+    assert "fator indefinido" not in res.avisos[0]
+
+
+def test_indice_com_fator_definido_mantem_aviso_de_fator_sem_lacuna():
+    def valores(i):
+        return {"fechamento": 10.0 + i, "indice_retorno_total": 100.0 + 2 * i}
+
+    def completa(i):
+        v = valores(i)
+        v["fechamento"] *= 0.5
+        return v
+
+    res = analisar("IBOV", "indice", antigos_de(valores), novos_de(completa))
+    a = res.ajustes[0]
+    assert a.fator == pytest.approx(0.5)
+    assert "lacuna_preenchida" not in a.detalhe
+    assert len(res.avisos) == 1
+    assert "campo oficial mudou (fator 0.5)" in res.avisos[0]
