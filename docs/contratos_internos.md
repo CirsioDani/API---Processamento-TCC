@@ -112,9 +112,11 @@ PREGOES_COMPLETA = 253
 def compacto_para_pontos(serie: dict) -> list[Ponto]
 def pontos_para_compacto(pontos: list[Ponto], campos: list[str]) -> tuple[list[str], dict[str, list], dict[str, list[dict]]]
 def hash_ponto(p: Ponto) -> str              # contrato.sha256_texto(contrato.json_canonico({"valores": p.valores, "status": p.status}))
-def recortar(pontos: list[Ponto], janela: str) -> list[Ponto]     # pontos em ordem crescente; últimos N (max = todos)
 def montar_registro(meta: dict, catalogo: dict, pontos: list[Ponto], janela: str,
-                    recusas: dict[str, str] | None = None) -> dict
+                    recusas: dict[str, str] | None = None, *, inicio_janela: str,
+                    inicio_ultima_completa: str | None = None) -> dict
+# ATUALIZAÇÃO 26/10/2026: o recorte é "data >= inicio_janela" (início da janela no calendário de pregões,
+# calculado pela rota) e não mais "últimos N pontos"; recortar() foi removida. Ver plano, "inicio_janela".
 ```
 - `compacto_para_pontos`: um Ponto por data. `status` de cada trecho `{de, ate, status}` vale para as datas com
   de ≤ data ≤ ate.

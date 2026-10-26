@@ -62,15 +62,6 @@ def hash_ponto(p: Ponto) -> str:
     return contrato.sha256_texto(contrato.json_canonico({"valores": p.valores, "status": p.status}))
 
 
-def recortar(pontos: list[Ponto], janela: str) -> list[Ponto]:
-    """Últimos N pontos da janela (pontos em ordem crescente); 'max' devolve todos."""
-    _validar_janela(janela)
-    n = JANELAS[janela]
-    if n is None:
-        return list(pontos)
-    return list(pontos[-n:])
-
-
 def _aplicar_recusas(pontos: list[Ponto], recusas: dict[str, str]) -> list[Ponto]:
     """Pontos com data <= data_ate do campo recusado viram None com status 'indisponivel'."""
     novos = []
@@ -86,12 +77,18 @@ def _aplicar_recusas(pontos: list[Ponto], recusas: dict[str, str]) -> list[Ponto
 
 
 def montar_registro(meta: dict, catalogo: dict, pontos: list[Ponto], janela: str,
-                    recusas: dict[str, str] | None = None) -> dict:
+                    recusas: dict[str, str] | None = None, *, inicio_janela: str,
+                    inicio_ultima_completa: str | None = None) -> dict:
+    """Pontos com data >= inicio_janela (início da janela no calendário de pregões).
+
+    Sem nenhum ponto a partir de inicio_janela: ValueError (a rota devolve 404)."""
     _validar_janela(janela)
     if not pontos:
         raise ValueError("série sem pontos")
     pontos = _aplicar_recusas(pontos, recusas or {})
-    recorte = recortar(pontos, janela)
+    recorte = [p for p in pontos if p.data >= inicio_janela]
+    if not recorte:
+        raise ValueError("série sem pontos na janela")
     datas, valores, status = pontos_para_compacto(recorte, catalogo["campos"])
     registro = {k: meta[k] for k in contrato.METADADOS}
     registro.update(
@@ -99,9 +96,9 @@ def montar_registro(meta: dict, catalogo: dict, pontos: list[Ponto], janela: str
         tipo=catalogo["tipo"],
         nome=catalogo["nome"],
         substituir_serie=True,
-        inicio_janela=recorte[0].data,
+        inicio_janela=inicio_janela,
     )
-    if janela in ("2a", "max"):
-        registro["inicio_ultima_completa"] = pontos[max(0, len(pontos) - PREGOES_COMPLETA)].data
+    if janela in ("2a", "max") and inicio_ultima_completa is not None:
+        registro["inicio_ultima_completa"] = inicio_ultima_completa
     registro.update(datas=datas, valores=valores, status=status)
     return registro

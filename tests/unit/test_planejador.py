@@ -155,7 +155,8 @@ def montar(estado: Estado, ticker: str, janela: str = "max", recusas=None) -> di
     catalogo = {"ticker": ticker, **estado.catalogo[ticker]}
     pontos = sorted(estado.pontos[ticker].values(), key=lambda p: p.data)
     meta = {"versao_contrato": "1.0", "gerado_em": "x", "dados_ate": "y"}
-    return series.montar_registro(meta, catalogo, pontos, janela, recusas)
+    return series.montar_registro(meta, catalogo, pontos, janela, recusas,
+                                  inicio_janela=pontos[0].data, inicio_ultima_completa=pontos[0].data)
 
 
 # ---------------------------------------------------------------- testes com os dados reais
@@ -538,5 +539,24 @@ def test_serie_5_setor_sem_composicao_nova_e_irregular_com_emenda():
 
     janela_att = [a for a in ops(plano, PontoAtualizar) if DATAS[10] <= a.ponto.data <= DATAS[20]]
     assert janela_att and all(a.anterior is not None for a in janela_att)
+
+
+# ---------------------------------------------------------------- metadados das séries (inicio_janela)
+
+def test_metadados_series_diarias_leva_o_menor_inicio_janela():
+    # a série curta vem primeiro: o menor inicio_janela não pode ser o da 1ª série
+    registros = [
+        registro_serie("AZUL3", "acao", range(20, 45), valores_base),
+        registro_serie("PETR4", "acao", range(0, 40), valores_base),
+    ]
+    plano = planejar(entrada_series(registros), Estado())
+
+    assert plano.metadados["series_diarias"]["inicio_janela"] == DATAS[0]
+
+
+def test_metadados_series_diarias_do_arquivo_real_tem_inicio_janela():
+    plano = planejar(entrada_de("2026-10-23"), Estado())
+
+    assert plano.metadados["series_diarias"]["inicio_janela"] == "2025-10-16"
 
 

@@ -128,7 +128,15 @@ def _metadados(completa: dict | None, execucao: dict) -> dict:
     meta = {"execucao": _meta_envelope(execucao)}
     for pacote, envelope in (completa or {}).items():
         meta[pacote] = _meta_envelope(envelope)
+    if completa and "series_diarias" in completa:
+        meta["series_diarias"]["inicio_janela"] = _inicio_janela_series(completa["series_diarias"])
     return meta
+
+
+def _inicio_janela_series(envelope: dict) -> str | None:
+    """Menor inicio_janela das séries da completa (todas têm o mesmo na prática); None sem séries."""
+    inicios = [r["inicio_janela"] for r in envelope.get("registros") or [] if r.get("inicio_janela")]
+    return min(inicios) if inicios else None
 
 
 def _meta_envelope(envelope: dict) -> dict:

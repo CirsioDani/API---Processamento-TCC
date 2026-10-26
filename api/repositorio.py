@@ -40,6 +40,19 @@ def sql_foto(tabela: str, com_ticker: bool, com_data: bool) -> str:
     return f"SELECT registro, data_publicacao, data_referencia FROM {tabela}{where} ORDER BY {ordem} LIMIT 1"
 
 
+def sql_ultima_referencia(tabela: str, com_data: bool) -> str:
+    filtro = " WHERE data_publicacao <= %s" if com_data else ""
+    return f"SELECT MAX(data_referencia) AS referencia FROM {tabela}{filtro}"
+
+
+def sql_fotos_da_referencia(tabela: str, com_data: bool) -> str:
+    filtro = " AND data_publicacao <= %s" if com_data else ""
+    return (
+        f"SELECT registro, data_publicacao, data_referencia FROM {tabela} "
+        f"WHERE data_referencia = %s{filtro} ORDER BY ticker"
+    )
+
+
 def sql_versoes(tabela: str, ordem: str, com_ticker: bool, com_data: bool) -> str:
     filtros = []
     if com_ticker:
@@ -64,6 +77,17 @@ def sql_pontos(series_pontos: str) -> str:
     return (
         f"SELECT data, valores, status FROM {series_pontos} "
         "WHERE ticker = %s AND removido_em IS NULL AND data <= %s ORDER BY data"
+    )
+
+
+def sql_inicio_max(series_pontos: str) -> str:
+    return f"SELECT MIN(data) AS inicio FROM {series_pontos} WHERE removido_em IS NULL AND data <= %s"
+
+
+def sql_calendario_recente(series_pontos: str) -> str:
+    return (
+        f"SELECT DISTINCT data FROM {series_pontos} "
+        "WHERE removido_em IS NULL AND data <= %s ORDER BY data DESC LIMIT %s"
     )
 
 
@@ -157,6 +181,26 @@ class Repositorio:
         linha = linhas[0]
         return ler_json(linha["registro"]), _iso(linha["data_publicacao"]), _iso(linha["data_referencia"])
 
+    def fotos_do_dia(self, pacote: str, data: str | None):
+        """(registros, data_publicacao, data_referencia) das linhas do pacote no pregão alvo, ou None.
+
+        Alvo: a maior data_referencia (com data, só entre as linhas publicadas até ela). Os registros são
+        todas as linhas desse pregão, por ticker. data_publicacao = a maior dessas linhas."""
+        if pacote not in ("resumo_acao", "noticias_dia"):
+            raise ValueError(f"pacote não é diário por ticker: {pacote!r}")
+        tabela = self._t(pacote)
+        ref = self._c.consultar(sql_ultima_referencia(tabela, data is not None), (data,) if data else None)
+        alvo = _iso(ref[0]["referencia"]) if ref else None
+        if alvo is None:
+            return None
+        params = (alvo,) if data is None else (alvo, data)
+        linhas = self._c.consultar(sql_fotos_da_referencia(tabela, data is not None), params)
+        if not linhas:
+            return None
+        registros = [ler_json(linha["registro"]) for linha in linhas]
+        data_publicacao = max(_iso(linha["data_publicacao"]) for linha in linhas)
+        return registros, data_publicacao, alvo
+
     def versoes(self, pacote: str, data: str | None, ticker: str | None = None) -> list[dict]:
         if pacote not in ORDEM_VERSIONADAS:
             raise ValueError(f"pacote não é versionado: {pacote!r}")
@@ -199,6 +243,17 @@ class Repositorio:
             if r["ate"] is not None
         }
         return catalogo, pontos, recusas
+
+    def inicio_da_janela(self, data_fim: str, n: int | None) -> str | None:
+        """Início da janela de n pregões até data_fim, sobre o calendário (datas distintas de todas as séries).
+
+        n None ("max"): a 1ª data do calendário. Com menos de n pregões, a mais antiga."""
+        tabela = self._t("series_pontos")
+        if n is None:
+            linhas = self._c.consultar(sql_inicio_max(tabela), (data_fim,))
+            return _iso(linhas[0]["inicio"]) if linhas else None
+        linhas = self._c.consultar(sql_calendario_recente(tabela), (data_fim, n))
+        return _iso(linhas[-1]["data"]) if linhas else None
 
     def historico(self, ticker: str, campo: str, inicio: str | None = None, fim: str | None = None) -> list:
         """Lista de (data_referencia, valor decodificado). Campo ausente no registro vem como None.

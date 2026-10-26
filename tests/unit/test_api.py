@@ -5,6 +5,7 @@ Os dados vêm de tests/dados/saida_completa/2026-10-23 (publicação 23/10, preg
 import json
 import re
 from contextlib import contextmanager
+from datetime import date
 from pathlib import Path
 
 import pytest
@@ -71,7 +72,8 @@ class RepositorioFalso:
 
     def __init__(self):
         self.publicacoes = []
-        self.fotos = {p: [] for p in ("resumo_acao", "noticias_dia", "mercado_dia", "experimento_top")}
+        self.fotos = {p: [] for p in ("resumo_acao", "noticias_dia", "mercado_dia", "experimento_top",
+                                      "experimento_historico")}
         self.linhas_execucao = []  # {registro, data_publicacao}
         self.versionadas = {p: [] for p in ("acoes", "fundamentos_trimestrais", "proventos")}
         self.catalogo = {}
@@ -118,6 +120,20 @@ class RepositorioFalso:
         l = max(linhas, key=chave)
         return l["registro"], l["data_publicacao"], l["data_referencia"]
 
+    def fotos_do_dia(self, pacote, data):
+        self._checar()
+        linhas = self.fotos[pacote]
+        if data is not None:
+            linhas = [l for l in linhas if l["data_publicacao"] <= data]
+        if not linhas:
+            return None
+        alvo = max(l["data_referencia"] for l in linhas)
+        do_pregao = [l for l in self.fotos[pacote] if l["data_referencia"] == alvo
+                     and (data is None or l["data_publicacao"] <= data)]
+        do_pregao.sort(key=lambda l: l["ticker"])
+        registros = [l["registro"] for l in do_pregao]
+        return registros, max(l["data_publicacao"] for l in do_pregao), alvo
+
     def versoes(self, pacote, data, ticker=None):
         self._checar()
         saida = []
@@ -142,6 +158,15 @@ class RepositorioFalso:
             return None
         pontos = [p for p in self.pontos[ticker] if p.data <= data_fim]
         return dict(self.catalogo[ticker]), pontos, dict(self.recusas.get(ticker, {}))
+
+    def inicio_da_janela(self, data_fim, n):
+        self._checar()
+        datas = sorted({p.data for pontos in self.pontos.values() for p in pontos if p.data <= data_fim})
+        if not datas:
+            return None
+        if n is None:
+            return datas[0]
+        return datas[-n] if len(datas) >= n else datas[0]
 
     def historico(self, ticker, campo, inicio=None, fim=None):
         self._checar()
@@ -170,6 +195,21 @@ class RepositorioFalso:
         return [(e["registro"], e["data_publicacao"]) for e in sorted(achados, key=lambda x: x["registro"]["rodada"])]
 
 
+def _serie_curta() -> dict:
+    """CURT3: série sintética que começa tarde, com só as 30 últimas datas de PETR4 (valores de PETR4)."""
+    petr4 = _registro_arquivo("series_diarias", "PETR4")
+    n = 30
+    return {
+        **petr4,
+        "ticker": "CURT3",
+        "nome": "Curta sintética",
+        "inicio_janela": petr4["datas"][-n],
+        "datas": petr4["datas"][-n:],
+        "valores": {campo: valores[-n:] for campo, valores in petr4["valores"].items()},
+        "status": {},
+    }
+
+
 def criar_repositorio() -> RepositorioFalso:
     repo = RepositorioFalso()
     metadados = {}
@@ -181,6 +221,8 @@ def criar_repositorio() -> RepositorioFalso:
             "gerado_em": env["gerado_em"],
             "dados_ate": env["dados_ate"],
         }
+    metadados["series_diarias"]["inicio_janela"] = min(
+        r["inicio_janela"] for r in _arquivo("series_diarias")["registros"])
     repo.publicacoes.append({"data_publicacao": PUB, "data_referencia": REF, "status": "completa",
                              "metadados": metadados})
     for pacote in ("resumo_acao", "noticias_dia", "mercado_dia"):
@@ -192,7 +234,7 @@ def criar_repositorio() -> RepositorioFalso:
         for reg in _arquivo(pacote)["registros"]:
             repo.versionadas[pacote].append({"ticker": reg["ticker"], "registro": reg,
                                              "valido_desde": PUB, "valido_ate": None})
-    for reg in _arquivo("series_diarias")["registros"]:
+    for reg in _arquivo("series_diarias")["registros"] + [_serie_curta()]:
         t = reg["ticker"]
         repo.catalogo[t] = {"ticker": t, "tipo": reg["tipo"], "nome": reg["nome"],
                             "campos": list(reg["valores"].keys())}
@@ -320,6 +362,119 @@ def test_experimento_top_sem_dados_404(cliente):
     assert r.json() == {"detail": "pacote experimento_top ainda não publicado"}
 
 
+def _ordenados_por_ticker(pacote: str) -> list:
+    return sorted(_arquivo(pacote)["registros"], key=lambda r: r["ticker"])
+
+
+@pytest.mark.parametrize("pacote", ["resumo_acao", "noticias_dia"])
+def test_do_dia_tres_registros_iguais_ao_arquivo(cliente, pacote):
+    r = cliente.get(f"/v1/{pacote}", headers=CHAVE)
+    assert r.status_code == 200
+    corpo = r.json()
+    assert set(corpo) == ENVELOPE
+    assert corpo["pacote"] == pacote
+    assert corpo["chave"] == ["data_referencia", "ticker"]
+    assert len(corpo["registros"]) == 3
+    assert corpo["registros"] == _ordenados_por_ticker(pacote)
+    assert corpo["data_publicacao"] == PUB
+    assert corpo["data_referencia"] == REF
+    assert corpo["removidos"] == []
+
+
+@pytest.mark.parametrize("pacote", ["resumo_acao", "noticias_dia"])
+def test_do_dia_com_data_de_publicacao(cliente, pacote):
+    corpo = cliente.get(f"/v1/{pacote}", params={"data": PUB}, headers=CHAVE).json()
+    assert corpo["registros"] == _ordenados_por_ticker(pacote)
+    assert corpo["data_publicacao"] == PUB
+    assert corpo["data_referencia"] == REF
+
+
+@pytest.mark.parametrize("pacote", ["resumo_acao", "noticias_dia"])
+def test_do_dia_sem_chave_401(cliente, pacote):
+    assert cliente.get(f"/v1/{pacote}").status_code == 401
+
+
+@pytest.mark.parametrize("pacote", ["resumo_acao", "noticias_dia"])
+def test_do_dia_data_anterior_a_tudo_404(cliente, pacote):
+    r = cliente.get(f"/v1/{pacote}", params={"data": "2026-10-01"}, headers=CHAVE)
+    assert r.status_code == 404
+    assert r.json() == {"detail": "nada publicado até 2026-10-01"}
+
+
+@pytest.mark.parametrize("pacote", ["resumo_acao", "noticias_dia"])
+def test_do_dia_sem_nada_publicado_404(repo, cliente, pacote):
+    repo.fotos[pacote].clear()
+    r = cliente.get(f"/v1/{pacote}", headers=CHAVE)
+    assert r.status_code == 404
+    assert r.json() == {"detail": "nada publicado ainda"}
+
+
+def test_resumo_do_dia_pega_o_pregao_mais_recente_e_respeita_data(repo, cliente):
+    base = _registro_arquivo("resumo_acao", "PETR4")
+    novo = json.loads(json.dumps(base))
+    novo["data_referencia"] = "2026-10-23"
+    repo.fotos["resumo_acao"].append(_linha_foto(novo, "2026-10-24"))
+    corpo = cliente.get("/v1/resumo_acao", headers=CHAVE).json()
+    assert corpo["registros"] == [novo]
+    assert corpo["data_publicacao"] == "2026-10-24"
+    assert corpo["data_referencia"] == "2026-10-23"
+    antigo = cliente.get("/v1/resumo_acao", params={"data": PUB}, headers=CHAVE).json()
+    assert antigo["registros"] == _ordenados_por_ticker("resumo_acao")
+    assert antigo["data_referencia"] == REF
+
+
+def _registro_experimento() -> dict:
+    return {
+        "versao_contrato": "1.0",
+        "gerado_em": "2026-10-23T09:12:00-03:00",
+        "dados_ate": "2026-10-23T08:00:00-03:00",
+        "data_referencia": PUB,
+        "ranking": [{"posicao": 1, "ticker": "PETR4"}],
+    }
+
+
+def test_experimento_sem_dados_404(cliente):
+    r = cliente.get("/v1/experimento/top", headers=CHAVE)
+    assert r.status_code == 404
+    assert r.json() == {"detail": "pacote experimento_top ainda não publicado"}
+    r = cliente.get("/v1/experimento/historico", headers=CHAVE)
+    assert r.status_code == 404
+    assert r.json() == {"detail": "pacote experimento_historico ainda não publicado"}
+
+
+@pytest.mark.parametrize("pacote,caminho", [
+    ("experimento_top", "/v1/experimento/top"),
+    ("experimento_historico", "/v1/experimento/historico"),
+])
+def test_experimento_com_registro_200(repo, cliente, pacote, caminho):
+    reg = _registro_experimento()
+    repo.fotos[pacote].append(_linha_foto(reg, PUB))
+    corpo = cliente.get(caminho, headers=CHAVE).json()
+    assert corpo["pacote"] == pacote
+    assert corpo["chave"] == ["data_referencia"]
+    assert corpo["registros"] == [reg]
+    assert corpo["data_publicacao"] == PUB
+    assert corpo["data_referencia"] == PUB
+    assert cliente.get(caminho, params={"data": PUB}, headers=CHAVE).status_code == 200
+    assert cliente.get(caminho, params={"data": "2026-10-01"}, headers=CHAVE).status_code == 404
+    assert cliente.get(caminho).status_code == 401
+
+
+def test_experimento_top_antigo_continua_funcionando(repo, cliente):
+    reg = _registro_experimento()
+    repo.fotos["experimento_top"].append(_linha_foto(reg, PUB))
+    r = cliente.get("/v1/experimento_top", headers=CHAVE)
+    assert r.status_code == 200
+    assert r.json()["registros"] == [reg]
+    assert cliente.get("/v1/experimento_top").status_code == 401
+
+
+def test_experimento_top_antigo_fica_fora_do_openapi(cliente):
+    caminhos = cliente.get("/openapi.json").json()["paths"]
+    assert "/v1/experimento_top" not in caminhos
+    assert {"/v1/experimento/top", "/v1/experimento/historico"} <= set(caminhos)
+
+
 def test_mercado_dia_igual_ao_arquivo(cliente):
     corpo = cliente.get("/v1/mercado_dia", headers=CHAVE).json()
     assert corpo["registros"] == _arquivo("mercado_dia")["registros"]
@@ -387,6 +542,39 @@ def test_series_max_tem_inicio_ultima_completa(cliente):
     reg = cliente.get("/v1/series_diarias/PETR4?janela=max", headers=CHAVE).json()["registros"][0]
     assert len(reg["datas"]) == 253
     assert reg["inicio_ultima_completa"] == reg["inicio_janela"]
+
+
+def _calendario(repo) -> list[str]:
+    """Datas distintas de todas as séries do repositório falso, até o fim da publicação."""
+    return sorted({p.data for pontos in repo.pontos.values() for p in pontos if p.data <= REF})
+
+
+def test_series_curta_1a_comeca_no_inicio_da_janela_do_arquivo(cliente):
+    reg = cliente.get("/v1/series_diarias/CURT3", headers=CHAVE).json()["registros"][0]
+    assert reg["inicio_janela"] == _registro_arquivo("series_diarias", "PETR4")["inicio_janela"] == "2025-10-16"
+    assert len(reg["datas"]) == 30
+    assert "inicio_ultima_completa" not in reg
+
+
+def test_series_curta_1m_inicio_e_a_21a_data_do_fim_no_calendario(repo, cliente):
+    reg = cliente.get("/v1/series_diarias/CURT3", params={"janela": "1m"}, headers=CHAVE).json()["registros"][0]
+    assert reg["inicio_janela"] == _calendario(repo)[-21]
+    assert len(reg["datas"]) == 21
+
+
+def test_series_curta_max_inicio_e_a_1a_data_do_calendario(repo, cliente):
+    reg = cliente.get("/v1/series_diarias/CURT3", params={"janela": "max"}, headers=CHAVE).json()["registros"][0]
+    assert reg["inicio_janela"] == _calendario(repo)[0] == "2025-10-16"
+    assert reg["inicio_ultima_completa"] == "2025-10-16"
+    assert len(reg["datas"]) == 30
+
+
+def test_serie_sem_pontos_na_janela_da_404(repo, cliente):
+    repo.catalogo["VELHA3"] = {"ticker": "VELHA3", "tipo": "acao", "nome": "Velha", "campos": ["fechamento"]}
+    repo.pontos["VELHA3"] = [series.Ponto(data="2025-10-01", valores={"fechamento": 1.0}, status={})]
+    r = cliente.get("/v1/series_diarias/VELHA3", headers=CHAVE)
+    assert r.status_code == 404
+    assert r.json() == {"detail": "ticker VELHA3 sem pontos na janela 1a"}
 
 
 def test_series_janela_invalida_422(cliente):
@@ -528,6 +716,8 @@ class ConexaoEspiao:
         self.registrados.append((sql, params))
         if "series_catalogo" in sql:
             return [{"ticker": "PETR4", "tipo": "acao", "nome": "Petrobras", "campos": '["fechamento"]'}]
+        if "MAX(data_referencia)" in sql:
+            return [{"referencia": date.fromisoformat(REF)}]
         return []
 
 
@@ -541,12 +731,17 @@ def _chamar_todos_os_metodos(repo: repositorio.Repositorio) -> None:
     for pacote in ("mercado_dia", "experimento_top", "experimento_historico", "execucao"):
         repo.foto(pacote, None, None)
         repo.foto(pacote, PUB, None)
+    for pacote in ("resumo_acao", "noticias_dia"):
+        repo.fotos_do_dia(pacote, None)
+        repo.fotos_do_dia(pacote, PUB)
     repo.versoes("acoes", None)
     repo.versoes("acoes", PUB)
     repo.versoes("fundamentos_trimestrais", PUB, "PETR4")
     repo.versoes("proventos", None, "PETR4")
     repo.ticker_existe("PETR4")
     repo.serie("PETR4", REF)
+    repo.inicio_da_janela(REF, 253)
+    repo.inicio_da_janela(REF, None)
     repo.historico("PETR4", "pl")
     repo.historico("PETR4", "pl", "2026-10-01")
     repo.historico("PETR4", "pl", None, "2026-10-31")
@@ -574,6 +769,29 @@ def test_sql_de_teste_usa_so_tabelas_teste():
             assert not re.search(rf"\b{base}\b", sql), f"tabela real citada no modo teste: {base} em {sql}"
 
 
+class ConexaoCalendario(ConexaoEspiao):
+    """Devolve um calendário de 3 pregões (22, 21 e 20/10/2026) e o início 16/10/2025 para o MIN."""
+
+    def consultar(self, sql, params=None):
+        self.registrados.append((sql, params))
+        if "DISTINCT" in sql:  # o LIMIT (último parâmetro) corta as linhas, como no banco
+            linhas = [{"data": date(2026, 10, 22)}, {"data": date(2026, 10, 21)}, {"data": date(2026, 10, 20)}]
+            return linhas[:params[-1]]
+        if "MIN(" in sql:
+            return [{"inicio": date(2025, 10, 16)}]
+        return []
+
+
+def test_inicio_da_janela_le_o_calendario_do_banco():
+    espiao = ConexaoCalendario(tabelas.PREFIXO_TESTE)
+    repo = repositorio.Repositorio(espiao)
+    assert repo.inicio_da_janela(REF, 2) == "2026-10-21"  # 2º pregão contado do fim
+    assert repo.inicio_da_janela(REF, 5) == "2026-10-20"  # menos pregões que n: o mais antigo
+    assert repo.inicio_da_janela(REF, None) == "2025-10-16"
+    assert espiao.registrados[0][1] == (REF, 2)
+    assert espiao.registrados[2][1] == (REF,)
+
+
 def test_ping_e_select_simples():
     assert repositorio.SQL_PING == "SELECT 1 AS ok"
     guarda_sql.verificar(repositorio.SQL_PING, "", somente_leitura=True)
@@ -585,10 +803,19 @@ def test_data_inexistente_no_calendario_da_422(cliente):
     assert r.status_code == 422
 
 
+PROTEGIDOS_ESPERADOS = {
+    "/v1/acoes", "/v1/resumo_acao", "/v1/resumo_acao/{ticker}", "/v1/resumo_acao/{ticker}/historico",
+    "/v1/series_diarias/{ticker}", "/v1/fundamentos_trimestrais/{ticker}", "/v1/proventos/{ticker}",
+    "/v1/noticias_dia", "/v1/noticias_dia/{ticker}", "/v1/mercado_dia", "/v1/experimento/top",
+    "/v1/experimento/historico", "/v1/execucao/ultima", "/v1/execucao/{data}",
+}
+
+
 def test_docs_documentam_401_e_404_em_todos_os_endpoints_com_chave(cliente):
     caminhos = cliente.get("/openapi.json").json()["paths"]
     protegidos = [c for c in caminhos if c != "/v1/saude"]
-    assert len(protegidos) == 11
+    assert set(protegidos) == PROTEGIDOS_ESPERADOS
+    assert len(protegidos) == 14
     for caminho in protegidos:
         respostas = caminhos[caminho]["get"]["responses"]
         for codigo in ("401", "404"):

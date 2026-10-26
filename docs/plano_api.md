@@ -363,7 +363,10 @@ Ticker em maiúsculas (a API converte `petr4` → `PETR4`).
 | `/v1/mercado_dia` | o registro do dia | `?data=D` |
 | `/v1/execucao/ultima` | a última execução gravada (inclusive de manhã que falhou) | — |
 | `/v1/execucao/{data}` | as execuções daquela D | — |
-| `/v1/experimento_top` | top 5 do dia; **404 "pacote ainda não publicado"** enquanto estiver vazio | `?data=D` |
+| `/v1/resumo_acao` | envelope `resumo_acao` com **todas** as ações do pregão (tela inicial) | `?data=D` |
+| `/v1/noticias_dia` | envelope `noticias_dia` com **todas** as ações do pregão | `?data=D` |
+| `/v1/experimento/top` | top 5 do dia; **404 "pacote ainda não publicado"** enquanto estiver vazio (`/v1/experimento_top` continua como apelido oculto) | `?data=D` |
+| `/v1/experimento/historico` | histórico do experimento; 404 enquanto vazio | `?data=D` |
 
 Regras:
 - **Sem `?data`:** o mais recente. **Com `?data=D`:** fotos = a de maior `data_publicacao ≤ D`;
@@ -590,7 +593,18 @@ data-com. Dividendo não muda nenhum ponto antigo (spec 8.3). O que muda para tr
     linha em `correcoes`). A API os ignora. Nada é apagado.
 
 **API:** `janela` até `1a` = idêntica à última completa. `2a` e `max` incluem os antigos emendados e o campo
-extra `inicio_ultima_completa` (data do 253º ponto contado do fim).
+extra `inicio_ultima_completa`.
+
+**`inicio_janela` (corrigido em 26/10/2026):** é o início da JANELA no calendário de pregões, não o 1º ponto da
+série. É assim que a interface detecta "histórico insuficiente" (ex.: AUAU3 e AZUL3 começam em 2026, mas a janela
+de 1a começa em 2025-10-16). Regras:
+- `1a`: o `inicio_janela` da carga completa daquela publicação, guardado em
+  `publicacoes.metadados.series_diarias.inicio_janela`;
+- demais janelas: a N-ésima data contada do fim no calendário = datas distintas de `series_pontos` de todas as
+  séries (`max` = a 1ª data do calendário);
+- os pontos devolvidos são os da série com data ≥ `inicio_janela`;
+- `inicio_ultima_completa` (2a/max) = o `inicio_janela` guardado da completa.
+Publicações anteriores à correção não têm o valor guardado: o cálculo pelo calendário dá o mesmo resultado.
 
 **Volume esperado de `series_ajustes`:**
 - dia de dividendo: 0 linhas;

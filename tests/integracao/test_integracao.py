@@ -12,6 +12,7 @@ import pymysql
 import pytest
 
 from comum import banco, guarda_sql
+from ferramentas import conferir_api
 from publicador import gravador
 from tests.integracao.conftest import (
     DIR_DADOS,
@@ -540,3 +541,169 @@ def test_emenda_ponta_a_ponta(conexao, cfg, tmp_path):
         t["status"] == "indisponivel" and t["de"] == DATAS[0].isoformat() and t["ate"] == DATAS[9].isoformat()
         for t in trechos
     ), trechos
+
+
+# ------------------------------------------------------ 11. experimento_top e experimento_historico (sintéticos)
+
+TICKERS_TOP = ("TSTA3", "TSTB4", "TSTC3", "TSTD4", "TSTF3")
+
+
+def _experimento_top(d: str, pregao_base: str, tickers: tuple[str, ...]) -> dict:
+    """experimento_top no formato da seção 8.3 item 8 do contrato (valores ilustrativos)."""
+    ranking = []
+    for posicao, ticker in enumerate(tickers, start=1):
+        ranking.append({
+            "posicao": posicao,
+            "ticker": ticker,
+            "chance": {"valor": None, "referencia_acaso": None, "exibir": False,
+                       "status": "calibracao_nao_conferida"},
+            "motivos": [
+                {"fator": "noticias_dia_tom", "valor": 0.42, "efeito": "ajudou",
+                 "texto": f"Notícias do último pregão e da noite com tom positivo (posição {posicao})"},
+                {"fator": "ret_5d", "valor": -0.031, "efeito": "ajudou",
+                 "texto": "Caiu 3,1% nos últimos 5 pregões (abaixo da média das ações)"},
+            ],
+            "noticias_usadas": [f"n{posicao:06d}"],
+        })
+    return {
+        "versao_contrato": "1.0",
+        "gerado_em": GERADO,
+        "dados_ate": DADOS_ATE,
+        "data_referencia": d,
+        "pregao_previsto": d,
+        "pregao_base": pregao_base,
+        "valido_para_historico": True,
+        "modelo_versao": "xgb-2030-02",
+        "modelo_provisorio": False,
+        "universo": "composicao_atual",
+        "n_candidatas": 84,
+        "selo": "em_avaliacao",
+        "titulo": "5 ações com maior chance de superar o Ibovespa (experimento)",
+        "aviso_fixo": "Não constitui recomendação de investimento.",
+        "avisos": [],
+        "ranking": ranking,
+    }
+
+
+def _experimento_historico(d: str) -> dict:
+    """experimento_historico sem dias fechados: dia null e taxa de acerto sem histórico suficiente."""
+    return {
+        "versao_contrato": "1.0",
+        "gerado_em": GERADO,
+        "dados_ate": DADOS_ATE,
+        "data_referencia": d,
+        "dia": None,
+        "resumo": {
+            "periodo_inicio": None,
+            "periodo_fim": None,
+            "n_dias": 0,
+            "taxa_acerto": {"valor": None, "status": "historico_insuficiente"},
+            "nota": "Histórico calculado com as ações que compõem o Ibovespa atualmente. Ainda não há dias fechados.",
+        },
+    }
+
+
+def _escrever_experimento(raiz: Path, d: str, pregao: str, top: dict, historico: dict) -> None:
+    """Escreve saida/<d>/execucao.json e saida_completa/<d>/{mercado_dia,experimento_top,experimento_historico,
+    execucao}.json, com pacotes_enviados batendo com os arquivos da completa."""
+    mercado = {
+        "versao_contrato": "1.0",
+        "gerado_em": GERADO,
+        "dados_ate": DADOS_ATE,
+        "data_referencia": pregao,
+        "IBOV": {"fechamento": {"valor": 100000.0, "status": "ok"}, "unidade": "pontos"},
+    }
+    enviados = [
+        {"pacote": "mercado_dia", "arquivo": "mercado_dia.json", "registros": 1, "removidos": 0},
+        {"pacote": "experimento_top", "arquivo": "experimento_top.json", "registros": 1, "removidos": 0},
+        {"pacote": "experimento_historico", "arquivo": "experimento_historico.json", "registros": 1, "removidos": 0},
+    ]
+    execucao = {
+        "versao_contrato": "1.0",
+        "gerado_em": GERADO,
+        "dados_ate": DADOS_ATE,
+        "data_referencia": d,
+        "rodada": 1,
+        "status": "ok",
+        "pacotes_enviados": enviados,
+    }
+    chave_execucao = ["data_referencia", "rodada"]
+    saida = raiz / "saida" / d
+    completa = raiz / "saida_completa" / d
+    saida.mkdir(parents=True)
+    completa.mkdir(parents=True)
+    (saida / "execucao.json").write_text(
+        json.dumps(_envelope("execucao", [execucao], chave_execucao), ensure_ascii=False), encoding="utf-8")
+    (completa / "mercado_dia.json").write_text(
+        json.dumps(_envelope("mercado_dia", [mercado], ["data_referencia"]), ensure_ascii=False), encoding="utf-8")
+    (completa / "experimento_top.json").write_text(
+        json.dumps(_envelope("experimento_top", [top], ["data_referencia"]), ensure_ascii=False), encoding="utf-8")
+    (completa / "experimento_historico.json").write_text(
+        json.dumps(_envelope("experimento_historico", [historico], ["data_referencia"]), ensure_ascii=False),
+        encoding="utf-8")
+    (completa / "execucao.json").write_text(
+        json.dumps(_envelope("execucao", [execucao], chave_execucao), ensure_ascii=False), encoding="utf-8")
+
+
+def test_experimento_top_sintetico(conexao, cfg, tmp_path):
+    api = ClienteAPI(dataclasses.replace(cfg, dir_processamento=tmp_path))
+    d1, d2 = "2030-02-04", "2030-02-05"  # D: dia da rotina
+    p1, p2 = "2030-02-01", "2030-02-04"  # pregão anterior a cada D (data_referencia do mercado_dia)
+    top1 = _experimento_top(d1, p1, TICKERS_TOP)
+    top2 = _experimento_top(d2, p2, TICKERS_TOP[::-1])  # ranking diferente, para o ?data= distinguir os dias
+    hist1, hist2 = _experimento_historico(d1), _experimento_historico(d2)
+    _escrever_experimento(tmp_path, d1, p1, top1, hist1)
+    _escrever_experimento(tmp_path, d2, p2, top2, hist2)
+
+    publicar(conexao, tmp_path, d1)
+    publicar(conexao, tmp_path, d2)
+
+    contagem = contagens(conexao)
+    assert contagem["teste_publicacoes"] == 2
+    assert contagem["teste_mercado_dia"] == 2
+    assert contagem["teste_experimento_top"] == 2
+    assert contagem["teste_experimento_historico"] == 2
+    assert contagem["teste_execucao"] == 2
+
+    atual = api.get("/v1/experimento/top").json()
+    assert atual["registros"] == [top2]
+    assert atual["data_publicacao"] == d2
+    assert atual["data_referencia"] == d2
+    assert atual["registros"][0]["ranking"][0]["chance"]["valor"] is None
+    antigo = api.get("/v1/experimento/top", params={"data": d1}).json()
+    assert antigo["registros"] == [top1]
+    assert antigo["data_publicacao"] == d1
+    assert antigo["data_referencia"] == d1
+
+    assert api.get("/v1/experimento/historico").json()["registros"] == [hist2]
+    assert api.get("/v1/experimento/historico", params={"data": d1}).json()["registros"] == [hist1]
+    assert api.get("/v1/experimento_top").json()["registros"] == [top2]
+
+    plano = publicar(conexao, tmp_path, d2)
+    assert plano.modo == "republicacao"
+    assert contagens(conexao) == contagem
+
+
+# ------------------------------------------------------------------------------------- 9. conferir_api contra a API
+
+def test_conferir_api_contra_banco(conexao, cfg, api, capsys):
+    """A conferência (só leitura) bate com a API real nas publicações 23 e 26.
+
+    Depois de 26, conferir 23 acusa UMA diferença, de propósito: com ?data= as séries saem com as correções
+    posteriores (regra do plano), e 26 corrigiu o volume de um ponto antigo de PETR4. O resto mostra 23 como era.
+    """
+
+    def buscar(caminho, params):
+        resposta = api.get(caminho, params=params)
+        return resposta.status_code, resposta.json()
+
+    publicar(conexao, DIR_DADOS, D23)
+    assert conferir_api.conferir(buscar, DIR_DADOS, D23) == 0
+
+    publicar(conexao, DIR_DADOS, D26)
+    capsys.readouterr()
+    assert conferir_api.conferir(buscar, DIR_DADOS, D23) == 1
+    saida = capsys.readouterr().out
+    assert "series_diarias[PETR4].valores.volume" in saida
+    assert len([linha for linha in saida.splitlines() if "≠" in linha]) == 1  # só o ponto corrigido
+    assert conferir_api.conferir(buscar, DIR_DADOS, D26) == 0

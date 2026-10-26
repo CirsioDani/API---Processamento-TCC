@@ -44,7 +44,11 @@ ERROS = {
     404: {"model": Erro, "description": "Ticker inexistente ou nada publicado até a data pedida.",
           "content": {"application/json": {"example": {"detail": "ticker XPTO4 não encontrado"}}}},
 }
-DESC_JANELA = "Quantos pregões mostrar, até o fim da série: 1m=21, 3m=63, 6m=126, 1a=253, 2a=506, max=tudo."
+DESC_JANELA = (
+    "Quantos pregões mostrar, até o fim da série: 1m=21, 3m=63, 6m=126, 1a=253, 2a=506, max=tudo. "
+    "inicio_janela é o início da janela no calendário de pregões; se a série começa depois, ela é mais curta "
+    "que a janela (histórico insuficiente)."
+)
 
 
 def _envelope(pacote: str, registros: list, data_publicacao, data_referencia, meta: dict) -> dict:
@@ -94,6 +98,24 @@ def _resposta_foto(pacote: str, achado, mensagem_404: str) -> dict:
         raise HTTPException(status_code=404, detail=mensagem_404)
     registro, data_publicacao, data_referencia = achado
     return _envelope(pacote, [registro], data_publicacao, data_referencia, _meta_registro(pacote, registro))
+
+
+def _resposta_dia(pacote: str, achado, data: str | None) -> dict:
+    """Pacote diário com todos os tickers do pregão alvo (sem ticker na URL)."""
+    if achado is None:
+        raise HTTPException(status_code=404, detail=f"nada publicado até {data}" if data else "nada publicado ainda")
+    registros, data_publicacao, data_referencia = achado
+    return _envelope(pacote, registros, data_publicacao, data_referencia, _meta_registro(pacote, registros[0]))
+
+
+def _experimento_top(repo: Repositorio, data: str | None) -> dict:
+    return _resposta_foto("experimento_top", repo.foto("experimento_top", data, None),
+                          "pacote experimento_top ainda não publicado")
+
+
+def _experimento_historico(repo: Repositorio, data: str | None) -> dict:
+    return _resposta_foto("experimento_historico", repo.foto("experimento_historico", data, None),
+                          "pacote experimento_historico ainda não publicado")
 
 
 def criar_roteador(config: Config, fabrica) -> APIRouter:
@@ -206,7 +228,23 @@ def criar_roteador(config: Config, fabrica) -> APIRouter:
             raise HTTPException(status_code=404, detail=f"ticker {tk} não encontrado")
         catalogo, pontos, recusas = achado
         meta = _meta_versionada(pub, "series_diarias")
-        registro = series.montar_registro(meta, catalogo, pontos, janela, recusas)
+        fim = pub["data_referencia"]
+        inicio_completa = (pub["metadados"].get("series_diarias") or {}).get("inicio_janela")
+        if janela == "1a" and inicio_completa:
+            inicio_janela = inicio_completa
+        else:
+            inicio_janela = repo.inicio_da_janela(fim, series.JANELAS[janela])
+        inicio_ultima_completa = None
+        if janela in ("2a", "max"):
+            inicio_ultima_completa = inicio_completa or repo.inicio_da_janela(fim, series.PREGOES_COMPLETA)
+        try:
+            if inicio_janela is None:
+                raise ValueError("calendário sem pregões até a data")
+            registro = series.montar_registro(meta, catalogo, pontos, janela, recusas,
+                                              inicio_janela=inicio_janela,
+                                              inicio_ultima_completa=inicio_ultima_completa)
+        except ValueError:
+            raise HTTPException(status_code=404, detail=f"ticker {tk} sem pontos na janela {janela}") from None
         return _envelope("series_diarias", [registro], pub["data_publicacao"], pub["data_referencia"], meta)
 
     @roteador.get("/fundamentos_trimestrais/{ticker}", dependencies=seguro, responses=ERROS)
@@ -254,13 +292,41 @@ def criar_roteador(config: Config, fabrica) -> APIRouter:
     ):
         return _resposta_foto("mercado_dia", repo.foto("mercado_dia", data, None), "nada publicado")
 
-    @roteador.get("/experimento_top", dependencies=seguro, responses=ERROS)
+    @roteador.get("/resumo_acao", dependencies=seguro, responses=ERROS)
+    def resumo_acao_do_dia(
+        data: Annotated[str | None, Query(pattern=PADRAO_DATA, description=DESC_DATA), AfterValidator(_data_valida)] = None,
+        repo: Repositorio = Depends(repositorio),
+    ):
+        return _resposta_dia("resumo_acao", repo.fotos_do_dia("resumo_acao", data), data)
+
+    @roteador.get("/noticias_dia", dependencies=seguro, responses=ERROS)
+    def noticias_do_dia(
+        data: Annotated[str | None, Query(pattern=PADRAO_DATA, description=DESC_DATA), AfterValidator(_data_valida)] = None,
+        repo: Repositorio = Depends(repositorio),
+    ):
+        return _resposta_dia("noticias_dia", repo.fotos_do_dia("noticias_dia", data), data)
+
+    @roteador.get("/experimento/top", dependencies=seguro, responses=ERROS)
     def experimento_top(
         data: Annotated[str | None, Query(pattern=PADRAO_DATA, description=DESC_DATA), AfterValidator(_data_valida)] = None,
         repo: Repositorio = Depends(repositorio),
     ):
-        return _resposta_foto("experimento_top", repo.foto("experimento_top", data, None),
-                              "pacote experimento_top ainda não publicado")
+        return _experimento_top(repo, data)
+
+    @roteador.get("/experimento/historico", dependencies=seguro, responses=ERROS)
+    def experimento_historico(
+        data: Annotated[str | None, Query(pattern=PADRAO_DATA, description=DESC_DATA), AfterValidator(_data_valida)] = None,
+        repo: Repositorio = Depends(repositorio),
+    ):
+        return _experimento_historico(repo, data)
+
+    # Nome antigo, mantido para quem já usa: mesma resposta, mas fora do /docs.
+    @roteador.get("/experimento_top", dependencies=seguro, include_in_schema=False)
+    def experimento_top_antigo(
+        data: Annotated[str | None, Query(pattern=PADRAO_DATA, description=DESC_DATA), AfterValidator(_data_valida)] = None,
+        repo: Repositorio = Depends(repositorio),
+    ):
+        return _experimento_top(repo, data)
 
     # A rota fixa /ultima vem antes de /{data}, senão "ultima" cairia no parâmetro.
     @roteador.get("/execucao/ultima", dependencies=seguro, responses=ERROS)

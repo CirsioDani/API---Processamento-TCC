@@ -83,44 +83,69 @@ def test_hash_ponto_muda_com_valor_ou_status():
     assert series.hash_ponto(base) != series.hash_ponto(status_mudou)
 
 
-def test_recortar_janelas():
+def test_montar_registro_1a_usa_o_inicio_da_janela_recebido():
     pontos = _pontos(300)
-    assert len(series.recortar(pontos, "1m")) == 21
-    assert series.recortar(pontos, "1m") == pontos[-21:]
-    assert series.recortar(pontos, "1a") == pontos[-253:]
-    assert series.recortar(pontos, "max") == pontos
-
-
-def test_recortar_janela_invalida():
-    with pytest.raises(ValueError):
-        series.recortar(_pontos(10), "7x")
-
-
-def test_montar_registro_janela_1a_sem_inicio_ultima_completa():
-    pontos = _pontos(300)
-    reg = series.montar_registro(META, CATALOGO, pontos, "1a")
+    reg = series.montar_registro(META, CATALOGO, pontos, "1a", inicio_janela=pontos[47].data)
     assert reg["inicio_janela"] == pontos[47].data
     assert "inicio_ultima_completa" not in reg
     assert len(reg["datas"]) == 253
+    assert reg["datas"][0] == pontos[47].data
 
 
-def test_montar_registro_max_tem_inicio_ultima_completa():
+def test_montar_registro_1m_recorta_pela_data_de_inicio():
     pontos = _pontos(300)
-    reg = series.montar_registro(META, CATALOGO, pontos, "max")
+    reg = series.montar_registro(META, CATALOGO, pontos, "1m", inicio_janela=pontos[-21].data)
+    assert reg["datas"] == [p.data for p in pontos[-21:]]
+    assert reg["valores"]["fechamento"] == [p.valores["fechamento"] for p in pontos[-21:]]
+
+
+def test_montar_registro_serie_curta_comeca_no_inicio_da_janela_nao_no_1o_ponto():
+    pontos = _pontos(30)
+    reg = series.montar_registro(META, CATALOGO, pontos, "1a", inicio_janela="2024-12-01")
+    assert reg["inicio_janela"] == "2024-12-01"
+    assert reg["datas"] == [p.data for p in pontos]
+    assert len(reg["datas"]) == 30
+
+
+def test_montar_registro_sem_ponto_na_janela_levanta_valor_erro():
+    pontos = _pontos(10)
+    with pytest.raises(ValueError):
+        series.montar_registro(META, CATALOGO, pontos, "1a", inicio_janela="2030-01-01")
+
+
+def test_montar_registro_max_tem_inicio_ultima_completa_recebido():
+    pontos = _pontos(300)
+    reg = series.montar_registro(META, CATALOGO, pontos, "max", inicio_janela=pontos[0].data,
+                                 inicio_ultima_completa=pontos[47].data)
     assert reg["inicio_ultima_completa"] == pontos[47].data
     assert reg["inicio_janela"] == pontos[0].data
     assert len(reg["datas"]) == 300
 
 
-def test_montar_registro_2a_tem_inicio_ultima_completa():
+def test_montar_registro_2a_tem_inicio_ultima_completa_recebido():
     pontos = _pontos(300)
-    reg = series.montar_registro(META, CATALOGO, pontos, "2a")
+    reg = series.montar_registro(META, CATALOGO, pontos, "2a", inicio_janela=pontos[0].data,
+                                 inicio_ultima_completa=pontos[47].data)
     assert reg["inicio_ultima_completa"] == pontos[47].data
+
+
+def test_montar_registro_2a_sem_inicio_ultima_completa_omite_o_campo():
+    pontos = _pontos(300)
+    reg = series.montar_registro(META, CATALOGO, pontos, "2a", inicio_janela=pontos[0].data)
+    assert "inicio_ultima_completa" not in reg
+
+
+def test_montar_registro_1a_ignora_inicio_ultima_completa():
+    pontos = _pontos(300)
+    reg = series.montar_registro(META, CATALOGO, pontos, "1a", inicio_janela=pontos[47].data,
+                                 inicio_ultima_completa=pontos[0].data)
+    assert "inicio_ultima_completa" not in reg
 
 
 def test_montar_registro_recusa_so_no_campo_e_ate_a_data():
     pontos = _pontos(300)
-    reg = series.montar_registro(META, CATALOGO, pontos, "max", recusas={"fechamento": pontos[10].data})
+    reg = series.montar_registro(META, CATALOGO, pontos, "max", recusas={"fechamento": pontos[10].data},
+                                 inicio_janela=pontos[0].data)
     assert reg["valores"]["fechamento"][0:11] == [None] * 11
     assert reg["valores"]["fechamento"][11] == pontos[11].valores["fechamento"]
     assert reg["status"]["fechamento"] == [
@@ -132,7 +157,7 @@ def test_montar_registro_recusa_so_no_campo_e_ate_a_data():
 
 def test_montar_registro_metadados_e_flags():
     pontos = _pontos(300)
-    reg = series.montar_registro(META, CATALOGO, pontos, "1a")
+    reg = series.montar_registro(META, CATALOGO, pontos, "1a", inicio_janela=pontos[0].data)
     assert reg["substituir_serie"] is True
     assert reg["versao_contrato"] == META["versao_contrato"]
     assert reg["gerado_em"] == META["gerado_em"]
@@ -144,6 +169,6 @@ def test_montar_registro_metadados_e_flags():
 
 def test_montar_registro_lista_vazia_e_janela_invalida():
     with pytest.raises(ValueError):
-        series.montar_registro(META, CATALOGO, [], "1a")
+        series.montar_registro(META, CATALOGO, [], "1a", inicio_janela="2025-01-01")
     with pytest.raises(ValueError):
-        series.montar_registro(META, CATALOGO, _pontos(10), "7x")
+        series.montar_registro(META, CATALOGO, _pontos(10), "7x", inicio_janela="2025-01-01")
