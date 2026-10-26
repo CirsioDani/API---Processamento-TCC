@@ -1,0 +1,352 @@
+{
+ "pacote": "noticias_dia",
+ "versao_contrato": "1.0",
+ "chave": [
+  "data_referencia",
+  "ticker"
+ ],
+ "gerado_em": "2026-10-26T12:40:00-03:00",
+ "dados_ate": "2026-10-26T08:00:00-03:00",
+ "registros": [
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "data_referencia": "2026-10-23",
+   "ticker": "ITUB4",
+   "janela_inicio": "2026-10-22T08:00:01-03:00",
+   "janela_fim": "2026-10-23T08:00:00-03:00",
+   "resumo": {
+    "quantidade": {
+     "valor": 27,
+     "status": "ok"
+    },
+    "positivas": {
+     "valor": 10,
+     "status": "ok"
+    },
+    "neutras": {
+     "valor": 7,
+     "status": "ok"
+    },
+    "negativas": {
+     "valor": 10,
+     "status": "ok"
+    },
+    "tom_medio": {
+     "valor": -0.04442722019222048,
+     "status": "ok"
+    }
+   },
+   "itens": [
+    {
+     "id": "n306040",
+     "titulo": "Bradesco lidera ranking de reclamações do Banco Central, seguido pelo C6 Bank e Itaú; fintechs enfrentam desafios no atendimento ao cliente.",
+     "fonte": "Repórter Maceió",
+     "link": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxPdUFDTWRPeHBoM3hGRVhJUUhfdEJZYW1SQXBVdmd0elR6X0E4MmE5UmhFZzIyR1VwYVltMDduLVp2aVZ2aVBDLWx0akJaYlA4WU5peUlPUUFkQzRJaTl5Yk5kWUpucThTZ3RmX0ZzaFRmelgyOFpUam5rMzZzZVROaHhPSFFVTHN2V3J2UGU5MXpTMTVjX0Y1RFlOMFNlN1VHOTFPSTNNMFBxNnpGNW5KX2lUNmpYcTMtM0tCeFljMk5hdVpkTGdoSk9vNmFQT1gtZWhQTUFQV3o2UmpoYk9EQ3hjLXM1dHFGOFUwRkhEYk1RTG53VkxoTEZnQTY?oc=5",
+     "publicado_em": "2026-10-22T20:41:00-03:00",
+     "data_publicacao": "2026-10-22",
+     "precisao_hora": "hora",
+     "janela": "noite",
+     "rotulo": "negativo",
+     "prob_positivo": 0.02682776190340519,
+     "prob_neutro": 0.03548219054937363,
+     "prob_negativo": 0.937690019607544,
+     "destaque": 1,
+     "status": "ok"
+    },
+    {
+     "id": "n307007",
+     "titulo": "Volta ao presencial e ‘cheque gordo’ do Itaú (ITUB4) dão nova vida a escritórios de SP — mas nem todos os bairros ganham",
+     "fonte": "Seu Dinheiro",
+     "link": "https://www.seudinheiro.com/2026/economia/volta-presencial-cheque-gordo-itau-itub4-nova-vida-escritorios-sp-mas-nem-todos-bairros-ganham-igdl/",
+     "publicado_em": "2026-10-22T10:09:00-03:00",
+     "data_publicacao": "2026-10-22",
+     "precisao_hora": "hora",
+     "janela": "pregao",
+     "rotulo": "positivo",
+     "prob_positivo": 0.876133382320404,
+     "prob_neutro": 0.0859956294298172,
+     "prob_negativo": 0.03787105530500412,
+     "destaque": 2,
+     "status": "ok"
+    },
+    {
+     "id": "n306064",
+     "titulo": "Estrangeiros lideram otimismo com Brasil; Petrobras supera Itaú entre ações favoritas",
+     "fonte": "InfoMoney",
+     "link": "https://www.infomoney.com.br/mercados/estrangeiros-lideram-otimismo-com-brasil-petrobras-supera-itau-entre-acoes-favoritas/",
+     "publicado_em": "2026-10-23T05:30:00-03:00",
+     "data_publicacao": "2026-10-23",
+     "precisao_hora": "hora",
+     "janela": "noite",
+     "rotulo": "positivo",
+     "prob_positivo": 0.8434599041938782,
+     "prob_neutro": 0.12125761806964874,
+     "prob_negativo": 0.03528251871466637,
+     "destaque": 3,
+     "status": "ok"
+    },
+    {
+     "id": "n306069",
+     "titulo": "Estrangeiros elevam o otimismo com o Brasil; Petrobras supera Itaú entre ações favoritas",
+     "fonte": "Itamaraju Notícias",
+     "link": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQLS1TUXpHMjJwYXFQTWFSX3VraFM2Z2h5RzNRWUNSbjY2NmJuS1JBSHE3Y25tOUNlRnR4WUUxTVhicHVSRWc1ZVZTd25meTkxX0JOdHlPclZNMXJqcGtsdWgyU2JlWERPUzlDWFFQTmFWWEtvX3JyN0pyaGRob2o5VFNfa1pnWGxNMldWWXFIR3V5YkxmVWNSTmJlaFo2MGtxeHNQem9EVkd6cEVmREJ0SnFCN1ZlOTk0bzJHc2dPcmdaeGNtZ0pV?oc=5",
+     "publicado_em": "2026-10-23T05:43:11-03:00",
+     "data_publicacao": "2026-10-23",
+     "precisao_hora": "hora",
+     "janela": "noite",
+     "rotulo": "positivo",
+     "prob_positivo": 0.7705369591712952,
+     "prob_neutro": 0.1305651068687439,
+     "prob_negativo": 0.09889787435531616,
+     "destaque": 4,
+     "status": "ok"
+    },
+    {
+     "id": "n307013",
+     "titulo": "Itaú está contratando: banco tem 134 vagas abertas em divesas áreas",
+     "fonte": "JC Concursos",
+     "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNTk5TbmZycU1DM1k5dFF2MHhxMGJqUkFyU1Z5V1VkbFJMMVpLMU14YkxtLU9rNFFtLXB4X1ZMWmpDMHZDamV5bk8ySnAxNkJERE1kYjgyUzBqUXBTN19iMUJXeUo1djBmM2FHZzc3RFFTZ2pIdWhtZW5XQ3dhdFpKRjNTNVNVZ21BeEtXT1MyZDZfM2h0UnNyQnZ1Mnp3Q25ORUdyTjF0NW4tTGp3V0RIQ1lrLVRleUlq0gG-AUFVX3lxTFBjNGo2NWt6REpuZzVibHVXdHJhNFFzeUZuTDctanlDMnBlSnZOQ0RQMHowVWotT3NJWEU5dGtZTkNtRVZWMFU5WUpYQ0tCZ0t5MHkzWTV5bUMyWVAwOVpOZ3BQN0JmcUUyZHFsbHF0YkFkSHNkMlo5S3FTQXVxWWVGZU40Tlo2TndUbDJ2SDJ2eUhZc25ZOEF4eTV4bV9sakNDYnRJOXFMeXBtZFpISERuY3kyaHE0empBODdsWVE?oc=5",
+     "publicado_em": "2026-10-22T10:18:13-03:00",
+     "data_publicacao": "2026-10-22",
+     "precisao_hora": "hora",
+     "janela": "pregao",
+     "rotulo": "neutro",
+     "prob_positivo": 0.2133074551820755,
+     "prob_neutro": 0.6905258893966675,
+     "prob_negativo": 0.09616661071777344,
+     "destaque": 5,
+     "status": "ok"
+    }
+   ]
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "data_referencia": "2026-10-23",
+   "ticker": "PETR4",
+   "janela_inicio": "2026-10-22T08:00:01-03:00",
+   "janela_fim": "2026-10-23T08:00:00-03:00",
+   "resumo": {
+    "quantidade": {
+     "valor": 82,
+     "status": "ok"
+    },
+    "positivas": {
+     "valor": 23,
+     "status": "ok"
+    },
+    "neutras": {
+     "valor": 36,
+     "status": "ok"
+    },
+    "negativas": {
+     "valor": 23,
+     "status": "ok"
+    },
+    "tom_medio": {
+     "valor": 0.031629565092394264,
+     "status": "ok"
+    }
+   },
+   "itens": [
+    {
+     "id": "n307533",
+     "titulo": "BofA lifts Petrobras stock target to USD 28 from USD 22",
+     "fonte": "AD HOC NEWS",
+     "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNTThXRU5UdVVrVFo2ckNfcjF2QUNQd0MwZ3BOSUFiQlN0ZTJTM0VTelNCSlFyVFFZVWFOa0Q2bHI2N1FWMU1wUHl2QU9EYlItM3FoREU3MVJYcDhHV1Y5WUo5OFhtYzVFVFI5d2hGRDhJQl9oR1hudWxYLW50Q3ZpOE1MTktpdlN4NG5adjRnMk4zb0xvcm1WcDFpaE02ZjhQeXBVX3Fody1fSkE3UklucGIxZDBtcHJRQ3c?oc=5",
+     "publicado_em": "2026-10-23T06:18:39-03:00",
+     "data_publicacao": "2026-10-23",
+     "precisao_hora": "hora",
+     "janela": "noite",
+     "rotulo": "positivo",
+     "prob_positivo": 0.9367552995681763,
+     "prob_neutro": 0.03178803250193596,
+     "prob_negativo": 0.03145669400691986,
+     "destaque": 1,
+     "status": "ok"
+    },
+    {
+     "id": "n307559",
+     "titulo": "Primeiro leilão de gás do pré-sal não contempla Ceará e gargalo segue no Estado",
+     "fonte": "O POVO",
+     "link": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxPTVBfSU1FMkZDZE9RQUp6SzVKTHdLTlhiYmtyWG1MVzVZaW5POVMyYktnNDVaUVlkek1YNjlsYUJzRjdkRFNpWUhJbU1ROTg2VVpBcmhFTXBJUWRrTW5wNi04M0NDOGU5dW9wV2lMaDhjU05mQmRkSzl3Rk56aUJHSlRqOXB6NHdiVFg4TVA2b2syRGczZElGYlRnZUdSQV83WHRCX0E3U3ExeGJqWnlRMGlWWmZBaXZud1I1dGRiaktvUTBZMWhBOWxQUUh5T01WVV9FbA?oc=5",
+     "publicado_em": "2026-10-23T06:00:00-03:00",
+     "data_publicacao": "2026-10-23",
+     "precisao_hora": "hora",
+     "janela": "noite",
+     "rotulo": "negativo",
+     "prob_positivo": 0.02766323648393154,
+     "prob_neutro": 0.053136374801397324,
+     "prob_negativo": 0.9192003607749939,
+     "destaque": 2,
+     "status": "ok"
+    },
+    {
+     "id": "n307536",
+     "titulo": "Petrobras stock: Bank of America raises target to USD 28.00",
+     "fonte": "AD HOC NEWS",
+     "link": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPblhsdHV5M3pvV2h4VzBaMGNSOFZNQzlzaGFlcFFGQU9IT3dSTlBIQ0lpajZLd21aanJQV24tMFQ5VU4yVDAtaUpRbFp0dWNKMUVBOHNwOUM5V0hhRXRGV0t4djNvZFRkLTJfNHc1X0NvVm1sOUVOXzZ5UlhMY2d0Y0g4eElNRzZ6WU5PTThtYWJnQ2ItRVZTaTNVYXpuX2llNHlIaW5KdnQ3YzhzUGk3TDd5RTlhR0VqTlN6N1BB?oc=5",
+     "publicado_em": "2026-10-22T10:56:28-03:00",
+     "data_publicacao": "2026-10-22",
+     "precisao_hora": "hora",
+     "janela": "pregao",
+     "rotulo": "positivo",
+     "prob_positivo": 0.9025093913078308,
+     "prob_neutro": 0.08208856731653214,
+     "prob_negativo": 0.01540201622992754,
+     "destaque": 3,
+     "status": "ok"
+    },
+    {
+     "id": "n307418",
+     "titulo": "Petrobras sobe 22,45% no mês e lidera valorização entre petroleiras do mundo, aponta Elos Ayta - TNOnline",
+     "fonte": "TNOnline",
+     "link": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxPb3hqLUlZVXR6RFlXeEFzTjIzVURUWW5yN3lWeXJNNUxicmUtbFlXdnc1TDY5Z051VU0ycXBRenBWUmptZzFNVV9tN1ZaLTA3MzNuMlpOTy1sTEE1Y0dVRmxoQmN5elBGNmdfYUV1QlRuRjBmYlU3NV9LT3NWU1VOSFlKSU1kalFJMHV0ekhweHVWaTNmbC1Qd3UxemloZGVJYWdVd0NuTFliVGlTTmxBbWJaMFJnX0pobEx4cGhJVzR1c3VNOUptZVlReWRBTkU3M1M1dC1NSl9kQXRuZjUzZXpENEFkT3JV0gHoAUFVX3lxTE9veGotSVlVdHpEWVd4QXNOMjNVRFRZbnI3eVZ5ck01TGJyZS1sWVd2dzVMNjlnTnVVTTJxcFF6cFZSam1nMU1VX203VlotMDczM24yWk5PLWxMQTVjR1VGbGhCY3l6UEY2Z19hRXVCVG5GMGZiVTc1X0tPc1ZTVU5IWUpJTWRqUUkwdXR6SHB4dVZpM2ZsLVB3dTF6aWhkZUlhZ1V3Q25MWWJUaVNObEFtYlowUmdfSmhsTHhwaElXNHVzdU05Sm1lWVF5ZEFORTczUzV0LU1KX2RBdG5mNTNlekQ0QWRPclU?oc=5",
+     "publicado_em": "2026-10-22T15:15:00-03:00",
+     "data_publicacao": "2026-10-22",
+     "precisao_hora": "hora",
+     "janela": "pregao",
+     "rotulo": "positivo",
+     "prob_positivo": 0.9251260161399841,
+     "prob_neutro": 0.0355067178606987,
+     "prob_negativo": 0.03936724737286568,
+     "destaque": 4,
+     "status": "ok"
+    },
+    {
+     "id": "n307557",
+     "titulo": "Petrobras sob pressão por diesel e subsídios",
+     "fonte": "SpaceMoney",
+     "link": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNTEJlT1JVUk42R29NYVFVZm9vc0Z5UmNIZmdDYTB6dGV2NFBfMDh6cVAxcm9QTGpnLTJDWHVIaXNfekJfU0NOTHBMZUFyNzZRbE5WNl9jYXJKRFZPTTdheGVEVkpUTFJXVWNFVWl0Snc4RTJncGRQRjdnUjJ2SFFlbFNhNkttV0czWXZjMnNyeVNUcUVZSHhDdVl3?oc=5",
+     "publicado_em": "2026-10-22T14:19:46-03:00",
+     "data_publicacao": "2026-10-22",
+     "precisao_hora": "hora",
+     "janela": "pregao",
+     "rotulo": "negativo",
+     "prob_positivo": 0.029524045065045357,
+     "prob_neutro": 0.0557396374642849,
+     "prob_negativo": 0.9147363305091858,
+     "destaque": 5,
+     "status": "ok"
+    }
+   ]
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "data_referencia": "2026-10-23",
+   "ticker": "VALE3",
+   "janela_inicio": "2026-10-22T08:00:01-03:00",
+   "janela_fim": "2026-10-23T08:00:00-03:00",
+   "resumo": {
+    "quantidade": {
+     "valor": 35,
+     "status": "ok"
+    },
+    "positivas": {
+     "valor": 6,
+     "status": "ok"
+    },
+    "neutras": {
+     "valor": 13,
+     "status": "ok"
+    },
+    "negativas": {
+     "valor": 16,
+     "status": "ok"
+    },
+    "tom_medio": {
+     "valor": -0.19851915181747504,
+     "status": "ok"
+    }
+   },
+   "itens": [
+    {
+     "id": "n308359",
+     "titulo": "STJ suspende repasse do novo auxílio da Vale aos atingidos pelo desastre de Brumadinho",
+     "fonte": "O Fator",
+     "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNLVdjMmo5VUgwNlV6QWY3X3h3eVhBaEVDMjRSOGIxVE5KcUE1UnJnd1BQR001ekVHVkVtOUtFZ1FvMHBtV1ZQeGtXWWRDelk1Z2E1aGM1TDJUOFo5STNzVkhnUUVGRlNyTVpHTjNEdW1DSlJzWnhiTUs1Q212LVluaEFseGZoVEhfVXVmZ0poTjJocm9TbjN2ZkdFYw?oc=5",
+     "publicado_em": "2026-10-22T17:04:00-03:00",
+     "data_publicacao": "2026-10-22",
+     "precisao_hora": "hora",
+     "janela": "noite",
+     "rotulo": "negativo",
+     "prob_positivo": 0.0284089595079422,
+     "prob_neutro": 0.03637327998876572,
+     "prob_negativo": 0.9352177977561951,
+     "destaque": 1,
+     "status": "ok"
+    },
+    {
+     "id": "n308362",
+     "titulo": "STJ suspende pagamento de novo auxílio da Vale a atingidos por tragédia em Brumadinho",
+     "fonte": "G1",
+     "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxOb3V0cjkyV19FMDkwUXlDOVJKX0NRS0x5S3dzUTY1NnR2SHlKemR2Qm5LakZyYkY0cFZlTl82b0k1VWN1eDl1bjZVTXQ1OXNWcWZOS1ljM2RpZWx5T1lha1UxTzZRLUtWZ09Lc1hHMGFYVjVpUmFGQS1KRlA1bXdHaV9oLTZzVlFWbG16WV9nSnE2cUNyTmVhU0Z6VWVEbFJtdDFTMWJWaEt0cDhhSW1FS08teUpudF83Qm5YY3hhX0JTWkhVbjVPbjJDSjJQR2dUSUVFMWtoLVp5TUnSAeoBQVVfeXFMUFAzMVlXcldKSlpma1Q5TkphMjBGbmsxSkNIUEtZRDhtWkxxTnBBYmZnSzNNTXJQaDdZUnRqd1ZSdEkxdmZnV1ZDZTBfdDJ5d1dCSERZaGhNczd6V053R0IwYU9BYjBTdVVUNzhXU3BXZW9INDU1LVJKVFNFN0lXamQtdHFnNFJtWVJodUNBSzNtdjFXSldNUExNWGVoTGFGQnlPa0h3LTNrVDNhZjhCU1VMaXpxRW1LeTZxb1N2bGRHMDdJcHk4a2lvTkQ2T3pDaHNERUlFLXhRRmtPY3B5QjZSU1B3UVJ4eGJ3?oc=5",
+     "publicado_em": "2026-10-22T19:57:05-03:00",
+     "data_publicacao": "2026-10-22",
+     "precisao_hora": "hora",
+     "janela": "noite",
+     "rotulo": "negativo",
+     "prob_positivo": 0.029614945873618126,
+     "prob_neutro": 0.03565036505460739,
+     "prob_negativo": 0.9347346425056458,
+     "destaque": 2,
+     "status": "ok"
+    },
+    {
+     "id": "n308364",
+     "titulo": "Governo federal deverá zerar alíquota do Imposto Seletivo para bens minerais",
+     "fonte": "O Fator",
+     "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOcUZsOWE0Ymx3emw1MWk0TURRME5nckxVUnM1Vl9KaVFGa0lRU3dvbTZmT3BBYzlUVVAtNWUxb1BNNzlGSGhOUE9nQmp2TmdkWTRLdFJENjgtM0NubzExRnNFRzNva1BMUTc1Zmtjd19kaGc5bzNJQXdDM1B0WnhPMHh2Nk8wMG5SM3ZfNEJSZ19xa3FMd3hYNVpiVFlLYUpmTUM2NGVFT25LR0hQdHBV?oc=5",
+     "publicado_em": "2026-10-22T15:18:00-03:00",
+     "data_publicacao": "2026-10-22",
+     "precisao_hora": "hora",
+     "janela": "pregao",
+     "rotulo": "negativo",
+     "prob_positivo": 0.02945656143128872,
+     "prob_neutro": 0.04823370277881622,
+     "prob_negativo": 0.9223096966743469,
+     "destaque": 3,
+     "status": "ok"
+    },
+    {
+     "id": "n308360",
+     "titulo": "Vale (VALE3) despenca e atrai investidores: oportunidade ou risco de novas perdas?",
+     "fonte": "O Petróleo",
+     "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPVHVCc0Y5TE9DTk94UkJSVHM0Mk0xdU9kM2c5ajdzcW1HZUJYRlI5QXBnZ1RpX0lfTFF0dEhTZzJEUi1od1NJY2w2VUVzazFTMFpDaEhNSnRkcm12U2VfQXJLTGdyWHp1U2U4anVvNDZRLVpQNGJZWDJLbm9xMllBa0hSNTBsSk1kbV9kTlNmUXZUSU45dm8wb1I0Z0VMOUxOTi1xX3VaNA?oc=5",
+     "publicado_em": "2026-10-22T11:46:52-03:00",
+     "data_publicacao": "2026-10-22",
+     "precisao_hora": "hora",
+     "janela": "pregao",
+     "rotulo": "negativo",
+     "prob_positivo": 0.03575466200709343,
+     "prob_neutro": 0.03891809284687042,
+     "prob_negativo": 0.9253272414207458,
+     "destaque": 4,
+     "status": "ok"
+    },
+    {
+     "id": "n307364",
+     "titulo": "Petrobras é sucesso e Vale acumula perdas em 2026",
+     "fonte": "MS Notícias",
+     "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOT2ZFSzB3RWxMN0JPVTl3SllrQzl1ZVJhcVV2ZXFhcTl0R0VzT21vRXFyUUY2U1NlOVUySXNEUDVpQXVYR3NZa2NUS1RlT0gzOThQd0gtczl0aDVEb01BajVucEZINndUUmktdXZYTEN2RDJwZmhJR0xkYWwxY0VZQk5mcXRrNkpOUWttcjhuREl3YTF1Z1FhOUhGVXVYbk5pSXRCa0R6di1wb2lySXhYWDlDVDJqOXhLbFQzSUdjb9IBoAFBVV95cUxQbkdyejZ1NmV5c0hiMlFTaHpJNmROelp1RlFGbUl0Snp0RWtnQWJqV0dwWTdoZEFTWEpYNlRCY2QyT0U1VWJkVlZQcTgwZXdRYXlyODdFS1hnMUN6d0pCaVZnZXUtc0RTOGNMOUkwS0tuOGFaLVVDOWsyVzQxSVVXU1NMcmVRWFFCdWZTWHhlb055ZGUwOXNqWkxvZU9rMEFo?oc=5",
+     "publicado_em": "2026-10-22T17:12:00-03:00",
+     "data_publicacao": "2026-10-22",
+     "precisao_hora": "hora",
+     "janela": "noite",
+     "rotulo": "negativo",
+     "prob_positivo": 0.051226790994405746,
+     "prob_neutro": 0.05225871130824089,
+     "prob_negativo": 0.8965144753456116,
+     "destaque": 5,
+     "status": "ok"
+    }
+   ]
+  }
+ ],
+ "removidos": []
+}

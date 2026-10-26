@@ -1,0 +1,1549 @@
+{
+ "pacote": "fundamentos_trimestrais",
+ "versao_contrato": "1.0",
+ "chave": [
+  "ticker",
+  "data_fim_periodo"
+ ],
+ "gerado_em": "2026-10-25T12:42:23-03:00",
+ "dados_ate": "2026-10-23T08:00:00-03:00",
+ "registros": [
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "data_fim_periodo": "2024-09-30",
+   "data_entrega": "2024-11-04",
+   "receita_trimestre": {
+    "valor": 77935000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 319184000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 10595000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 39950000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "roe": {
+    "valor": 0.1893481588913061,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "ebitda_12m": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "divida_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_pl": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "data_fim_periodo": "2024-12-31",
+   "data_entrega": "2025-02-05",
+   "receita_trimestre": {
+    "valor": 91236000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 335328000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 11123000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 42128000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "roe": {
+    "valor": 0.19037978344570777,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "ebitda_12m": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "divida_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_pl": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "data_fim_periodo": "2025-03-31",
+   "data_entrega": "2025-05-08",
+   "receita_trimestre": {
+    "valor": 97490000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 352850000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 10707000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 42795000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "roe": {
+    "valor": 0.20279876031882932,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "ebitda_12m": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "divida_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_pl": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "data_fim_periodo": "2025-06-30",
+   "data_entrega": "2025-08-05",
+   "receita_trimestre": {
+    "valor": 102761000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 369422000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 11398000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 43823000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "roe": {
+    "valor": 0.20060791664950034,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "ebitda_12m": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "divida_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_pl": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "data_fim_periodo": "2025-09-30",
+   "data_entrega": "2025-11-04",
+   "receita_trimestre": {
+    "valor": 97389000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 388876000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 11600000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 44828000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "roe": {
+    "valor": 0.19949534282421108,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "ebitda_12m": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "divida_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_pl": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "data_fim_periodo": "2025-12-31",
+   "data_entrega": "2026-02-12",
+   "receita_trimestre": {
+    "valor": 89478000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 387118000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 12144000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 45849000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "roe": {
+    "valor": 0.21317580762149194,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "ebitda_12m": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "divida_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_pl": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "data_fim_periodo": "2026-03-31",
+   "data_entrega": "2026-05-05",
+   "receita_trimestre": {
+    "valor": 99045000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 388673000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 11875000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 47017000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "roe": {
+    "valor": 0.2136971234041006,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "ebitda_12m": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "divida_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_pl": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "data_fim_periodo": "2026-06-30",
+   "data_entrega": "2026-08-04",
+   "receita_trimestre": {
+    "valor": 100073000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 385985000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 12324000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 47943000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "roe": {
+    "valor": 0.21025233964547901,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "ebitda_12m": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "margem_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "divida_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_pl": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "dl_ebitda": {
+    "valor": null,
+    "status": "nao_se_aplica"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "PETR4",
+   "data_fim_periodo": "2024-09-30",
+   "data_entrega": "2024-11-07",
+   "receita_trimestre": {
+    "valor": 129582000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 503819000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 32676000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 85134000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.5179479138341349,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.1689773509931146,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.2155001987075152,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 63003000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 231191000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.45887709673513705,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 62481000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.1581585255649242,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 0.27025706017967827,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": 0.7418413984585609,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "PETR4",
+   "data_fim_periodo": "2024-12-31",
+   "data_entrega": "2025-02-26",
+   "receita_trimestre": {
+    "valor": 121268000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 490829000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": -16962000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 37009000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.5021341444780157,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.0754010052380768,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.10070092567902175,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 30652000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 204234000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.41610010818431675,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 96775000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.2633233019694488,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 0.4738437282724718,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": 2.24740028684706,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "PETR4",
+   "data_fim_periodo": "2025-03-31",
+   "data_entrega": "2025-05-12",
+   "receita_trimestre": {
+    "valor": 123144000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 496252000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 35331000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 48530000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.4966629857411154,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.09779305675342366,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.12205642311551976,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 62016000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 205575000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.41425525740954194,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 92813000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.23343133728870255,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 0.4514799951355953,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": 1.7138684775586823,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "PETR4",
+   "data_fim_periodo": "2025-06-30",
+   "data_entrega": "2025-08-07",
+   "receita_trimestre": {
+    "valor": 119128000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 493122000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 26774000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 77819000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.4909576129233739,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.15780881810180847,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.19368463495129198,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 51420000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 207091000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.41995895539034966,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 88901000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.22126675659934988,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 0.4292847105861674,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": 0.868637848556065,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "PETR4",
+   "data_fim_periodo": "2025-09-30",
+   "data_entrega": "2025-11-06",
+   "receita_trimestre": {
+    "valor": 127906000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 491446000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 32847000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 77990000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.48151984144748355,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.15869495326037855,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.18352272326166402,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 66024000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 210112000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.4275383256756592,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 87569000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.20606361524939937,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 0.41677295918367346,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": 0.8016195971821009,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "PETR4",
+   "data_fim_periodo": "2025-12-31",
+   "data_entrega": "2026-03-05",
+   "receita_trimestre": {
+    "valor": 127371000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 497549000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 15653000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 110605000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.47633097443668865,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.22229971319407738,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.2648669618546554,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 50556000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 230016000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.46229818570633247,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 94881000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.22721253295720412,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 0.41249739148580966,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": 0.3354963112088485,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "PETR4",
+   "data_fim_periodo": "2026-03-31",
+   "data_entrega": "2026-05-11",
+   "receita_trimestre": {
+    "valor": 123686000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 498091000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 32761000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 108035000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.4735901672585933,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.21689811701074704,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.24202906992374074,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 62884000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 230884000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.4635377872718037,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 96124000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.21534504852454903,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 0.41633027840820497,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": 0.3434772944069485,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "PETR4",
+   "data_fim_periodo": "2026-06-30",
+   "data_entrega": "2026-08-06",
+   "receita_trimestre": {
+    "valor": 169530000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 548493000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 52495000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 133756000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.5059535855516843,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.2438609061555936,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.27758615680268295,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 93859000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 273323000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.4983162957412401,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 79970000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.16596313406135468,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 0.29258423184291116,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": 0.21957874593928306,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "VALE3",
+   "data_fim_periodo": "2024-09-30",
+   "data_entrega": "2024-10-24",
+   "receita_trimestre": {
+    "valor": 52978000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 211109000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 13271000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 48291000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.3906465380443278,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.22874912959655913,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.22328413693613716,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 21362000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 86850000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.41139885083061356,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 47786000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.22094915755793523,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 0.5502130109383996,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "VALE3",
+   "data_fim_periodo": "2024-12-31",
+   "data_entrega": "2025-03-17",
+   "receita_trimestre": {
+    "valor": 59401000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 206005000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": -5758000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 30431000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.3625494526831873,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.14771971554088492,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.1423872356354108,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 9256000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 71984000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.3494284119317492,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 60596000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.2835298521429908,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 0.8417981773727495,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "VALE3",
+   "data_fim_periodo": "2025-03-31",
+   "data_entrega": "2025-04-25",
+   "receita_trimestre": {
+    "valor": 47411000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 211525000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 8173000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 30272000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.35452074222905094,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.14311310719773077,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.14503849710373376,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 14991000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 70709000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.33428199976362133,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 65554000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.31408078881931034,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 0.9270955606782729,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "VALE3",
+   "data_fim_periodo": "2025-06-30",
+   "data_entrega": "2025-07-31",
+   "receita_trimestre": {
+    "valor": 49807000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 209597000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 12187000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 27873000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.34244287847631405,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.13298377362271407,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.12614214920915076,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 15399000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 61008000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.2910728684093761,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 62478000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.28275066186952685,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 1.0240952006294257,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "VALE3",
+   "data_fim_periodo": "2025-09-30",
+   "data_entrega": "2025-10-30",
+   "receita_trimestre": {
+    "valor": 56701000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 213320000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 14671000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 29273000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.34805925370335644,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.1372257641102569,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.13025679361731476,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 20220000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 59866000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.2806394149634352,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 62505000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.2781300476565524,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 1.0440817826479136,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "VALE3",
+   "data_fim_periodo": "2025-12-31",
+   "data_entrega": "2026-03-12",
+   "receita_trimestre": {
+    "valor": 59676000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 213595000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": -23220000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 11811000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.34976474168402816,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.055296238207823215,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.06251654086785302,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": -1335000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 49275000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.23069360237833283,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 58150000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.30779246900903,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 1.180111618467783,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "VALE3",
+   "data_fim_periodo": "2026-03-31",
+   "data_entrega": "2026-04-28",
+   "receita_trimestre": {
+    "valor": 48680000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 214864000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 10199000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 13837000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.3507567577630501,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.06439887556780102,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.070627568077993,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 17103000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 51387000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.23916058530046913,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 67421000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.34413393563535205,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 1.312024441979489,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "VALE3",
+   "data_fim_periodo": "2026-06-30",
+   "data_entrega": "2026-07-31",
+   "receita_trimestre": {
+    "valor": 53012000000.0,
+    "status": "ok"
+   },
+   "receita_12m": {
+    "valor": 218069000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_trimestre": {
+    "valor": 7041000000.0,
+    "status": "ok"
+   },
+   "lucro_liquido_12m": {
+    "valor": 8691000000.0,
+    "status": "ok"
+   },
+   "margem_bruta": {
+    "valor": 0.34923808519321864,
+    "status": "ok"
+   },
+   "margem_liquida": {
+    "valor": 0.039854358024295065,
+    "status": "ok"
+   },
+   "roe": {
+    "valor": 0.04313857852650806,
+    "status": "ok"
+   },
+   "ebitda_trimestre": {
+    "valor": 15945000000.0,
+    "status": "ok"
+   },
+   "ebitda_12m": {
+    "valor": 51933000000.0,
+    "status": "ok"
+   },
+   "margem_ebitda": {
+    "valor": 0.23814939308200617,
+    "status": "ok"
+   },
+   "divida_liquida": {
+    "valor": 64911000000.0,
+    "status": "ok"
+   },
+   "dl_pl": {
+    "valor": 0.322191723706612,
+    "status": "ok"
+   },
+   "dl_ebitda": {
+    "valor": 1.2498989082086533,
+    "status": "ok"
+   },
+   "payout_12m": {
+    "valor": null,
+    "status": "indisponivel"
+   }
+  }
+ ],
+ "removidos": []
+}

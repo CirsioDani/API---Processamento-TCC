@@ -1,0 +1,2046 @@
+{
+ "pacote": "proventos",
+ "versao_contrato": "1.0",
+ "chave": [
+  "ticker",
+  "tipo",
+  "data_com"
+ ],
+ "gerado_em": "2026-10-26T12:40:00-03:00",
+ "dados_ate": "2026-10-26T08:00:00-03:00",
+ "registros": [
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-02-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.013262135922330097,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-02-25",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-03-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-04-29",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-05-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-06-30",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-07-29",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-08-18",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.2975728155339806,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-08-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-09-30",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-10-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-11-30",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-12-08",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.4720194174757282,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2022-12-29",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-01-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-02-28",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-03-23",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.254368932038835,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-03-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-04-28",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-05-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-06-19",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.25854368932038835,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-06-30",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-07-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-08-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-09-18",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.2614563106796116,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-09-29",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-10-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-11-30",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-12-06",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.2400388349514563,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2023-12-28",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-01-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2024-02-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 1.0923543689320387,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-02-29",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-03-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.23475728155339806,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-03-28",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-04-30",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-05-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-06-20",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.2436893203883495,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-06-28",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-07-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-08-30",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-09-19",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.26502912621359226,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-09-30",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-10-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-11-29",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-12-09",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.30151456310679614,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2024-12-30",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-01-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2025-02-17",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 1.214495145631068,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-02-17",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.32372815533980587,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-02-28",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-03-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-04-30",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-05-30",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-06-09",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.324368932038835,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-06-30",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-07-31",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-08-18",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.3528155339805825,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-08-29",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-09-30",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-10-31",
+   "data_pagamento": {
+    "valor": "2025-12-01",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-11-28",
+   "data_pagamento": {
+    "valor": "2026-01-02",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.017135922330097086,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2025-12-09",
+   "data_pagamento": {
+    "valor": "2025-12-19",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 1.8138087378640777,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-12-09",
+   "data_pagamento": {
+    "valor": "2026-03-06",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.3589805825242719,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2025-12-30",
+   "data_pagamento": {
+    "valor": "2026-02-02",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.018182,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2026-01-30",
+   "data_pagamento": {
+    "valor": "2026-03-02",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.018182,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2026-02-27",
+   "data_pagamento": {
+    "valor": "2026-04-01",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.018182,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2026-03-19",
+   "data_pagamento": {
+    "valor": "2026-08-28",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.34888,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2026-03-31",
+   "data_pagamento": {
+    "valor": "2026-05-04",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.018182,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2026-04-30",
+   "data_pagamento": {
+    "valor": "2026-06-01",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.018182,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2026-05-29",
+   "data_pagamento": {
+    "valor": "2026-07-01",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.018182,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2026-06-18",
+   "data_pagamento": {
+    "valor": "2026-08-28",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.36188,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2026-06-30",
+   "data_pagamento": {
+    "valor": "2026-08-03",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.018182,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2026-07-31",
+   "data_pagamento": {
+    "valor": "2026-09-01",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.018182,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2026-08-31",
+   "data_pagamento": {
+    "valor": "2026-10-01",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.018182,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "tipo": "JCP",
+   "data_com": "2026-09-30",
+   "data_pagamento": {
+    "valor": "2026-11-03",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.018182,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2022-04-13",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 2.8610762,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2022-05-23",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 3.285313,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2022-05-23",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.430177,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2022-08-11",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 6.304862,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2022-08-11",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.427141,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2022-11-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 2.756015,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2022-11-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.592885,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2023-04-27",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 2.74573369,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2023-06-12",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 1.224968,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2023-06-12",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.668609,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2023-08-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.7838280000000001,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2023-08-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.365476,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2023-11-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.9159607000000001,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2023-11-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.4293868,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2024-04-25",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.55015787,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2024-05-02",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.84962838,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2024-06-11",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.44806667,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2024-06-11",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.59517559,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2024-08-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.64044846,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2024-08-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.41275171,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2024-12-11",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 1.55174293,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2024-12-23",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.65356508,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2024-12-23",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.67464153,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2025-04-16",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.35477261,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2025-06-02",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.30844749,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2025-06-02",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.6007187,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2025-08-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.20092175,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2025-08-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.47100234,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2025-12-22",
+   "data_pagamento": {
+    "valor": "2026-03-20",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.29642144,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2025-12-22",
+   "data_pagamento": {
+    "valor": "2026-02-20",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.64678611,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2026-04-22",
+   "data_pagamento": {
+    "valor": "2026-06-22",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.31311454,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2026-06-01",
+   "data_pagamento": {
+    "valor": "2026-08-20",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.35048636,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "DIVIDENDO",
+   "data_com": "2026-08-21",
+   "data_pagamento": {
+    "valor": "2026-12-21",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.47156696,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "PETR4",
+   "tipo": "JCP",
+   "data_com": "2026-08-21",
+   "data_pagamento": {
+    "valor": "2026-12-21",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.87657566,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "DIVIDENDO",
+   "data_com": "2022-03-08",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 3.719256588,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "DIVIDENDO",
+   "data_com": "2022-08-11",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 2.032680337,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "JCP",
+   "data_com": "2022-08-11",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 1.539376229,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "JCP",
+   "data_com": "2022-12-12",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.292012688,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "DIVIDENDO",
+   "data_com": "2023-03-13",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 1.827646129,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "JCP",
+   "data_com": "2023-08-11",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 1.918471798,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "DIVIDENDO",
+   "data_com": "2023-11-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 1.565890809,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "JCP",
+   "data_com": "2023-11-21",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.765770758,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "DIVIDENDO",
+   "data_com": "2024-03-11",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 2.738548374,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "JCP",
+   "data_com": "2024-08-02",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 2.093798142,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "JCP",
+   "data_com": "2024-12-11",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 0.520530743,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "DIVIDENDO",
+   "data_com": "2025-03-07",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 2.141847479,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "JCP",
+   "data_com": "2025-08-12",
+   "data_pagamento": {
+    "valor": null,
+    "status": "indisponivel"
+   },
+   "valor_por_acao": {
+    "valor": 1.895387417,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "DIVIDENDO",
+   "data_com": "2025-12-11",
+   "data_pagamento": {
+    "valor": "2026-01-07",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 2.012236024,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "JCP",
+   "data_com": "2025-12-11",
+   "data_pagamento": {
+    "valor": "2026-03-04",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 1.569535033,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "DIVIDENDO",
+   "data_com": "2026-08-11",
+   "data_pagamento": {
+    "valor": "2026-09-02",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 0.462016093,
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "ticker": "VALE3",
+   "tipo": "JCP",
+   "data_com": "2026-08-11",
+   "data_pagamento": {
+    "valor": "2026-09-02",
+    "status": "ok"
+   },
+   "valor_por_acao": {
+    "valor": 1.568705805,
+    "status": "ok"
+   }
+  }
+ ],
+ "removidos": []
+}

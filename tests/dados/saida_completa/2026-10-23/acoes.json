@@ -1,0 +1,45 @@
+{
+ "pacote": "acoes",
+ "versao_contrato": "1.0",
+ "chave": [
+  "ticker"
+ ],
+ "gerado_em": "2026-10-25T12:42:23-03:00",
+ "dados_ate": "2026-10-23T08:00:00-03:00",
+ "registros": [
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "ITUB4",
+   "empresa": "Itau Unibanco",
+   "setor": "Financeiro",
+   "subsetor": "Intermediários Financeiros",
+   "tipo_acao": "PN",
+   "ativo_no_universo": true
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "PETR4",
+   "empresa": "Petrobras",
+   "setor": "Petróleo, Gás e Biocombustíveis",
+   "subsetor": "Petróleo, Gás e Biocombustíveis",
+   "tipo_acao": "PN",
+   "ativo_no_universo": true
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:42:23-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "ticker": "VALE3",
+   "empresa": "Vale",
+   "setor": "Materiais Básicos",
+   "subsetor": "Mineração",
+   "tipo_acao": "ON",
+   "ativo_no_universo": true
+  }
+ ],
+ "removidos": []
+}

@@ -1,0 +1,62 @@
+{
+ "pacote": "execucao",
+ "versao_contrato": "1.0",
+ "chave": [
+  "data_referencia",
+  "rodada"
+ ],
+ "gerado_em": "2026-10-25T12:36:49-03:00",
+ "dados_ate": "2026-10-23T08:00:00-03:00",
+ "registros": [
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-25T12:36:49-03:00",
+   "dados_ate": "2026-10-23T08:00:00-03:00",
+   "data_referencia": "2026-10-27",
+   "rodada": 1,
+   "inicio": "2026-10-25T12:36:49-03:00",
+   "fim": "2026-10-25T12:40:11-03:00",
+   "status": "falhou",
+   "coleta_status": {
+    "consultado": true,
+    "nota": "Daily da agenda (origem cron). Consulta única (--sem-esperar).",
+    "motivo": "entrega_concluida",
+    "execucao_id": "2026-10-23-daily-080001",
+    "origem": "cron",
+    "status_execucao": "concluida",
+    "iniciada_em": "2026-10-23T08:00:01-03:00",
+    "finalizada_em": "2026-10-23T08:24:29-03:00",
+    "entrega_concluida_em": "2026-10-23T08:22:52-03:00",
+    "etapas": {
+     "precos": "concluida",
+     "macro": "concluida",
+     "noticias": "concluida",
+     "ipe": "concluida",
+     "enriquecimento": "concluida",
+     "juiza": "concluida",
+     "cadastro": "concluida",
+     "entrega": "concluida",
+     "analise": "concluida"
+    },
+    "consultas": 1,
+    "espera_segundos": 0,
+    "primeira_consulta_em": "2026-10-25T12:36:48-03:00",
+    "ultima_consulta_em": "2026-10-25T12:36:48-03:00",
+    "prazo": "2026-10-23T09:45:00-03:00",
+    "t_esperado": "2026-10-22",
+    "ultimo_pregao_lido": "2026-10-22"
+   },
+   "pacotes_enviados": [],
+   "avisos": [
+    "Composição do Ibovespa cobre 1448 de 1697 pregões (de 2021-01-04 a 2026-10-22); nos outros, universo = composição atual (ações do cadastro).",
+    "Retornos diários suspeitos (abaixo de -75% ou acima de 100%) entre 2025-10-16 e 2026-10-22, fora das séries e das medianas do setor: AZUL3 (2026-02-10, 2026-04-09, 2026-04-20).",
+    "Modelo provisório: treinado de 2024-01-02 a 2026-06-19 (cerca de 2,5 anos), só para testar a rotina.",
+    "Gerado depois das 10h: não entra no histórico do experimento.",
+    "Antes da entrada em produção: este top 5 é um teste de funcionamento e não entra no histórico do experimento.",
+    "Modelo de 2026-06 (o do mês de D ainda não foi treinado).",
+    "Top 5 gerado e registrado só como teste de funcionamento (modelo não oficial): experimento_top e experimento_historico não enviados à interface (saida.publicar_top_provisorio = false)."
+   ]
+  }
+ ],
+ "removidos": []
+}

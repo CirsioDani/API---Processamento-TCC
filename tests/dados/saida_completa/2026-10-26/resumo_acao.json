@@ -1,0 +1,841 @@
+{
+ "pacote": "resumo_acao",
+ "versao_contrato": "1.0",
+ "chave": [
+  "data_referencia",
+  "ticker"
+ ],
+ "gerado_em": "2026-10-26T12:40:00-03:00",
+ "dados_ate": "2026-10-26T08:00:00-03:00",
+ "registros": [
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "data_referencia": "2026-10-23",
+   "ticker": "ITUB4",
+   "cotacao": {
+    "fechamento": {
+     "valor": 48.0,
+     "status": "ok"
+    },
+    "variacao_dia": {
+     "valor": -0.018404938605218746,
+     "status": "ok"
+    }
+   },
+   "variacao_preco": {
+    "d1": {
+     "valor": -0.018404938605218746,
+     "status": "ok"
+    },
+    "m1": {
+     "valor": 0.11162574480682586,
+     "status": "ok"
+    },
+    "m6": {
+     "valor": 0.08646445605335806,
+     "status": "ok"
+    },
+    "a1": {
+     "valor": 0.3233405332480197,
+     "status": "ok"
+    }
+   },
+   "rentabilidade": {
+    "d1": {
+     "valor": -0.018404938605218746,
+     "status": "ok"
+    },
+    "m1": {
+     "valor": 0.11208239171416379,
+     "status": "ok"
+    },
+    "m6": {
+     "valor": 0.0991178345017274,
+     "status": "ok"
+    },
+    "a1": {
+     "valor": 0.430640293038294,
+     "status": "ok"
+    },
+    "ibov": {
+     "d1": {
+      "valor": -0.011501489140172905,
+      "status": "ok"
+     },
+     "m1": {
+      "valor": 0.08908725183141875,
+      "status": "ok"
+     },
+     "m6": {
+      "valor": 0.06658027568477043,
+      "status": "ok"
+     },
+     "a1": {
+      "valor": 0.43544303797468364,
+      "status": "ok"
+     }
+    },
+    "setor": {
+     "d1": {
+      "valor": -0.009720622350997132,
+      "status": "ok"
+     },
+     "m1": {
+      "valor": 0.1245296968562013,
+      "status": "ok"
+     },
+     "m6": {
+      "valor": 0.15366178087175442,
+      "status": "ok"
+     },
+     "a1": {
+      "valor": 0.4673373520814297,
+      "status": "ok"
+     }
+    }
+   },
+   "volume": {
+    "total": {
+     "valor": 25554000.0,
+     "status": "ok"
+    },
+    "relativo": {
+     "valor": 0.8643693712739419,
+     "status": "ok",
+     "texto": "0,9× o normal do último mês"
+    },
+    "mediana_20": {
+     "valor": 29563750.0,
+     "status": "ok"
+    },
+    "posicao_pct": {
+     "valor": 0.4819277108433735,
+     "status": "ok"
+    }
+   },
+   "volatilidade_20d": {
+    "valor": 0.02881092222438397,
+    "status": "ok",
+    "texto": "mais agitada que 52% das ações",
+    "posicao_pct": {
+     "valor": 0.5180722891566265,
+     "status": "ok"
+    }
+   },
+   "beta": {
+    "valor": 1.2043488409843595,
+    "status": "ok",
+    "texto": "1,20: move-se bem mais que o Ibovespa"
+   },
+   "pl": {
+    "valor": null,
+    "status": "indisponivel",
+    "texto": null,
+    "setor": {
+     "valor": 16.557113320957264,
+     "status": "ok"
+    }
+   },
+   "pvp": {
+    "valor": null,
+    "status": "indisponivel",
+    "setor": {
+     "valor": 2.672415139667199,
+     "status": "ok"
+    }
+   },
+   "roe": {
+    "valor": 0.21025233964547901,
+    "status": "ok",
+    "setor": {
+     "valor": 0.20520558436231717,
+     "status": "ok"
+    }
+   },
+   "dividend_yield": {
+    "valor": 0.06457585760517799,
+    "status": "ok",
+    "setor": {
+     "valor": 0.04521609309945358,
+     "status": "ok"
+    }
+   },
+   "payout": {
+    "valor": null,
+    "status": "indisponivel",
+    "setor": {
+     "valor": 0.38196519898259473,
+     "status": "ok"
+    }
+   },
+   "margem_bruta": {
+    "valor": null,
+    "status": "nao_se_aplica",
+    "setor": {
+     "valor": null,
+     "status": "nao_se_aplica"
+    }
+   },
+   "margem_liquida": {
+    "valor": null,
+    "status": "nao_se_aplica",
+    "setor": {
+     "valor": null,
+     "status": "nao_se_aplica"
+    }
+   },
+   "payout_por_ano": [
+    {
+     "ano": 2022,
+     "valor": null,
+     "status": "indisponivel"
+    },
+    {
+     "ano": 2023,
+     "valor": null,
+     "status": "indisponivel"
+    },
+    {
+     "ano": 2024,
+     "valor": null,
+     "status": "indisponivel"
+    },
+    {
+     "ano": 2025,
+     "valor": null,
+     "status": "indisponivel"
+    }
+   ],
+   "proventos_por_ano": [
+    {
+     "ano": 2022,
+     "valor": 0.9884854368932039,
+     "status": "ok"
+    },
+    {
+     "ano": 2023,
+     "valor": 1.2200388349514564,
+     "status": "ok"
+    },
+    {
+     "ano": 2024,
+     "valor": 2.3429757281553396,
+     "status": "ok"
+    },
+    {
+     "ano": 2025,
+     "valor": 4.59487423300971,
+     "status": "ok"
+    },
+    {
+     "ano": 2026,
+     "valor": 0.8743980000000001,
+     "status": "ok"
+    }
+   ],
+   "ebitda": {
+    "rotulo": "EBITDA (cálculo padrão CVM)",
+    "valor_12m": {
+     "valor": null,
+     "status": "nao_se_aplica"
+    },
+    "margem": {
+     "valor": null,
+     "status": "nao_se_aplica"
+    },
+    "setor_margem": {
+     "valor": null,
+     "status": "nao_se_aplica"
+    }
+   },
+   "endividamento": {
+    "divida_liquida": {
+     "valor": null,
+     "status": "nao_se_aplica"
+    },
+    "dl_pl": {
+     "valor": null,
+     "status": "nao_se_aplica"
+    },
+    "dl_ebitda": {
+     "valor": null,
+     "status": "nao_se_aplica"
+    },
+    "caixa_liquido": {
+     "valor": null,
+     "status": "nao_se_aplica"
+    },
+    "setor_dl_pl": {
+     "valor": null,
+     "status": "nao_se_aplica"
+    },
+    "setor_dl_ebitda": {
+     "valor": null,
+     "status": "nao_se_aplica"
+    },
+    "aviso": "Dívida líquida sem arrendamentos."
+   },
+   "setor_comparacao_fraca": false,
+   "balanco_referencia": {
+    "data_fim_periodo": "2026-06-30",
+    "data_entrega": "2026-08-04",
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "data_referencia": "2026-10-23",
+   "ticker": "PETR4",
+   "cotacao": {
+    "fechamento": {
+     "valor": 57.83000183105469,
+     "status": "ok"
+    },
+    "variacao_dia": {
+     "valor": 0.0013853130918559664,
+     "status": "ok"
+    }
+   },
+   "variacao_preco": {
+    "d1": {
+     "valor": 0.0013853130918559664,
+     "status": "ok"
+    },
+    "m1": {
+     "valor": 0.19607039619675848,
+     "status": "ok"
+    },
+    "m6": {
+     "valor": 0.210592448752134,
+     "status": "ok"
+    },
+    "a1": {
+     "valor": 0.9636672439013743,
+     "status": "ok"
+    }
+   },
+   "rentabilidade": {
+    "d1": {
+     "valor": 0.0013853130918559664,
+     "status": "ok"
+    },
+    "m1": {
+     "valor": 0.19607039619675848,
+     "status": "ok"
+    },
+    "m6": {
+     "valor": 0.26959402069802185,
+     "status": "ok"
+    },
+    "a1": {
+     "valor": 1.15437889673936,
+     "status": "ok"
+    },
+    "ibov": {
+     "d1": {
+      "valor": -0.011501489140172905,
+      "status": "ok"
+     },
+     "m1": {
+      "valor": 0.08908725183141875,
+      "status": "ok"
+     },
+     "m6": {
+      "valor": 0.06658027568477043,
+      "status": "ok"
+     },
+     "a1": {
+      "valor": 0.43544303797468364,
+      "status": "ok"
+     }
+    },
+    "setor": {
+     "d1": {
+      "valor": -0.006745712850073082,
+      "status": "ok"
+     },
+     "m1": {
+      "valor": 0.17114918997057682,
+      "status": "ok"
+     },
+     "m6": {
+      "valor": 0.09623232277384863,
+      "status": "ok"
+     },
+     "a1": {
+      "valor": 0.3663513681864081,
+      "status": "ok"
+     }
+    }
+   },
+   "volume": {
+    "total": {
+     "valor": 39860200.0,
+     "status": "ok"
+    },
+    "relativo": {
+     "valor": 0.939439897713279,
+     "status": "ok",
+     "texto": "0,9× o normal do último mês"
+    },
+    "mediana_20": {
+     "valor": 42429750.0,
+     "status": "ok"
+    },
+    "posicao_pct": {
+     "valor": 0.5903614457831325,
+     "status": "ok"
+    }
+   },
+   "volatilidade_20d": {
+    "valor": 0.02512432693220048,
+    "status": "ok",
+    "texto": "mais calma que 55% das ações",
+    "posicao_pct": {
+     "valor": 0.4457831325301205,
+     "status": "ok"
+    }
+   },
+   "beta": {
+    "valor": 0.5036347397818852,
+    "status": "ok",
+    "texto": "0,50: move-se bem menos que o Ibovespa"
+   },
+   "pl": {
+    "valor": 6.015983698158975,
+    "status": "ok",
+    "texto": null,
+    "setor": {
+     "valor": 14.219568740040916,
+     "status": "ok"
+    }
+   },
+   "pvp": {
+    "valor": 1.6534195981777642,
+    "status": "ok",
+    "setor": {
+     "valor": 0.810243891644056,
+     "status": "ok"
+    }
+   },
+   "roe": {
+    "valor": 0.27758615680268295,
+    "status": "ok",
+    "setor": {
+     "valor": 0.12485761855801712,
+     "status": "ok"
+    }
+   },
+   "dividend_yield": {
+    "valor": 0.051097198278371704,
+    "status": "ok",
+    "setor": {
+     "valor": 0.005857925459022691,
+     "status": "ok"
+    }
+   },
+   "payout": {
+    "valor": 0.284739186750957,
+    "status": "ok",
+    "setor": {
+     "valor": 0.7092886374379419,
+     "status": "ok"
+    }
+   },
+   "margem_bruta": {
+    "valor": 0.5059535855516843,
+    "status": "ok",
+    "setor": {
+     "valor": 0.27863842979208603,
+     "status": "ok"
+    }
+   },
+   "margem_liquida": {
+    "valor": 0.2438609061555936,
+    "status": "ok",
+    "setor": {
+     "valor": 0.023617604117792127,
+     "status": "ok"
+    }
+   },
+   "payout_por_ano": [
+    {
+     "ano": 2022,
+     "valor": 1.1496431620378804,
+     "status": "ok"
+    },
+    {
+     "ano": 2023,
+     "valor": 0.7434842360240885,
+     "status": "ok"
+    },
+    {
+     "ano": 2024,
+     "valor": 2.24740028684706,
+     "status": "ok"
+    },
+    {
+     "ano": 2025,
+     "valor": 0.3354963112088485,
+     "status": "ok"
+    }
+   ],
+   "proventos_por_ano": [
+    {
+     "ano": 2022,
+     "valor": 16.657469199999998,
+     "status": "ok"
+    },
+    {
+     "ano": 2023,
+     "valor": 7.13396219,
+     "status": "ok"
+    },
+    {
+     "ano": 2024,
+     "valor": 6.37617822,
+     "status": "ok"
+    },
+    {
+     "ano": 2025,
+     "valor": 2.87907044,
+     "status": "ok"
+    },
+    {
+     "ano": 2026,
+     "valor": 2.01174352,
+     "status": "ok"
+    }
+   ],
+   "ebitda": {
+    "rotulo": "EBITDA (cálculo padrão CVM)",
+    "valor_12m": {
+     "valor": 273323000000.0,
+     "status": "ok"
+    },
+    "margem": {
+     "valor": 0.4983162957412401,
+     "status": "ok"
+    },
+    "setor_margem": {
+     "valor": 0.13888717716610258,
+     "status": "ok"
+    }
+   },
+   "endividamento": {
+    "divida_liquida": {
+     "valor": 79970000000.0,
+     "status": "ok"
+    },
+    "dl_pl": {
+     "valor": 0.16596313406135468,
+     "status": "ok"
+    },
+    "dl_ebitda": {
+     "valor": 0.29258423184291116,
+     "status": "ok"
+    },
+    "caixa_liquido": {
+     "valor": false,
+     "status": "ok"
+    },
+    "setor_dl_pl": {
+     "valor": 0.6956863548507538,
+     "status": "ok"
+    },
+    "setor_dl_ebitda": {
+     "valor": 1.6912392926483573,
+     "status": "ok"
+    },
+    "aviso": "Dívida líquida sem arrendamentos."
+   },
+   "setor_comparacao_fraca": false,
+   "balanco_referencia": {
+    "data_fim_periodo": "2026-06-30",
+    "data_entrega": "2026-08-06",
+    "status": "ok"
+   }
+  },
+  {
+   "versao_contrato": "1.0",
+   "gerado_em": "2026-10-26T12:40:00-03:00",
+   "dados_ate": "2026-10-26T08:00:00-03:00",
+   "data_referencia": "2026-10-23",
+   "ticker": "VALE3",
+   "cotacao": {
+    "fechamento": {
+     "valor": 61.4900016784668,
+     "status": "ok"
+    },
+    "variacao_dia": {
+     "valor": -0.039668860678650275,
+     "status": "ok"
+    }
+   },
+   "variacao_preco": {
+    "d1": {
+     "valor": -0.039668860678650275,
+     "status": "ok"
+    },
+    "m1": {
+     "valor": -0.15570506477390367,
+     "status": "ok"
+    },
+    "m6": {
+     "valor": -0.2847504849905842,
+     "status": "ok"
+    },
+    "a1": {
+     "valor": 0.019734700770524638,
+     "status": "ok"
+    }
+   },
+   "rentabilidade": {
+    "d1": {
+     "valor": -0.039668860678650275,
+     "status": "ok"
+    },
+    "m1": {
+     "valor": -0.15570506477390367,
+     "status": "ok"
+    },
+    "m6": {
+     "valor": -0.2646802023630431,
+     "status": "ok"
+    },
+    "a1": {
+     "valor": 0.10323120408959574,
+     "status": "ok"
+    },
+    "ibov": {
+     "d1": {
+      "valor": -0.011501489140172905,
+      "status": "ok"
+     },
+     "m1": {
+      "valor": 0.08908725183141875,
+      "status": "ok"
+     },
+     "m6": {
+      "valor": 0.06658027568477043,
+      "status": "ok"
+     },
+     "a1": {
+      "valor": 0.43544303797468364,
+      "status": "ok"
+     }
+    },
+    "setor": {
+     "d1": {
+      "valor": -0.025138877214021305,
+      "status": "ok"
+     },
+     "m1": {
+      "valor": -0.07209555716475158,
+      "status": "ok"
+     },
+     "m6": {
+      "valor": -0.061076198970074214,
+      "status": "ok"
+     },
+     "a1": {
+      "valor": 0.11595844358372775,
+      "status": "ok"
+     }
+    }
+   },
+   "volume": {
+    "total": {
+     "valor": 39849700.0,
+     "status": "ok"
+    },
+    "relativo": {
+     "valor": 1.5760525222962685,
+     "status": "ok",
+     "texto": "1,6× o normal do último mês"
+    },
+    "mediana_20": {
+     "valor": 25284500.0,
+     "status": "ok"
+    },
+    "posicao_pct": {
+     "valor": 0.9156626506024096,
+     "status": "ok"
+    }
+   },
+   "volatilidade_20d": {
+    "valor": 0.014026653905425868,
+    "status": "ok",
+    "texto": "mais calma que 96% das ações",
+    "posicao_pct": {
+     "valor": 0.03614457831325301,
+     "status": "ok"
+    }
+   },
+   "beta": {
+    "valor": 0.7153450664523021,
+    "status": "ok",
+    "texto": "0,72: move-se bem menos que o Ibovespa"
+   },
+   "pl": {
+    "valor": null,
+    "status": "indisponivel",
+    "texto": null,
+    "setor": {
+     "valor": 11.505993189502489,
+     "status": "ok"
+    }
+   },
+   "pvp": {
+    "valor": null,
+    "status": "indisponivel",
+    "setor": {
+     "valor": 0.9413234387511714,
+     "status": "ok"
+    }
+   },
+   "roe": {
+    "valor": 0.04313857852650806,
+    "status": "ok",
+    "setor": {
+     "valor": 0.04221799628811436,
+     "status": "ok"
+    }
+   },
+   "dividend_yield": {
+    "valor": 0.09127488700273431,
+    "status": "ok",
+    "setor": {
+     "valor": 0.031004710133156595,
+     "status": "ok"
+    }
+   },
+   "payout": {
+    "valor": null,
+    "status": "indisponivel",
+    "setor": {
+     "valor": 0.6940067771709372,
+     "status": "ok"
+    }
+   },
+   "margem_bruta": {
+    "valor": 0.34923808519321864,
+    "status": "ok",
+    "setor": {
+     "valor": 0.20506930383693558,
+     "status": "ok"
+    }
+   },
+   "margem_liquida": {
+    "valor": 0.039854358024295065,
+    "status": "ok",
+    "setor": {
+     "valor": 0.029283057305334412,
+     "status": "ok"
+    }
+   },
+   "payout_por_ano": [
+    {
+     "ano": 2022,
+     "valor": null,
+     "status": "indisponivel"
+    },
+    {
+     "ano": 2023,
+     "valor": null,
+     "status": "indisponivel"
+    },
+    {
+     "ano": 2024,
+     "valor": null,
+     "status": "indisponivel"
+    },
+    {
+     "ano": 2025,
+     "valor": null,
+     "status": "indisponivel"
+    }
+   ],
+   "proventos_por_ano": [
+    {
+     "ano": 2022,
+     "valor": 7.583325842,
+     "status": "ok"
+    },
+    {
+     "ano": 2023,
+     "valor": 6.0777794940000005,
+     "status": "ok"
+    },
+    {
+     "ano": 2024,
+     "valor": 5.3528772589999996,
+     "status": "ok"
+    },
+    {
+     "ano": 2025,
+     "valor": 7.619005953,
+     "status": "ok"
+    },
+    {
+     "ano": 2026,
+     "valor": 2.030721898,
+     "status": "ok"
+    }
+   ],
+   "ebitda": {
+    "rotulo": "EBITDA (cálculo padrão CVM)",
+    "valor_12m": {
+     "valor": 51933000000.0,
+     "status": "ok"
+    },
+    "margem": {
+     "valor": 0.23814939308200617,
+     "status": "ok"
+    },
+    "setor_margem": {
+     "valor": 0.14842482693881387,
+     "status": "ok"
+    }
+   },
+   "endividamento": {
+    "divida_liquida": {
+     "valor": 64911000000.0,
+     "status": "ok"
+    },
+    "dl_pl": {
+     "valor": 0.322191723706612,
+     "status": "ok"
+    },
+    "dl_ebitda": {
+     "valor": 1.2498989082086533,
+     "status": "ok"
+    },
+    "caixa_liquido": {
+     "valor": false,
+     "status": "ok"
+    },
+    "setor_dl_pl": {
+     "valor": 0.1510678899992236,
+     "status": "ok"
+    },
+    "setor_dl_ebitda": {
+     "valor": 1.9763082430367631,
+     "status": "ok"
+    },
+    "aviso": "Dívida líquida sem arrendamentos."
+   },
+   "setor_comparacao_fraca": false,
+   "balanco_referencia": {
+    "data_fim_periodo": "2026-06-30",
+    "data_entrega": "2026-07-31",
+    "status": "ok"
+   }
+  }
+ ],
+ "removidos": []
+}
