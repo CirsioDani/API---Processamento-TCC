@@ -1,0 +1,7 @@
+# Lista de permissão: tudo fica fora do contexto do build, menos o que o Dockerfile copia.
+*
+!requirements-api.txt
+!api/
+!comum/
+**/__pycache__
+**/*.pyc

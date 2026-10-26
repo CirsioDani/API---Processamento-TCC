@@ -132,6 +132,7 @@ e passa pela guarda.
 | `PROC_DIR_PROCESSAMENTO` | caminho do processamento-tcc (padrão: `../processamento-tcc`) |
 | `PROC_API_CHAVES` | chaves aceitas no X-API-Key, separadas por vírgula |
 | `PROC_API_CORS_ORIGENS` | origens permitidas, separadas por vírgula (padrão: nenhuma) |
+| `PROC_API_CHAVE_CONFERIR` | chave usada pelo `ferramentas/conferir_api.py` (padrão: a 1ª de `PROC_API_CHAVES`) |
 | `PROC_API_PREFIXO_TABELAS` | vazio = tabelas reais; os testes forçam `teste_` |
 | `PROC_API_TESTES_COM_BANCO` | `1` liga os testes de integração |
 
@@ -529,7 +530,7 @@ data_referencia, hash sem metadados, DDL fora da transação), `.claude/settings
 ## h) Para depois (só a lista)
 - Chamar o publicador ao fim da rotina do processamento.
 - Cartão "publicação" no painel (lê `publicacoes`).
-- Onde hospedar a API (e trocar para os usuários ESCRITA/LEITURA no MySQL).
+- ~~Onde hospedar a API~~ → Railway (seção Deploy). Falta trocar para os usuários ESCRITA/LEITURA no MySQL.
 - Atualizar o Guia da interface com a URL, a chave e `?data` / `historico`.
 - Se o banco crescer: guardar os itens de notícia uma vez por id.
 
@@ -685,3 +686,30 @@ completa e voltou numa seguinte virava INSERT com chave duplicada (a publicaçã
   entra na linha "correções" do resumo;
 - modo buraco: ponto removido fica como está (quem removeu foi uma D posterior);
 - republicar depois da volta: o ponto já está aberto e igual → nada.
+
+## Deploy no Railway (preparação aprovada em 26/10/2026)
+O projeto do Railway foi criado a partir do GitHub; o primeiro build falhou ("Railpack could not determine how to
+build the app"), porque não havia Dockerfile nem requirements.txt. Com o `Dockerfile` na raiz, o Railway usa ele.
+
+Arquivos:
+- `Dockerfile`: `python:3.12-slim`; instala só `requirements-api.txt`; copia só `api/` e `comum/`; roda como
+  usuário sem root (`api`, uid 10001); `CMD sh -c "exec uvicorn api.servidor:app --host 0.0.0.0 --port ${PORT:-8000}"`
+  (o Railway define `PORT`).
+- `.dockerignore`: lista de permissão (`*`, depois `!requirements-api.txt`, `!api/`, `!comum/`). `.env`, testes,
+  publicador, ferramentas, sql e docs nunca chegam ao contexto do build.
+- `requirements-api.txt`: versões fixadas iguais às da `.venv` dos testes (fastapi 0.162.0, uvicorn 0.54.0,
+  pymysql 1.2.3, python-dotenv 1.2.4) + `cryptography` 50.0.2, que o PyMySQL exige para o login
+  `caching_sha2_password` do MySQL 8 sem SSL.
+- Teste `test_toda_rota_fora_de_saude_exige_chave`: percorre todas as rotas da aplicação (inclusive as que não
+  aparecem no `/openapi.json`) e confere 401 sem chave e com chave errada; só `/v1/saude` fica aberta.
+- `PROC_API_CHAVE_CONFERIR`: chave do `conferir_api.py` para conferir a API publicada
+  (`--url https://<domínio>`) sem pôr a chave do Railway em `PROC_API_CHAVES` local.
+
+Painel do Railway (o usuário configura; o agente não):
+- Variáveis (só os nomes aqui): `IP_BANCO`, `PORTA_BANCO`, `NOME_BANCO` (= `tcc_processador`), `USER_LEITURA` e
+  `SENHA_LEITURA` (ou `USER_BANCO`/`SENHA_BANCO` enquanto não houver o usuário de leitura), `PROC_API_CHAVES`,
+  `PROC_API_CORS_ORIGENS`. Não vão para lá: `USER_ESCRITA`/`SENHA_ESCRITA`, `PROC_DIR_PROCESSAMENTO`,
+  `PROC_API_PREFIXO_TABELAS`, `PROC_API_TESTES_COM_BANCO`, `PROC_API_CHAVE_CONFERIR`. `PORT` é do Railway.
+- Healthcheck Path: `/v1/saude` (200 com banco ok; 503 se o MySQL não responde, e o deploy não sobe).
+- Networking: gerar o domínio público (`*.up.railway.app`) apontando para a porta que o Railway passa em `PORT`.
+- O MySQL precisa aceitar conexão vinda do Railway (IP/porta públicos e usuário liberado para host remoto).

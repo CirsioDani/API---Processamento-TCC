@@ -188,3 +188,19 @@ def test_chave_recusada_da_2(capsys):
 
     assert cf.conferir(buscar, DADOS, DATA) == 2
     assert "/v1/acoes respondeu HTTP 401" in capsys.readouterr().out
+
+
+# ---------------------------------------------------------------- chave usada na conferência
+
+def test_chave_conferir_tem_prioridade():
+    from tests.unit.test_api import criar_config
+    cfg = criar_config(chaves=("local-1", "local-2"))
+    assert cf.chave_para_conferir(cfg, {"PROC_API_CHAVE_CONFERIR": " remota "}) == "remota"
+
+
+def test_sem_chave_conferir_usa_a_primeira_de_proc_api_chaves():
+    from tests.unit.test_api import criar_config
+    cfg = criar_config(chaves=("local-1", "local-2"))
+    assert cf.chave_para_conferir(cfg, {}) == "local-1"
+    assert cf.chave_para_conferir(cfg, {"PROC_API_CHAVE_CONFERIR": "  "}) == "local-1"
+    assert cf.chave_para_conferir(criar_config(chaves=()), {}) == ""

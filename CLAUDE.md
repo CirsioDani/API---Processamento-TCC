@@ -55,6 +55,21 @@ módulo).
 - Ponto de série com diferença relativa ≤ 1e-6 (mesmo status) = ruído numérico: grava o valor novo, sem linha em
   `correcoes`. Pontos e correções vão em lote (`gravador.ordenar_para_lotes`); não volte a UPDATE um a um.
 
+## Deploy (Railway)
+- Só a **API** vai para o Railway, pelo `Dockerfile` da raiz (python:3.12-slim, usuário sem root,
+  `uvicorn api.servidor:app --host 0.0.0.0 --port ${PORT:-8000}`). O publicador continua no PC do usuário.
+- A imagem leva só `requirements-api.txt`, `api/` e `comum/`. O `.dockerignore` é **lista de permissão** (`*` e
+  depois `!` só nesses três): arquivo novo fora deles não entra na imagem; se a API passar a precisar dele, inclua
+  nos dois arquivos. Nunca permita `.env`.
+- `requirements-api.txt` tem versões **fixadas** (as da `.venv` em que a suíte passa) + `cryptography` (login
+  `caching_sha2_password` do MySQL 8). Atualizou a `.venv`? Atualize os pinos e rode a suíte.
+- No painel do Railway ficam só os valores das variáveis da API (lista em `docs/plano_api.md`, seção Deploy).
+  Healthcheck: `/v1/saude` (público; 503 se o banco não responde). Toda outra rota exige `X-API-Key`
+  (`test_toda_rota_fora_de_saude_exige_chave`).
+- Conferir a API publicada: `python ferramentas/conferir_api.py --data AAAA-MM-DD --url https://<domínio>`, com a
+  chave do Railway em `PROC_API_CHAVE_CONFERIR` (sem ela, usa a primeira de `PROC_API_CHAVES`).
+- O agente não faz deploy nem mexe no painel: só prepara os arquivos.
+
 ## Comandos
 - Testes: `./.venv/Scripts/python -m pytest -q` (integração: com `PROC_API_TESTES_COM_BANCO=1`).
 - Publicador (usuário): `python -m publicador --criar-tabelas | --data AAAA-MM-DD [--forcar] | --conferir`.

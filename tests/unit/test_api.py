@@ -822,3 +822,33 @@ def test_docs_documentam_401_e_404_em_todos_os_endpoints_com_chave(cliente):
             assert codigo in respostas, (caminho, codigo)
             esquema = respostas[codigo]["content"]["application/json"]["schema"]
             assert esquema == {"$ref": "#/components/schemas/Erro"}, (caminho, codigo)
+
+
+VALORES_DE_CAMINHO = {"ticker": "PETR4", "data": PUB}
+
+
+def _rotas_da_api(rotas):
+    """APIRoutes da aplicação, entrando nos roteadores incluídos (o FastAPI recente os embrulha em _IncludedRouter)."""
+    from fastapi.routing import APIRoute
+
+    for rota in rotas:
+        if isinstance(rota, APIRoute):
+            yield rota
+        elif getattr(rota, "original_router", None) is not None:
+            yield from _rotas_da_api(rota.original_router.routes)
+
+
+def test_toda_rota_fora_de_saude_exige_chave(cliente):
+    """Vale também para rotas fora do /openapi.json (ex.: o experimento/top antigo): exposto na internet, só /v1/saude
+    responde sem chave."""
+    rotas = list(_rotas_da_api(cliente.app.routes))
+    assert {r.path for r in rotas if r.include_in_schema} - {"/v1/saude"} == PROTEGIDOS_ESPERADOS
+    for rota in rotas:
+        if rota.path == "/v1/saude":
+            continue
+        caminho = re.sub(r"\{(\w+)\}", lambda m: VALORES_DE_CAMINHO[m.group(1)], rota.path)
+        for cabecalhos in ({}, {"X-API-Key": "errada"}):
+            r = cliente.get(caminho, headers=cabecalhos)
+            assert r.status_code == 401, (rota.path, cabecalhos, r.status_code)
+            assert r.json() == {"detail": "chave de API ausente ou inválida"}
+        assert cliente.get(caminho, headers=CHAVE).status_code != 401, rota.path

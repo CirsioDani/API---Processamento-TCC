@@ -9,11 +9,15 @@ Uso:
     python ferramentas/conferir_api.py --data AAAA-MM-DD [--url http://127.0.0.1:8000]
         [--processamento PASTA] [--remontar [PASTA]]
 
+Chave: PROC_API_CHAVE_CONFERIR, se existir (ex.: a chave da API publicada no Railway, que não precisa estar em
+PROC_API_CHAVES local); senão, a primeira de PROC_API_CHAVES.
+
 Saída: 0 = tudo igual; 1 = há diferença, registro faltando ou a mais; 2 = erro que impede a conferência
 (API fora do ar, chave ausente, pasta inexistente, resposta inesperada da API).
 """
 import argparse
 import json
+import os
 import sys
 import urllib.error
 import urllib.parse
@@ -354,6 +358,15 @@ def conferir(buscar, dir_processamento, data: str, remontar=None) -> int:
     return 0 if problemas == 0 else 1
 
 
+def chave_para_conferir(cfg, ambiente=None) -> str:
+    """PROC_API_CHAVE_CONFERIR, se preenchida; senão a primeira de PROC_API_CHAVES; senão vazio."""
+    env = os.environ if ambiente is None else ambiente
+    propria = (env.get("PROC_API_CHAVE_CONFERIR") or "").strip()
+    if propria:
+        return propria
+    return cfg.chaves_api[0] if cfg.chaves_api else ""
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Confere a API de dados do TCC contra o processamento (só leitura).")
     parser.add_argument("--data", required=True, metavar="AAAA-MM-DD",
@@ -376,11 +389,13 @@ def main(argv=None) -> int:
     except config.ErroConfig as erro:
         print(f"configuração inválida: {erro}")
         return 2
-    if not cfg.chaves_api:
-        print("sem chave de API na configuração (PROC_API_CHAVES): não dá para consultar a API")
+    chave = chave_para_conferir(cfg)  # o config.carregar acima já leu o .env para o ambiente
+    if not chave:
+        print("sem chave de API na configuração (PROC_API_CHAVE_CONFERIR ou PROC_API_CHAVES): "
+              "não dá para consultar a API")
         return 2
     processamento = Path(args.processamento) if args.processamento else cfg.dir_processamento
-    buscar = criar_buscar(args.url, cfg.chaves_api[0])
+    buscar = criar_buscar(args.url, chave)
     return conferir(buscar, processamento, args.data, args.remontar)
 
 

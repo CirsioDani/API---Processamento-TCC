@@ -1,4 +1,7 @@
-fastapi>=0.115
-uvicorn>=0.30
-pymysql>=1.1
-python-dotenv>=1.0
+# Versões fixadas: as mesmas da .venv em que a suíte passa. Vale para a imagem do deploy (Dockerfile).
+fastapi==0.162.0
+uvicorn==0.54.0
+pymysql==1.2.3
+python-dotenv==1.2.4
+# Login caching_sha2_password do MySQL 8 sem SSL (o PyMySQL precisa dele para a troca de chave RSA).
+cryptography==50.0.2
