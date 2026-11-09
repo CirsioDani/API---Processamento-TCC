@@ -11,9 +11,13 @@ from pathlib import Path
 import pymysql
 import pytest
 
-from comum import banco, guarda_sql
+from api.repositorio import sql_recusas
+from comum import banco, guarda_sql, series
+from comum.series import Ponto
 from ferramentas import conferir_api
-from publicador import gravador
+from publicador import gravador, liberacao
+from publicador.emenda import Ajuste
+from publicador.operacoes import AjusteRegistrar, CatalogoGravar, PontoInserir
 from tests.integracao.conftest import (
     DIR_DADOS,
     ClienteAPI,
@@ -769,3 +773,71 @@ def test_conferir_api_contra_banco(conexao, cfg, api, capsys):
     assert "series_diarias[PETR4].valores.volume" in saida
     assert len([linha for linha in saida.splitlines() if "≠" in linha]) == 1  # só o ponto corrigido
     assert conferir_api.conferir(buscar, DIR_DADOS, D26) == 0
+
+
+# ------------------------------------------------ 12. liberação de recusa SETOR_SEM (sintético, só teste_*)
+
+TICKER_SETOR = "SETOR_SEM:TSTS3"
+MOTIVO_TESTE = "teste de integração"
+AGORA_TESTE = "2030-01-13T09:00:00"
+
+
+def test_liberacao_de_recusa_setor_sem(conexao):
+    t = conexao.t
+    # índices 0..9: antigos (100+2i); 10..14: janela já no nível novo, (100+2i) × 1.26
+    pontos = [
+        Ponto(DATAS[i].isoformat(),
+              {"indice_retorno_total": (100.0 + 2 * i) * (1.26 if i >= 10 else 1.0), "n_empresas": 7}, {})
+        for i in range(15)
+    ]
+    operacoes = [CatalogoGravar(TICKER_SETOR, "setor_sem_empresa", "Setor sem empresa TSTS3",
+                                ["indice_retorno_total", "n_empresas"])]
+    operacoes += [PontoInserir(TICKER_SETOR, p, series.hash_ponto(p)) for p in pontos]
+    operacoes.append(AjusteRegistrar(TICKER_SETOR, Ajuste(
+        campo="indice_retorno_total", fator=1.26, de=DATAS[0].isoformat(), ate=DATAS[9].isoformat(), pontos=10,
+        origem="emenda", classificacao="recusado", aplicado=False,
+        detalhe={"antigos": {"de": DATAS[0].isoformat(), "ate": DATAS[9].isoformat(), "pontos": 10},
+                 "motivo": "recusa de teste"},
+    )))
+    for op in operacoes:
+        for sql, params in gravador.comandos_da_operacao(op, D3, t):
+            conexao.executar(sql, params)
+
+    # a API esconde os pontos até 'ate' enquanto a recusa existir
+    sql_rec = sql_recusas(t("series_ajustes"))
+    recusas_api = conexao.consultar(sql_rec, (TICKER_SETOR, "2030-12-31"))
+    assert len(recusas_api) == 1 and recusas_api[0]["ate"] == DATAS[9]
+
+    correcoes_antes = contagens(conexao)["teste_correcoes"]
+    recusas, tipos, pontos_banco = gravador.carregar_recusas(conexao, D3)
+    assert len(recusas) == 1 and recusas[0].ticker == TICKER_SETOR and recusas[0].pontos == 10
+    libs, ignoradas = liberacao.planejar(recusas, tipos, pontos_banco, MOTIVO_TESTE, AGORA_TESTE)
+    assert ignoradas == [] and len(libs) == 1 and len(libs[0].operacoes) == 10
+    gravador.gravar_liberacoes(conexao, libs)
+
+    assert conexao.consultar(sql_rec, (TICKER_SETOR, "2030-12-31")) == []
+    linhas = conexao.consultar(
+        f"SELECT data, valores FROM {t('series_pontos')} WHERE ticker = %s AND removido_em IS NULL ORDER BY data",
+        (TICKER_SETOR,),
+    )
+    assert len(linhas) == 15
+    for i, linha in enumerate(linhas):
+        assert banco.ler_json(linha["valores"])["indice_retorno_total"] == pytest.approx((100.0 + 2 * i) * 1.26)
+    assert contagens(conexao)["teste_correcoes"] - correcoes_antes == 10
+
+    ajustes = conexao.consultar(
+        f"SELECT classificacao, aplicado, detalhe FROM {t('series_ajustes')} WHERE ticker = %s", (TICKER_SETOR,))
+    assert [(a["classificacao"], a["aplicado"]) for a in ajustes] == [("irregular", 1)]
+    detalhe = banco.ler_json(ajustes[0]["detalhe"])
+    assert detalhe["liberacao"]["classificacao_anterior"] == "recusado"
+    assert detalhe["liberacao"]["pontos_emendados"] == 10
+    assert detalhe["antigos"] == {"de": DATAS[0].isoformat(), "ate": DATAS[9].isoformat(), "pontos": 10}
+
+    # repetir não faz nada: a recusa já não é 'recusado'
+    antes_de_novo = contagens(conexao)
+    recusas2, tipos2, pontos2 = gravador.carregar_recusas(conexao, D3)
+    assert recusas2 == []
+    libs2, ignoradas2 = liberacao.planejar(recusas2, tipos2, pontos2, MOTIVO_TESTE, AGORA_TESTE)
+    assert libs2 == [] and ignoradas2 == []
+    gravador.gravar_liberacoes(conexao, libs2)
+    assert contagens(conexao) == antes_de_novo

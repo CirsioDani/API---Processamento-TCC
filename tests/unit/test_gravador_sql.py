@@ -7,9 +7,10 @@ import pytest
 
 from comum import guarda_sql, tabelas
 from comum.series import Ponto
-from publicador import gravador
+from publicador import gravador, liberacao
 from publicador.emenda import Ajuste
 from publicador.entrada import Entrada
+from publicador.liberacao import Recusa
 from publicador.operacoes import (
     AjusteRegistrar,
     CatalogoGravar,
@@ -506,3 +507,97 @@ def test_carregar_estado_separa_pontos_removidos_dos_vigentes():
     consulta_removidos = next(sql for sql in conexao.consultas if "removido_em IS NOT NULL" in sql)
     assert "FROM teste_series_pontos" in consulta_removidos
     assert "ticker IN (%s)" in consulta_removidos
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Liberação de recusas (publicador/liberacao.py)
+# ---------------------------------------------------------------------------------------------------------------
+
+TICKER_SETOR = "SETOR_SEM:PETR4"
+ID_RECUSA = 7
+
+
+def _liberacao_sintetica():
+    """Recusa com 2 pontos antigos (10-01 e 10-02) e 1 ponto da janela (10-05) para a costura."""
+    recusa = Recusa(id=ID_RECUSA, ticker=TICKER_SETOR, campo="indice_retorno_total", data_publicacao=DATA,
+                    fator=2.0, de="2026-10-01", ate="2026-10-02", pontos=2, detalhe={"antigos": {"pontos": 2}})
+    pontos = {TICKER_SETOR: {
+        "2026-10-01": Ponto("2026-10-01", {"indice_retorno_total": 100.0, "n_empresas": 7}, {}),
+        "2026-10-02": Ponto("2026-10-02", {"indice_retorno_total": 102.0, "n_empresas": 7}, {}),
+        "2026-10-05": Ponto("2026-10-05", {"indice_retorno_total": 208.0, "n_empresas": 7}, {}),
+    }}
+    libs, ignoradas = liberacao.planejar([recusa], {TICKER_SETOR: "setor_sem_empresa"}, pontos, "teste",
+                                         "2026-11-10T09:00:00")
+    assert ignoradas == []
+    (lib,) = libs
+    return lib
+
+
+@pytest.mark.parametrize("prefixo", PREFIXOS)
+def test_comandos_da_liberacao_passam_na_guarda_e_terminam_na_recusa(prefixo):
+    comandos = gravador.comandos_da_liberacao(_liberacao_sintetica(), _t(prefixo))
+    assert len(comandos) == 2 * 2 + 1  # por ponto: upsert + correcao; depois o UPDATE da recusa
+    for sql, params in comandos:
+        guarda_sql.verificar(sql, prefixo)
+        assert isinstance(params, tuple)
+        assert _tamanho_esperado(sql) == len(params), sql
+    sql, params = comandos[-1]
+    assert sql == (f"UPDATE {prefixo}series_ajustes SET classificacao = %s, aplicado = %s, detalhe = %s "
+                   "WHERE id = %s AND classificacao = %s")
+    assert params[0:2] == ("irregular", 1)
+    assert params[3:] == (ID_RECUSA, "recusado")
+    assert '"classificacao_anterior": "recusado"' in params[2]
+
+
+def test_correcao_da_liberacao_usa_a_data_da_recusa_como_troca():
+    comandos = gravador.comandos_da_liberacao(_liberacao_sintetica(), _t("teste_"))
+    sql, params = comandos[1]
+    assert sql.startswith("INSERT INTO teste_correcoes")
+    assert params[2] == DATA
+
+
+def test_carregar_recusas_monta_recusas_tipos_e_pontos():
+    linhas = {
+        "series_ajustes": [{"id": ID_RECUSA, "ticker": TICKER_SETOR, "campo": "indice_retorno_total",
+                            "data_publicacao": date(2026, 11, 9), "fator": 2.0, "de": date(2026, 10, 1),
+                            "ate": date(2026, 10, 2), "pontos": 2, "detalhe": '{"antigos": {"pontos": 2}}'}],
+        "series_catalogo": [{"ticker": TICKER_SETOR, "tipo": "setor_sem_empresa"}],
+        "series_pontos": [{"ticker": TICKER_SETOR, "data": date(2026, 10, 1),
+                           "valores": '{"indice_retorno_total": 100.0, "n_empresas": 7}', "status": "{}"}],
+    }
+    conexao = ConexaoFalsa(linhas)
+    recusas, tipos, pontos = gravador.carregar_recusas(conexao, "2026-11-09")
+
+    assert recusas == [liberacao.Recusa(id=ID_RECUSA, ticker=TICKER_SETOR, campo="indice_retorno_total",
+                                        data_publicacao="2026-11-09", fator=2.0, de="2026-10-01", ate="2026-10-02",
+                                        pontos=2, detalhe={"antigos": {"pontos": 2}})]
+    assert tipos == {TICKER_SETOR: "setor_sem_empresa"}
+    esperado = Ponto("2026-10-01", {"indice_retorno_total": 100.0, "n_empresas": 7}, {})
+    assert pontos[TICKER_SETOR]["2026-10-01"] == esperado
+    sql_ajustes = next(sql for sql in conexao.consultas if "FROM teste_series_ajustes" in sql)
+    assert "classificacao = %s AND data_publicacao = %s" in sql_ajustes
+
+
+def test_carregar_recusas_sem_recusas_nao_consulta_catalogo_nem_pontos():
+    conexao = ConexaoFalsa()
+    assert gravador.carregar_recusas(conexao, "2026-11-09") == ([], {}, {})
+    assert len(conexao.consultas) == 1
+
+
+def test_gravar_liberacoes_executa_pontos_e_recusa_numa_transacao_so():
+    conexao = ConexaoFalsa()
+    gravador.gravar_liberacoes(conexao, [_liberacao_sintetica()])
+    assert conexao.chamadas[0] == "iniciar"
+    assert conexao.chamadas[-1] == "confirmar"
+    assert "desfazer" not in conexao.chamadas
+    # a recusa vai primeiro (fase 0), depois os pontos em lote e as correcoes em lote
+    assert conexao.executados[0][0].startswith("UPDATE teste_series_ajustes")
+    assert [n for _, _, n in conexao.muitos] == [2, 2]
+
+
+def test_gravar_liberacoes_com_erro_desfaz_sem_confirmar():
+    conexao = ConexaoFalsa(falhar_em="UPDATE teste_series_ajustes")
+    with pytest.raises(RuntimeError, match="falha simulada"):
+        gravador.gravar_liberacoes(conexao, [_liberacao_sintetica()])
+    assert "desfazer" in conexao.chamadas
+    assert "confirmar" not in conexao.chamadas

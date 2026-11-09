@@ -5,6 +5,8 @@ correção de histórico (desdobramento, mudança de âncora, composição de se
 precisa ser emendada nos pontos antigos. Contrato: docs/contratos_internos.md,
 seção "publicador/emenda.py (lógica pura)"; regra completa em docs/plano_api.md,
 seção "Séries: emenda dos pontos antigos".
+
+setor_sem_empresa encadeia no 1º ponto da sobreposição e nunca recusa; fator fora de [0,5; 2,0] gera aviso ATENÇÃO.
 """
 from dataclasses import dataclass
 
@@ -29,6 +31,12 @@ CAMPOS_SO_AVISO = {"indice": ("fechamento",)}
 ORIGEM_EMENDA = "emenda"
 ORIGEM_JANELA = "janela"
 MOTIVO_SO_AVISO = "campo oficial: só aviso"
+
+TIPOS_ENCADEADOS = ("setor_sem_empresa",)
+FATOR_ALERTA_MIN = 0.5
+FATOR_ALERTA_MAX = 2.0
+MOTIVO_ENCADEADO = "setor_sem_empresa: histórico substituído; antigos encadeados no 1º ponto da sobreposição"
+MOTIVO_SEM_COSTURA = "setor_sem_empresa: sem ponto na sobreposição para encadear"
 
 
 @dataclass(frozen=True)
@@ -81,7 +89,8 @@ def analisar(ticker: str, tipo: str, antigos: dict[str, Ponto], novos: list[Pont
         proporcional = campo in proporcionais
 
         if proporcional:
-            _analisar_proporcional(ticker, campo, razoes, costura, antigas, resultado)
+            _analisar_proporcional(ticker, campo, razoes, costura, antigas, resultado,
+                                   encadear=tipo in TIPOS_ENCADEADOS)
         else:
             lacuna = _lacuna_preenchida(campo, sobreposicao, antigos, novos_por_data)
             _analisar_so_aviso(ticker, campo, razoes, costura, antigas, resultado, lacuna)
@@ -89,9 +98,21 @@ def analisar(ticker: str, tipo: str, antigos: dict[str, Ponto], novos: list[Pont
     return resultado
 
 
-def _analisar_proporcional(ticker, campo, razoes, costura, antigas, resultado):
+def _analisar_proporcional(ticker, campo, razoes, costura, antigas, resultado, encadear=False):
     k, motivo = _fator_da_costura(costura)
-    if motivo is None and not (FATOR_MIN <= k <= FATOR_MAX):
+    encadeado = False
+    if encadear and motivo is not None:
+        if not costura or not costura[0][1] > 0:
+            if antigas:
+                resultado.ajustes.append(Ajuste(
+                    campo=campo, fator=None, de=antigas[0], ate=antigas[-1], pontos=len(antigas),
+                    origem=ORIGEM_EMENDA, classificacao="irregular", aplicado=False,
+                    detalhe={"motivo": MOTIVO_SEM_COSTURA, "antigos": _faixa(antigas), "razoes_costura": []},
+                ))
+                resultado.avisos.append(f"série {ticker}, campo {campo}: sem ponto para encadear — antigos mantidos como publicados")
+            return
+        k, motivo, encadeado = costura[0][1], None, True
+    if motivo is None and not encadear and not (FATOR_MIN <= k <= FATOR_MAX):
         motivo = f"fator fora de [{FATOR_MIN}, {FATOR_MAX}]"
     if motivo is not None:
         if antigas:
@@ -122,6 +143,8 @@ def _analisar_proporcional(ticker, campo, razoes, costura, antigas, resultado):
     }
     if data_evento is not None:
         detalhe["data_evento"] = data_evento
+    if encadeado:
+        detalhe["motivo"] = MOTIVO_ENCADEADO
     resultado.ajustes.append(Ajuste(
         campo=campo,
         fator=k,
@@ -133,6 +156,22 @@ def _analisar_proporcional(ticker, campo, razoes, costura, antigas, resultado):
         aplicado=True,
         detalhe=detalhe,
     ))
+    if encadear:
+        _avisos_setor(ticker, campo, k, encadeado, resultado)
+
+
+def _avisos_setor(ticker, campo, k, encadeado, resultado):
+    """Avisos de setor_sem_empresa para um fator aplicado: nunca recusa, só avisa."""
+    if encadeado:
+        resultado.avisos.append(
+            f"série {ticker}, campo {campo}: histórico substituído (fator de encadeamento {_fmt_fator(k)}) "
+            "— antigos encadeados no 1º ponto da janela"
+        )
+    if not (FATOR_ALERTA_MIN <= k <= FATOR_ALERTA_MAX):
+        resultado.avisos.append(
+            f"ATENÇÃO: série {ticker}, campo {campo}: fator de encadeamento {_fmt_fator(k)} "
+            "fora de [0,5; 2,0] — conferir o processamento (aplicado mesmo assim)"
+        )
 
 
 def _analisar_so_aviso(ticker, campo, razoes, costura, antigas, resultado, lacuna=0):

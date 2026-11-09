@@ -4,7 +4,7 @@ from datetime import date, timedelta
 import pytest
 
 from comum.series import Ponto
-from publicador.emenda import analisar
+from publicador.emenda import MOTIVO_ENCADEADO, MOTIVO_SEM_COSTURA, analisar
 
 
 def datas_uteis(n):
@@ -88,6 +88,16 @@ def completa_setor(i):
         "indice_retorno_total": (100.0 + 2 * i) * r,
         "n_empresas": 20.0 if i < 21 else 21.0,
     }
+
+
+SETOR = "SETOR_SEM:PETR4"
+
+
+def deriva_setor(base):
+    """Composição nova: razão novo ÷ antigo = base + 0.01·(i−10) na janela (começa em base)."""
+    def completa(i):
+        return {"indice_retorno_total": (100.0 + 2 * i) * (base + 0.01 * (i - 10)), "n_empresas": 6.0}
+    return completa
 
 
 def test_dia_de_dividendo_nao_mexe_em_antigos():
@@ -330,3 +340,90 @@ def test_indice_com_fator_definido_mantem_aviso_de_fator_sem_lacuna():
     assert "lacuna_preenchida" not in a.detalhe
     assert len(res.avisos) == 1
     assert "campo oficial mudou (fator 0.5)" in res.avisos[0]
+
+
+def test_setor_sem_empresa_deriva_encadeia_no_primeiro_ponto_sem_recusa():
+    res = analisar(SETOR, "setor_sem_empresa", antigos_de(valores_setor), novos_de(deriva_setor(1.26)))
+    assert len(res.ajustes) == 1
+    a = res.ajustes[0]
+    assert a.campo == "indice_retorno_total"
+    assert a.classificacao == "irregular"
+    assert a.aplicado is True
+    assert a.fator == pytest.approx(1.26)
+    assert a.de == DATAS[0]
+    assert a.ate == DATAS[9]
+    assert a.pontos == 10
+    assert a.origem == "emenda"
+    assert a.detalhe["motivo"] == MOTIVO_ENCADEADO
+    assert res.fatores_aplicar == pytest.approx({"indice_retorno_total": 1.26})
+    assert len(res.avisos) == 1
+    assert "encadeamento" in res.avisos[0]
+    assert not any("recusada" in x or "ATENÇÃO" in x for x in res.avisos)
+
+
+def test_mesma_deriva_em_taxa_continua_recusada():
+    res = analisar("CDI", "taxa", antigos_de(valores_setor), novos_de(deriva_setor(1.26)))
+    assert len(res.ajustes) == 1
+    a = res.ajustes[0]
+    assert a.classificacao == "recusado"
+    assert a.aplicado is False
+    assert res.fatores_aplicar == {}
+    assert len(res.avisos) == 1
+    assert "recusada" in res.avisos[0]
+
+
+def test_setor_sem_costura_mantem_antigos_sem_recusa():
+    """Nenhum ponto da sobreposição tem os dois valores: não há onde encadear, antigos ficam como publicados."""
+    def antigos(i):
+        v = valores_setor(i)
+        if 10 <= i <= 30:
+            v["indice_retorno_total"] = None
+        return v
+
+    res = analisar(SETOR, "setor_sem_empresa", antigos_de(antigos), novos_de(deriva_setor(1.26)))
+    assert len(res.ajustes) == 1
+    a = res.ajustes[0]
+    assert a.classificacao == "irregular"
+    assert a.aplicado is False
+    assert a.fator is None
+    assert a.de == DATAS[0]
+    assert a.ate == DATAS[9]
+    assert a.pontos == 10
+    assert a.detalhe["motivo"] == MOTIVO_SEM_COSTURA
+    assert res.fatores_aplicar == {}
+    assert len(res.avisos) == 1
+    assert "sem ponto para encadear" in res.avisos[0]
+
+
+def test_setor_fator_fora_da_faixa_de_k_e_aplicado_com_atencao():
+    def completa(i):
+        return {"indice_retorno_total": (100.0 + 2 * i) * 141012.0 * (1 + 0.01 * (i - 10)), "n_empresas": 6.0}
+
+    res = analisar(SETOR, "setor_sem_empresa", antigos_de(valores_setor), novos_de(completa))
+    a = res.ajustes[0]
+    assert a.aplicado is True
+    assert a.fator == pytest.approx(141012.0)
+    assert res.fatores_aplicar == pytest.approx({"indice_retorno_total": 141012.0})
+    assert not any("recusada" in x for x in res.avisos)
+    assert any("ATENÇÃO" in x and "fora de [0,5; 2,0]" in x for x in res.avisos)
+
+
+@pytest.mark.parametrize("base, com_atencao", [(2.5, True), (1.9, False), (0.4, True)])
+def test_setor_alerta_atencao_so_quando_fator_sai_de_0_5_a_2_0(base, com_atencao):
+    res = analisar(SETOR, "setor_sem_empresa", antigos_de(valores_setor), novos_de(deriva_setor(base)))
+    assert res.ajustes[0].aplicado is True
+    assert any("ATENÇÃO" in x for x in res.avisos) is com_atencao
+    assert not any("recusada" in x for x in res.avisos)
+
+
+def test_setor_um_ponto_corrigido_no_comeco_nao_gera_ajuste():
+    def completa(i):
+        v = valores_setor(i)
+        if i == 10:
+            v["indice_retorno_total"] *= 1.2
+        return v
+
+    res = analisar(SETOR, "setor_sem_empresa", antigos_de(valores_setor), novos_de(completa))
+    assert res.ajustes == []
+    assert res.fatores_aplicar == {}
+    assert res.avisos == []

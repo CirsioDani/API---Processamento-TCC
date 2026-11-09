@@ -510,3 +510,74 @@ def carregar_estado(conexao: Conexao, entrada: Entrada) -> Estado:
         estado.versoes[pacote] = versoes
 
     return estado
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Liberação de recusas (a lógica fica em publicador/liberacao.py; aqui só SQL)
+# ---------------------------------------------------------------------------------------------------------------
+
+def carregar_recusas(conexao: Conexao, data: str) -> tuple[list, dict[str, str], dict[str, dict[str, Ponto]]]:
+    """Recusas (series_ajustes com classificacao='recusado') da publicação `data`, o tipo dos tickers delas (série
+    series_catalogo) e os pontos vigentes desses tickers. Devolve (recusas, tipos, pontos)."""
+    from publicador.liberacao import Recusa  # import tardio: liberacao depende de planejador
+
+    sql = (f"SELECT id, ticker, campo, data_publicacao, fator, de, ate, pontos, detalhe "
+           f"FROM {conexao.t('series_ajustes')} WHERE classificacao = %s AND data_publicacao = %s "
+           "ORDER BY ticker, campo")
+    recusas = [
+        Recusa(
+            id=linha["id"],
+            ticker=linha["ticker"],
+            campo=linha["campo"],
+            data_publicacao=_do_banco(linha["data_publicacao"]),
+            fator=linha["fator"],
+            de=_do_banco(linha["de"]),
+            ate=_do_banco(linha["ate"]),
+            pontos=linha["pontos"],
+            detalhe=ler_json(linha["detalhe"]),
+        )
+        for linha in conexao.consultar(sql, ("recusado", data))
+    ]
+
+    tipos: dict[str, str] = {}
+    pontos: dict[str, dict[str, Ponto]] = {}
+    tickers = sorted({recusa.ticker for recusa in recusas})
+    if tickers:
+        marcas = ", ".join(["%s"] * len(tickers))
+        sql = f"SELECT ticker, tipo FROM {conexao.t('series_catalogo')} WHERE ticker IN ({marcas})"
+        for linha in conexao.consultar(sql, tuple(tickers)):
+            tipos[linha["ticker"]] = linha["tipo"]
+        sql = (f"SELECT ticker, data, valores, status FROM {conexao.t('series_pontos')} "
+               f"WHERE removido_em IS NULL AND ticker IN ({marcas})")
+        for linha in conexao.consultar(sql, tuple(tickers)):
+            ponto = Ponto(
+                data=_do_banco(linha["data"]),
+                valores=ler_json(linha["valores"]),
+                status=ler_json(linha["status"]) or {},
+            )
+            pontos.setdefault(linha["ticker"], {})[ponto.data] = ponto
+    return recusas, tipos, pontos
+
+
+def comandos_da_liberacao(lib: Any, t: Callable[[str], str]) -> list[tuple[str, tuple]]:
+    """SQL de uma liberação: primeiro os pontos (pelas mesmas funções de qualquer operação, com a data da recusa
+    como D da troca) e por último a recusa virando irregular/aplicado. O WHERE só casa se ainda for 'recusado'."""
+    comandos: list[tuple[str, tuple]] = []
+    for op in lib.operacoes:
+        comandos.extend(comandos_da_operacao(op, lib.recusa.data_publicacao, t))
+    sql = (f"UPDATE {t('series_ajustes')} SET classificacao = %s, aplicado = %s, detalhe = %s "
+           "WHERE id = %s AND classificacao = %s")
+    comandos.append((sql, ("irregular", 1, _json(lib.detalhe_novo), lib.recusa.id, "recusado")))
+    return comandos
+
+
+def gravar_liberacoes(conexao: Conexao, libs: list) -> None:
+    """Todas as liberações numa transação só, com os pontos em lote (como em gravar)."""
+
+    def executar() -> None:
+        comandos: list[tuple[str, tuple]] = []
+        for lib in libs:
+            comandos.extend(comandos_da_liberacao(lib, conexao.t))
+        _executar_em_lotes(conexao, ordenar_para_lotes(comandos, conexao.t))
+
+    _em_transacao(conexao, executar)

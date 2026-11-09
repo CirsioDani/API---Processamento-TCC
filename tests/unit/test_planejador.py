@@ -543,6 +543,53 @@ def test_serie_5_setor_sem_composicao_nova_e_irregular_com_emenda():
     assert janela_att and all(a.anterior is not None for a in janela_att)
 
 
+def test_serie_setor_sem_que_deriva_encadeia_sem_recusa():
+    def base_setor(i):
+        return {"indice_retorno_total": 100.0 + 2 * i, "n_empresas": 7}
+
+    def deriva(i):
+        return {"indice_retorno_total": (100.0 + 2 * i) * (1.26 + 0.01 * (i - 10)), "n_empresas": 6}
+
+    ticker = "SETOR_SEM:PETR4"
+    estado = banco_series([registro_serie(ticker, "setor_sem_empresa", range(0, 40), base_setor)])
+    entrada = entrada_series([registro_serie(ticker, "setor_sem_empresa", range(10, 45), deriva)])
+    plano = planejar(entrada, estado)
+
+    ajustes = ops(plano, AjusteRegistrar)
+    assert len(ajustes) == 1
+    assert ajustes[0].ajuste.classificacao == "irregular"
+    assert ajustes[0].ajuste.aplicado
+    assert not [a for a in ajustes if a.ajuste.classificacao == "recusado"]
+    assert any("encadeamento" in aviso for aviso in plano.avisos)
+    assert not any("recusada" in aviso for aviso in plano.avisos)
+
+    antigos_att = [a for a in ops(plano, PontoAtualizar) if a.ponto.data < DATAS[10]]
+    assert len(antigos_att) == 10
+    for a in antigos_att:
+        i = DATAS.index(a.ponto.data)
+        assert a.ponto.valores["indice_retorno_total"] == pytest.approx((100.0 + 2 * i) * 1.26)
+        assert a.ponto.valores["n_empresas"] == 7
+
+    janela_att = [a for a in ops(plano, PontoAtualizar) if DATAS[10] <= a.ponto.data <= DATAS[39]]
+    assert len(janela_att) == 30
+    for a in janela_att:
+        i = DATAS.index(a.ponto.data)
+        assert a.ponto.valores["indice_retorno_total"] == pytest.approx(deriva(i)["indice_retorno_total"])
+        assert a.ponto.valores["n_empresas"] == 6
+
+    assert len(ops(plano, PontoInserir)) == 5
+
+    aplicar_em_memoria(estado, plano)
+    assert not estado.recusas.get(ticker)
+    assert estado.pontos[ticker][DATAS[0]].valores["indice_retorno_total"] == pytest.approx(100.0 * 1.26)
+
+    replano = planejar(entrada, estado)
+    assert replano.modo == "republicacao"
+    assert not ops(replano, AjusteRegistrar)
+    assert not ops(replano, PontoAtualizar)
+    assert not ops(replano, PontoInserir)
+
+
 # ---------------------------------------------------------------- metadados das séries (inicio_janela)
 
 def test_metadados_series_diarias_leva_o_menor_inicio_janela():

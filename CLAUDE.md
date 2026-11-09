@@ -51,6 +51,18 @@ módulo).
 - Séries: o fechamento **não** é ajustado por proventos. A emenda dos pontos antigos (fator k pelo início da
   janela; uniforme/evento/irregular/recusado) está no plano. pl/pvp/dividend_yield/n_empresas antigos ficam
   como publicados.
+- **SETOR_SEM (`setor_sem_empresa`, 09/11/2026) nunca é recusado:** o histórico muda legitimamente quando a
+  composição do setor muda, então os antigos são encadeados pela razão do 1º ponto da sobreposição
+  (`emenda.TIPOS_ENCADEADOS`). Fator fora de [0,5; 2,0] gera aviso `ATENÇÃO` no resumo, sem bloquear. Ações e os
+  outros tipos continuam com a trava. Recusas antigas de SETOR_SEM: `python -m publicador --liberar-recusas D`
+  (simulação) e depois com `--aplicar` (quem roda é o usuário); fica registrado em `correcoes` e no `detalhe.liberacao`
+  da linha de `series_ajustes`, que vira `irregular`/aplicado.
+
+## Pendências
+- **Séries que somem da carga completa ficam congeladas no banco (09/11/2026, não resolvido):** o planejador só
+  percorre as séries presentes em `saida_completa/D`, e o `removidos` da carga completa vem sempre vazio. Uma série
+  que deixa de vir (ex.: a ação RAIZ4, sem preço desde a união RAIZ4 → RAIZ55) não é removida: a API continua a
+  servi-la até a última data publicada. Decidir como marcar `removido_em` (ex.: ler o `removidos` de `saida/D`).
 - Ausência = `null` + status, nunca 0.
 - Ponto de série com diferença relativa ≤ 1e-6 (mesmo status) = ruído numérico: grava o valor novo, sem linha em
   `correcoes`. Pontos e correções vão em lote (`gravador.ordenar_para_lotes`); não volte a UPDATE um a um.
@@ -72,5 +84,6 @@ módulo).
 
 ## Comandos
 - Testes: `./.venv/Scripts/python -m pytest -q` (integração: com `PROC_API_TESTES_COM_BANCO=1`).
-- Publicador (usuário): `python -m publicador --criar-tabelas | --data AAAA-MM-DD [--forcar] | --conferir`.
+- Publicador (usuário): `python -m publicador --criar-tabelas | --data AAAA-MM-DD [--forcar] | --conferir |
+  --liberar-recusas AAAA-MM-DD [--aplicar] [--motivo "..."]`.
 - API (usuário): `python -m uvicorn api.servidor:app --host 127.0.0.1 --port 8000` → `/docs`.

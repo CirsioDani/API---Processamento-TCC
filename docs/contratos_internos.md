@@ -198,6 +198,10 @@ CAMPOS_PROPORCIONAIS = {"acao": ("fechamento","volume","indice_retorno_total"),
                         "indice": ("indice_retorno_total",), "taxa": ("indice_retorno_total",),
                         "setor_sem_empresa": ("indice_retorno_total",)}
 CAMPOS_SO_AVISO = {"indice": ("fechamento",)}
+TIPOS_ENCADEADOS = ("setor_sem_empresa",)        # encadeia no 1º ponto da costura e nunca recusa (09/11/2026)
+FATOR_ALERTA_MIN = 0.5; FATOR_ALERTA_MAX = 2.0   # fora disso: aviso "ATENÇÃO" (só setor; aplicado mesmo assim)
+MOTIVO_ENCADEADO = "setor_sem_empresa: histórico substituído; antigos encadeados no 1º ponto da sobreposição"
+MOTIVO_SEM_COSTURA = "setor_sem_empresa: sem ponto na sobreposição para encadear"
 @dataclass(frozen=True) class Ajuste:
     campo: str; fator: float | None; de: str | None; ate: str | None; pontos: int
     origem: str          # "emenda" | "janela"
@@ -222,7 +226,21 @@ Algoritmo exato no plano (§ "Séries: emenda"). Detalhes:
 - `alguma_mudanca` = alguma razão não `iguais(r, 1.0)`.
 - Sem `alguma_mudanca` → nada para o campo.
 - `len(costura) < MINIMO_PONTOS`, ou costura não concorda (todas `iguais(r, k)` com k = costura[0]), ou k fora de
-  [FATOR_MIN, FATOR_MAX] → **recusado**, só para campo PROPORCIONAL. Em SO_AVISO, nunca recusado: só um aviso.
+  [FATOR_MIN, FATOR_MAX] → **recusado**, só para campo PROPORCIONAL de tipo fora de `TIPOS_ENCADEADOS`. Em SO_AVISO,
+  nunca recusado: só um aviso.
+- **Encadeamento** (`analisar` passa `encadear=tipo in TIPOS_ENCADEADOS` a `_analisar_proporcional`; 09/11/2026):
+  nunca recusa.
+  - Costura com menos de `MINIMO_PONTOS` ou que não concorda: k = razão do 1º ponto da costura (`costura[0][1]`);
+    `encadeado = True`. A faixa [FATOR_MIN, FATOR_MAX] não vale.
+  - Sem nenhum ponto na costura (ou razão ≤ 0): se n_antigos > 0, 1 Ajuste `irregular`, `aplicado=False`,
+    `fator=None`, `origem="emenda"`, `detalhe={"motivo": MOTIVO_SEM_COSTURA, "antigos": {...}, "razoes_costura": []}`
+    e o aviso `"… sem ponto para encadear — antigos mantidos como publicados"`. Nada em `fatores_aplicar`.
+    Se n_antigos == 0, nada.
+  - Costura concordante com pelo menos 3 pontos: k normal, sem `MOTIVO_ENCADEADO`.
+  - Aplicado (k ≠ 1): `detalhe["motivo"] = MOTIVO_ENCADEADO` se `encadeado`. Depois, `_avisos_setor(ticker, campo, k,
+    encadeado, resultado)`: se `encadeado`, aviso `"histórico substituído (fator de encadeamento k) — antigos
+    encadeados no 1º ponto da janela"`; se k fora de [FATOR_ALERTA_MIN; FATOR_ALERTA_MAX] (= [0,5; 2,0]), aviso
+    `"ATENÇÃO: … conferir o processamento (aplicado mesmo assim)"`. O fator é sempre aplicado.
 - k concordante e `iguais(k, 1.0)` → mudança só no meio da janela: nada de ajuste, nada explicado (vai ponto a
   ponto).
 - Classificação:
@@ -239,7 +257,7 @@ Algoritmo exato no plano (§ "Séries: emenda"). Detalhes:
     `pontos = n_antigos + len(explicadas)`; `aplicado=True`;
   - `detalhe = {"antigos": {"de","ate","pontos"}, "janela": {"de","ate","pontos"}, "razoes_costura": [...],
     "data_evento"?: S}`.
-- **PROPORCIONAL recusado:**
+- **PROPORCIONAL recusado** (nunca para `TIPOS_ENCADEADOS`):
   - Ajuste com `classificacao="recusado"`, `aplicado=False`, `fator=k` (ou None);
   - `de` = 1º antigo, `ate` = último antigo (data < d0), `pontos=n_antigos`, origem "emenda";
   - `detalhe={"motivo": ..., "razoes_costura": [...]}`; aviso
@@ -337,6 +355,42 @@ def planejar(entrada: Entrada, estado: Estado, forcar: bool = False) -> Plano
   - `"<versionada>"` = VersaoInserir; `"<versionada>_fechadas"`; `"<versionada>_corrigidas"`.
   Só chaves com contagem > 0.
 
+## publicador/liberacao.py (lógica pura: sem SQL, sem I/O; 09/11/2026)
+```python
+TIPOS_LIBERAVEIS = ("setor_sem_empresa",)
+MOTIVO_PADRAO = "SETOR_SEM passou a ser substituição inteira (decisão de 09/11/2026)"
+FATOR_ALERTA_MIN, FATOR_ALERTA_MAX = 0.5, 2.0
+REGRA = "setor_sem_empresa: substituição inteira; antigos encadeados pelo fator da recusa"
+class ErroLiberacao(Exception)   # contagem de pontos antigos diferente da recusa
+@dataclass(frozen=True) class Recusa:
+    id: int; ticker: str; campo: str; data_publicacao: str; fator: float | None
+    de: str | None; ate: str | None; pontos: int; detalhe: dict   # de/ate/pontos = pontos antigos da recusa
+@dataclass class Liberacao:
+    recusa: Recusa
+    operacoes: list[PontoAtualizar]   # um por ponto antigo
+    detalhe_novo: dict                # detalhe da recusa + chave "liberacao"
+    costura_antes: float | None       # v(ate) / v(1º ponto depois de ate), no campo; None se não dá para calcular
+    costura_depois: float | None      # costura_antes × fator
+    alerta: bool                      # fator fora de [FATOR_ALERTA_MIN; FATOR_ALERTA_MAX]
+def planejar(recusas: list[Recusa], tipos: dict[str, str], pontos: dict[str, dict[str, Ponto]], motivo: str,
+             agora: str) -> tuple[list[Liberacao], list[tuple[Recusa, str]]]
+```
+- `planejar` devolve `(liberações, ignoradas)`; as ignoradas são `(recusa, motivo em texto)`. `pontos` são os
+  vigentes (`removido_em IS NULL`), por ticker e por data. Se uma contagem não bate, levanta `ErroLiberacao` e nada
+  é devolvido.
+- `_motivo_ignorada`, nesta ordem: tipo fora de `TIPOS_LIBERAVEIS` → `"tipo … não é liberável"`; campo fora de
+  `emenda.CAMPOS_PROPORCIONAIS[tipo]` → `"campo … não é proporcional no tipo …"`; fator None ou ≤ 0; `de` ou `ate`
+  None; nenhum ponto antigo com valor no campo.
+- `_antigos(recusa, pontos_ticker)`: pontos com `de ≤ data ≤ ate` e valor no campo, por data.
+- `_liberar`: `len(antigos) != recusa.pontos` → `ErroLiberacao`. Senão, para cada antigo:
+  `planejador._ponto_emendado(antigo, {campo: fator})` → `PontoAtualizar(ticker, ponto=emendado,
+  hash=series.hash_ponto(emendado), anterior=antigo, hash_anterior=series.hash_ponto(antigo))`.
+- `detalhe_novo` = `{**recusa.detalhe, "liberacao": {"em", "motivo", "classificacao_anterior": "recusado",
+  "aplicado_anterior": False, "fator_aplicado", "pontos_emendados", "regra"}}`.
+- `_costura`: `costura_antes` = v(ate) ÷ v(1º ponto com valor depois de ate), no campo; `costura_depois` =
+  `costura_antes × fator`. Os dois são None se não há ponto em ate com valor, nem ponto depois, ou o ponto depois é 0.
+- `alerta` só avisa: não impede a liberação.
+
 ## publicador/gravador.py
 ```python
 def criar_tabelas(conexao: Conexao) -> list[str]
@@ -344,6 +398,9 @@ def carregar_estado(conexao: Conexao, entrada: Entrada) -> Estado
 def gravar(conexao: Conexao, entrada: Entrada, plano: Plano, inicio: datetime) -> None
 def registrar_rejeicao(conexao: Conexao, entrada: Entrada, erros: list[str], inicio: datetime) -> None
 def contar_tabelas(conexao: Conexao) -> dict[str, int]
+def carregar_recusas(conexao: Conexao, data: str) -> tuple[list, dict[str, str], dict[str, dict[str, Ponto]]]
+def comandos_da_liberacao(lib: Any, t: Callable[[str], str]) -> list[tuple[str, tuple]]
+def gravar_liberacoes(conexao: Conexao, libs: list) -> None
 ```
 - `criar_tabelas`: lê `sql/esquema.sql` (RAIZ), tira as linhas que começam com `--`, separa por `;`, troca `{p}` por
   `conexao.prefixo`, executa cada comando e confirma. Devolve os nomes das tabelas criadas.
@@ -377,6 +434,15 @@ def contar_tabelas(conexao: Conexao) -> dict[str, int]
     registro de execucao, inicio, fim = agora.
 - `registrar_rejeicao`: transação própria, só o upsert em publicacoes (status "rejeitada", erros = lista).
 - `contar_tabelas`: `SELECT COUNT(*) AS n FROM <t>` das 14.
+- `carregar_recusas(conexao, data)` (liberação de recusas): `series_ajustes` com `classificacao='recusado'` e
+  `data_publicacao = data`, ordem ticker e campo → lista de `Recusa` (import tardio de `liberacao`); `tipos` = tipo de
+  cada ticker em `series_catalogo`; `pontos` = `series_pontos` com `removido_em IS NULL` desses tickers. Devolve
+  `(recusas, tipos, pontos)`.
+- `comandos_da_liberacao(lib, t)`: primeiro os pontos, pelas funções de `comandos_da_operacao` com
+  `data = lib.recusa.data_publicacao` (vira `data_troca` das correções); por último
+  `UPDATE series_ajustes SET classificacao='irregular', aplicado=1, detalhe=… WHERE id=%s AND classificacao='recusado'`.
+- `gravar_liberacoes(conexao, libs)`: todas as liberações numa transação (`_em_transacao`), com os comandos em lote
+  por `ordenar_para_lotes`.
 
 ## publicador/resumo.py
 `formatar(plano: Plano, segundos: float) -> str`. Primeira linha
@@ -386,13 +452,20 @@ brasileiro (`44.671`), incluindo `"top 5 ... não publicado (pacote ausente)"` q
 completa. Por fim, `Avisos:` com cada aviso.
 
 ## publicador/__main__.py
-`python -m publicador (--criar-tabelas | --data AAAA-MM-DD [--forcar] | --conferir)`, exatamente um dos três.
+`python -m publicador (--criar-tabelas | --data AAAA-MM-DD [--forcar] | --conferir | --liberar-recusas AAAA-MM-DD [--aplicar] [--motivo TEXTO])`, exatamente um dos quatro.
 - Carrega a config e abre a conexão "escrita".
 - `--data`: inicio → `leitor.ler` → `validar`:
   - com erros: `registrar_rejeicao`, imprime os erros (no máximo 30) e sai 1;
   - senão: `carregar_estado` → `planejar` (ErroPublicacao → registrar_rejeicao + sai 1) → `gravar` → imprime o resumo.
-- Saídas: 0 ok; 1 recusado/validação; 2 config, banco ou uso.
+- Saídas: 0 ok; 1 recusado/validação/liberação recusada; 2 config, banco ou uso.
 - Nunca imprime credencial.
+- `--liberar-recusas D` (conexão "escrita"): `gravador.carregar_recusas(D)` → `liberacao.planejar(..., motivo or
+  MOTIVO_PADRAO, agora)`.
+  - `ErroLiberacao` → imprime `"Liberação de D recusada: …"`, sai 1, nada gravado.
+  - Imprime cada liberável (ticker, campo, fator, pontos, de a ate, costura antes → depois; `ATENÇÃO` se o fator está
+    fora de [0,5; 2,0]) e cada ignorada com o motivo.
+  - Sem `--aplicar`: `"Simulação: nada gravado."`, sai 0. Com `--aplicar`: `gravar_liberacoes`, `"N recusas liberadas."`, sai 0.
+- `--aplicar` e `--motivo` só valem com `--liberar-recusas` (senão erro de uso, sai 2). A data é validada (AAAA-MM-DD).
 
 ## api/
 - `api/main.py`: `criar_app(config: Config | None = None, fabrica_repositorio=None) -> FastAPI`. Sem config →

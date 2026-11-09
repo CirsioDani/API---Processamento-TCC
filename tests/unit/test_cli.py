@@ -46,6 +46,34 @@ def test_data_com_formato_errado_sai_com_2(monkeypatch):
     assert erro.value.code == 2
 
 
+def test_aplicar_sozinho_sai_com_2(monkeypatch):
+    monkeypatch.setattr(config, "carregar", _nao_pode_conectar)
+    with pytest.raises(SystemExit) as erro:
+        cli.main(["--aplicar"])
+    assert erro.value.code == 2
+
+
+def test_liberar_recusas_com_data_invalida_sai_com_2(monkeypatch):
+    monkeypatch.setattr(config, "carregar", _nao_pode_conectar)
+    with pytest.raises(SystemExit) as erro:
+        cli.main(["--liberar-recusas", "2026-13-01"])
+    assert erro.value.code == 2
+
+
+def test_liberar_recusas_e_data_juntos_saem_com_2(monkeypatch):
+    monkeypatch.setattr(config, "carregar", _nao_pode_conectar)
+    with pytest.raises(SystemExit) as erro:
+        cli.main(["--liberar-recusas", "2026-11-09", "--data", "2026-11-09"])
+    assert erro.value.code == 2
+
+
+def test_motivo_sem_liberar_recusas_sai_com_2(monkeypatch):
+    monkeypatch.setattr(config, "carregar", _nao_pode_conectar)
+    with pytest.raises(SystemExit) as erro:
+        cli.main(["--conferir", "--motivo", "outro motivo"])
+    assert erro.value.code == 2
+
+
 def test_erro_de_configuracao_sai_com_2_e_nao_mostra_senha(monkeypatch, capsys):
     def carregar_falhando(*args, **kwargs):
         raise config.ErroConfig("IP_BANCO não definido")

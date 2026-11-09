@@ -533,6 +533,7 @@ data_referencia, hash sem metadados, DDL fora da transação), `.claude/settings
 - ~~Onde hospedar a API~~ → Railway (seção Deploy). Falta trocar para os usuários ESCRITA/LEITURA no MySQL.
 - Atualizar o Guia da interface com a URL, a chave e `?data` / `historico`.
 - Se o banco crescer: guardar os itens de notícia uma vez por id.
+- Séries que somem da carga completa ficam congeladas no banco: o planejador só percorre as séries de `saida_completa/D` e o `removidos` da carga completa vem vazio; ex.: ação RAIZ4. Não resolvido (09/11/2026).
 
 ---
 
@@ -573,10 +574,12 @@ data-com. Dividendo não muda nenhum ponto antigo (spec 8.3). O que muda para tr
 5. k fora de [0,01; 100], pontos que não concordam ou menos de 3 pontos com r ≠ 1 na sobreposição →
    **`recusado`**. Os antigos não são tocados, o resumo traz um aviso e a API serve os antigos daquele campo
    (data ≤ `ate` da recusa mais recente) como `null` + `indisponivel`. No banco, nada é apagado.
+   **Exceção (09/11/2026): `setor_sem_empresa` nunca é recusado.** Ele encadeia no 1º ponto da sobreposição
+   (ver a seção "SETOR_SEM: substituição inteira e liberação de recusas (09/11/2026)").
 6. Senão, classifica pela sobreposição inteira:
    - **`uniforme`**: r ≈ k em tudo (mudança de âncora);
    - **`evento`**: r ≈ k antes de uma data S e r ≈ 1 a partir de S (desdobramento);
-   - **`irregular`**: o resto (SETOR_SEM com composição nova).
+   - **`irregular`**: o resto (SETOR_SEM com composição nova; no setor, o fator vem do encadeamento, ver a seção nova).
    Nos três casos, os antigos são multiplicados por k.
 7. "Só aviso" (fechamento de índice): classifica do mesmo jeito, mas `aplicado = false`, não ajusta e não
    recusa (os antigos continuam servidos).
@@ -620,6 +623,53 @@ Publicações anteriores à correção não têm o valor guardado: o cálculo pe
 4. fator absurdo (AZUL3): `recusado`, aviso, antigos `indisponivel` na API e intactos no banco;
 5. SETOR_SEM com composição nova: `irregular`, emenda aplicada;
 6. republicar o mesmo dia não aplica o fator duas vezes.
+7. deriva de SETOR_SEM (caso de 09/11/2026: a Raízen sai do setor depois de RAIZ4 → RAIZ55): antigos encadeados no
+   1º ponto da costura, `irregular`, aplicado, nunca `recusado`; sem ponto na costura, `aplicado=false` e antigos
+   intactos; fator fora de [0,5; 2,0] → aviso ATENÇÃO.
+
+## SETOR_SEM: substituição inteira e liberação de recusas (09/11/2026)
+**Motivo.** `SETOR_SEM:` é derivada das empresas do setor. Em 09/11/2026 a Raízen saiu do setor (RAIZ4 ficou sem
+preço depois de RAIZ4 → RAIZ55). O histórico mudou de forma não proporcional, então não há um fator único. Oito
+emendas foram recusadas (BRAV3, CSAN3, PETR3, PETR4, PRIO3, RECV3, UGPA3, VBBR3), e os pontos antigos (anteriores
+à janela) sumiram das visões `2a` e `max`.
+
+**Regra nova para `setor_sem_empresa` (`emenda.TIPOS_ENCADEADOS`):**
+- nunca é recusado;
+- se a costura não concorda ou tem menos de 3 pontos, o fator k é a razão do 1º ponto da costura (encadeamento);
+  os antigos são multiplicados por k; classificação `irregular`; `aplicado = true`;
+- sem nenhum ponto na costura: ajuste `irregular` com `aplicado = false`, aviso "sem ponto para encadear", e os
+  antigos ficam como publicados;
+- a faixa [0,01; 100] não vale para o setor;
+- fator fora de **[0,5; 2,0]**: aviso `ATENÇÃO: … conferir o processamento (aplicado mesmo assim)`. O fator é aplicado;
+- pontos fora da janela de 253 pregões guardam os retornos da composição antiga. Eles ficam encadeados sem degrau.
+  O `n_empresas` antigo fica como publicado.
+
+Ações, ETFs, índices e taxas mantêm a trava (recusa).
+
+**Liberação das recusas gravadas (`publicador/liberacao.py`).** Para `setor_sem_empresa` (`TIPOS_LIBERAVEIS`), a
+recusa vira substituição inteira: os pontos antigos (de ≤ data ≤ `ate`, com valor no campo) são multiplicados pelo
+fator da recusa. Depois a linha de `series_ajustes` vira `irregular` com `aplicado = 1`. Outros tipos e campos são
+ignorados, com o motivo impresso.
+
+Comando, com `AAAA-MM-DD` = data da publicação que gravou as recusas. Quem roda é o usuário, não o agente:
+1. `python -m publicador --liberar-recusas AAAA-MM-DD`: só simula. Mostra, por recusa, o fator, os pontos, a costura
+   antes → depois e o alerta, e as recusas ignoradas com o motivo. Não grava nada.
+2. `python -m publicador --liberar-recusas AAAA-MM-DD --aplicar [--motivo "..."]`: grava numa transação. Sem
+   `--motivo`, usa a decisão de 09/11/2026.
+
+- Se a contagem de pontos antigos não bate com a da recusa, a liberação é recusada (sai 1) e nada é gravado.
+- Repetir não faz nada: a linha deixa de ser `recusado` e não entra mais na lista.
+
+**O que fica registrado:**
+- `correcoes`: um registro por ponto antigo, com `hash_anterior` e `conteudo_anterior` exatos e `data_troca` = data
+  da recusa;
+- `series_pontos`: os pontos antigos com o valor × fator;
+- `series_ajustes`: a linha da recusa vira `classificacao = 'irregular'`, `aplicado = 1`, e o `detalhe` ganha o bloco
+  `liberacao` (`em`, `motivo`, `classificacao_anterior`, `aplicado_anterior`, `fator_aplicado`, `pontos_emendados`,
+  `regra`).
+
+**O que a API mostra:** sem a recusa, os antigos saem com o valor emendado (sem `null` nem `indisponivel`) nas visões
+`2a` e `max`. A API não muda e não precisa de deploy: `sql_recusas` só lê as linhas `recusado`.
 
 ## Mudanças no esquema depois da aprovação (25/10/2026)
 - **Nova tabela `series_ajustes`** (14ª), também na lista fechada da guarda.
